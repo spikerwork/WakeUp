@@ -25,25 +25,26 @@ Local $test_options=$test_halt & $test_sleep & $test_hiber ; OSH (Off, Sleep, Hi
 
 If $firstrun==1 Then 
    ToolTip("Идет подготовка к запуску теста " & $ScriptName,2000,0 , "Первый запуск", 1,4)
-   
+   PauseTime($ClientPause)
    SendData($ServerIP, "Test", $TCPport)
-   Sleep(2000)
+   PauseTime($ClientPause)
    $socket = StartTCPServer($Client_IP,$TCPport+1)
    RecieveData ($socket)
    
    If $Ready==1 Then
 	  
 	  history ("###Connection to server established###")
+	  PauseTime($ClientPause)
 	  SendData($ServerIP, "ToServer|StoreValues", $TCPport)
-	  Sleep(2000)
+	  PauseTime($ClientPause)
 	  SendData($ServerIP, "ToServer|MAC" & "|" & $ipdetails[2][0], $TCPport)
-	  Sleep(2000)
+	  PauseTime($ClientPause)
 	  SendData($ServerIP, "ToServer|TestRuns" & "|" & $runs_all-1, $TCPport)
-	  Sleep(2000)
+	  PauseTime($ClientPause)
 	  SendData($ServerIP, "ToServer|OptionsOSH" & "|" & $test_options, $TCPport) ; Halt, Reboot, Hibernate 111 or 000
-	  Sleep(2000)
+	  PauseTime($ClientPause)
 	  SendData($ServerIP, "ToServer|StoreValuesFinish", $TCPport)
-	  Sleep(1000)
+	  PauseTime($ClientPause)
 	  $socket = StartTCPServer($Client_IP,$TCPport+1)
 	  RecieveData ($socket)
 	  
@@ -52,7 +53,7 @@ If $firstrun==1 Then
 	  
 		 IniWrite($resultini, "Runs", "First Run", 0)
 		 IniWrite($resultini, "Runs", "Left", $run-1)
-		 Sleep(2000)
+		 PauseTime($ClientPause)
 		 halt("reboot")
 		 
 		 EndIf
@@ -65,13 +66,14 @@ Else
 	  $test_sleep_time=IniRead($resultini, $current_run, "Sleep", 0) 
 	  
 	  If $test_sleep_time==0 Then
-		 Sleep(5000)
 		 
-		 FileDelete (@StartupCommonDir & "\WakeClient.lnk")
+		 PauseTime(5)
 		 
-		 FileCreateShortcut ($ScriptFolder & "\" & $WakeDaemon, @StartupCommonDir & "\WakeDaemon.lnk", ""," Sleep")
 		 SendData($ServerIP, "ToServer|Sleep|" & $run, $TCPport)
-		 Sleep(5000)
+		 
+		 PauseTime($ClientPause)
+		 
+		 Run($ScriptFolder & "\" & $WakeDaemon & " Sleep", $ScriptFolder)
 		 halt("sleep")
 		 
 	  Else
@@ -113,35 +115,6 @@ Else
 
 EndIf
 
-
-#cs
-
-;SendMagicPacket("00241D12CC3B", GetBroadcast ($ipdetails[1][0], $ipdetails[3][0]))
-
-SendData($ServerIP, "Test", $TCPport)
-Sleep(1000)
-$socket = StartTCPServer($Client_IP,$TCPport+1)
-RecieveData ($socket)
-
-if $Ready==1 Then 
-history ("###Connection to server established###")
-SendData($ServerIP, "MAC", $TCPport)
-Sleep(1000)
-SendData($ServerIP, $ipdetails[2][0], $TCPport)
-Sleep(1000)
-SendData($ServerIP, "Lol",$TCPport)
-Sleep(1000)
-SendData($ServerIP, "Yes",$TCPport)
-Sleep(1000)
-SendData($ServerIP, "Good",$TCPport)
-Sleep(1000)
-;SendData($ServerIP, "Exit",$TCPport)
-
-Else
-history ("Connection to server lost")
-EndIf
-
-#ce
 
 #include "Libs\foot.au3"
 

@@ -100,6 +100,8 @@ history ("INI file not found, use default vars")
 EndIf
 
 
+Global $ClientPause=3
+Global $ServerPause=2
 
 Global $cpu_need= 1 ; $cpu_need=IniRead($mainini, $section_daemon, "CPU", 1)
 Global $cpu_percent_need= 5 ;$cpu_percent_need=IniRead($mainini, $section_daemon, "CPU_percent", 5)
@@ -270,7 +272,7 @@ Global $hdd_percent_need= 0 ; $hdd_percent_need=IniRead($mainini, $section_daemo
 
 		 $idle = "Elapsed Time: " & $time & " sec"
 	  
-		 ToolTip("÷икл номер Ч " & $run & @CRLF & $CPU_Clock & @CRLF & $CPU_Load & @CRLF & $HDD & @CRLF & $HDD_bytes& @CRLF & $idle, 2000, 0, @ScriptName, 2,4)
+		 ToolTip("Cycle number " & $run & @CRLF & $CPU_Clock & @CRLF & $CPU_Load & @CRLF & $HDD & @CRLF & $HDD_bytes& @CRLF & $idle, 2000, 0, @ScriptName, 2,4)
 	   
 		 Sleep(500)
 	  
@@ -371,7 +373,7 @@ Global $hdd_percent_need= 0 ; $hdd_percent_need=IniRead($mainini, $section_daemo
    $worktime +=5
    history ("System enter IDLE state, after " & $worktime & " seconds. " & $run & " cycles")
    ;Run($parser, $ScriptFolder)
-   Return $worktime
+   Return $worktime & "|" & $run
    
    EndFunc
 

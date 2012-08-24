@@ -9,7 +9,7 @@
 	  ; Client sending to server
 	  Case "Test"
 	  
-			Sleep(2000)
+			PauseTime($ServerPause)
 			history ("Found new client! Wrote IP to ini file.")
 			IniWrite($inifile, "Network", "Client_IP", $clientIP)
 			IniWrite($resultini, "Network", "Client_IP", $clientIP)
@@ -18,14 +18,14 @@
 	  Case "Ready"
 			
 			SendData($clientIP, "Exit", $TCPport+1)
-			Sleep(1000)
+			PauseTime($ServerPause)
 	  
 	  ; Server sending to client
 	  Case "Passed"
 	   
 			SendData($clientIP, "Ready", $TCPport)
 			$Ready=1
-			Sleep(1000)
+			PauseTime($ServerPause)
 	  
 	  ; Else data
 	  Case Else
@@ -75,9 +75,9 @@
 			   Case "StoreValuesFinish"
 			   
 			   history ("Finish storing values")
-			   Sleep(2000)
+			   PauseTime($ServerPause)
 			   SendData($clientIP, "ToClient|Done", $TCPport+1)
-			   Sleep(5000)
+			   PauseTime(5)
 			   SendData($clientIP, "Exit", $TCPport+1)
 			   
 			   Case "Sleep"
@@ -88,8 +88,7 @@
 			   $Client_MAC=IniRead($resultini, "Network", "MAC", "00241D12CC3B")
 			   $Client_MAC=StringReplace($Client_MAC, ":", "")
 			   
-			   Sleep(20000)
-			   
+			   PauseTime(30)
 			   
 			   $broadcast=GetBroadcast ($ipdetails[1][0], $ipdetails[3][0])
 			   
@@ -98,8 +97,18 @@
 			   
 			   Case "SleepStop"
 			   
-			   IniWrite($resultini, "Run#" & $Packetarray[3], "StopSleepReciveAt", currenttime ())
+			   history ("Sleep test finish. DaemonTime:" & $Packetarray[4] & ". DaemonCycles:" & $Packetarray[5])
 			   
+			   IniWrite($resultini, "Run#" & $Packetarray[3], "StopSleepReciveAt", currenttime ())
+			   IniWrite($resultini, "Run#" & $Packetarray[3], "SleepDaemonTime", $Packetarray[4])
+			   IniWrite($resultini, "Run#" & $Packetarray[3], "SleepDaemonCycles", $Packetarray[5])
+			   
+			   $sleepwakeup="3324324"
+			   
+			   PauseTime($ServerPause)
+			   SendData($clientIP, "ToClient|Time|" & $sleepwakeup, $TCPport+1)
+			   PauseTime($ServerPause+5)
+			   SendData($clientIP, "Exit", $TCPport+1)
 			   
 			   EndSwitch
 			   
@@ -114,6 +123,11 @@
 			   Case "Done"
 			   $Done = 1
 			   history ("Done - " & $Done)
+			   
+			   Case "Time"
+			   
+			   history ("Time - " & $Packetarray[3])
+			   IniWrite($resultini, "Run#" & $run, "Time", $Packetarray[3])
 			   
 			   EndSwitch
 			

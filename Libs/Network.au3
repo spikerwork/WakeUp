@@ -248,6 +248,7 @@
 	  Local $connexion = TCPConnect($ip, $port)
 	  If @error <> 0 Then 
 	  history ("Fail to start TCP :" & $connexion)
+	  SendData ($ip, $dataS, $port)
 	  Else
 	  history ("To IP: " & $ip & " port:" & $port & ". Data | " & $dataS & " | Socket ID:" & $connexion)
 	  
