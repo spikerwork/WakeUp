@@ -1,6 +1,7 @@
 #include "Libs\libs.au3"
 #include "Libs\head.au3"
 Local $ipdetails=_IPDetail()
+Global $TimerStart
 
 $socket = StartTCPServer($ServerIP,$TCPport)
 

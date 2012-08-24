@@ -1,6 +1,5 @@
-#include "Libs\libs.au3"
-#include "Libs\head.au3"
-$console=0
-SendData($ServerIP, "ToServer|Sleep|" & "1", $TCPport)
+Local $begin = TimerInit()
+Sleep(3000)
+Local $dif = TimerDiff($begin)
+MsgBox(0, "Time Difference", $dif)
 
-#include "Libs\foot.au3"
