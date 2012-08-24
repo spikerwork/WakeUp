@@ -173,7 +173,7 @@ Else
 		 PauseTime($ClientPause)
 		 
 		 FileDelete(@StartupCommonDir & "\WakeClient.lnk")
-		 FileCreateShortcut ($ScriptFolder & "\" & $WakeDaemon, @StartupCommonDir & "\WakeDaemon.lnk")
+		 FileCreateShortcut ($ScriptFolder & "\" & $WakeDaemon & " Halt", @StartupCommonDir & "\WakeDaemon.lnk")
 		 ;Run($ScriptFolder & "\" & $WakeDaemon & " Halt", $ScriptFolder)
 		 halt("halt")
 		 
