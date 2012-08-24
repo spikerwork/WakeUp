@@ -1,0 +1,1 @@
+RunWait("SC start MpsSvc")
