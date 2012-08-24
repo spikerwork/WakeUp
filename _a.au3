@@ -1,6 +1,6 @@
-Local $days = StringSplit("Sun,Mon,Tue,Wed,Thu,Fri,Sat", ",")
-;$days[1] contains "Sun" ... $days[7] contains "Sat"
-MsgBox(0,"",$days[2])
-;Local $text = "This\nline\ncontains\nC-style breaks."
-;Local $array = StringSplit($text, '\n', 1)
+#include "Libs\libs.au3"
+#include "Libs\head.au3"
+$console=0
+SendData($ServerIP, "ToServer|Sleep|" & "1", $TCPport)
 
+#include "Libs\foot.au3"

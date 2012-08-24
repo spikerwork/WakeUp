@@ -58,6 +58,13 @@ If FileExists($inifile)==1 Then
 history ("Skip settings of existing ini file")
 EndIf
 
+If DirGetSize($ScriptFolder) <> -1 Then
+DirRemove($ScriptFolder, 1)
+history ("Old directory removed")
+EndIf
+
+
+
 ; Help file install
 If FileInstall("help.txt", @TempDir & "\" & $helpfile, 1)<>0 Then
 history ("File " & $helpfile & " is copied successfully to " & @TempDir & "\" & $helpfile)

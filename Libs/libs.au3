@@ -143,9 +143,9 @@ Global $hdd_percent_need= 0 ; $hdd_percent_need=IniRead($mainini, $section_daemo
 	  Case "reboot"
    		 Shutdown(6)
 	  Case "sleep"
-		 Shutdown(36)
+		 Shutdown(32) ; 32+4 not working
 	  Case "hibernate"
-		 Shutdown(68)
+		 Shutdown(64) ; 64+4 not working
 	  Case "halt"
 		 Shutdown(5)
 	  Case Else

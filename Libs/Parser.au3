@@ -70,6 +70,8 @@
 			   history ("Number of test" & $Packetarray[3])
 			   IniWrite($resultini, "Network", "OptionsOSH", $Packetarray[3])
 			   
+			   ; Need to add parser
+			   
 			   Case "StoreValuesFinish"
 			   
 			   history ("Finish storing values")
@@ -79,18 +81,24 @@
 			   SendData($clientIP, "Exit", $TCPport+1)
 			   
 			   Case "Sleep"
+			   
 			   history ("Run#" & $Packetarray[3] & " going to sleep")
 			   
 			   IniWrite($resultini, "Run#" & $Packetarray[3], "ToSleep", currenttime ())
 			   $Client_MAC=IniRead($resultini, "Network", "MAC", "00241D12CC3B")
+			   $Client_MAC=StringReplace($Client_MAC, ":", "")
+			   
 			   Sleep(20000)
 			   
-			   SendMagicPacket($Client_MAC, GetBroadcast ($ipdetails[1][0], $ipdetails[3][0]))
-			   IniWrite($resultini, "Run#" & $Packetarray[3], "WakeFromSleep", currenttime ())
+			   
+			   $broadcast=GetBroadcast ($ipdetails[1][0], $ipdetails[3][0])
+			   
+			   SendMagicPacket($Client_MAC, $broadcast)
+			   IniWrite($resultini, "Run#" & $Packetarray[3], "WakeFromSleepSendAt", currenttime ())
 			   
 			   Case "SleepStop"
 			   
-			   IniWrite($resultini, "Run#" & $Packetarray[3], "StopSleep", currenttime ())
+			   IniWrite($resultini, "Run#" & $Packetarray[3], "StopSleepReciveAt", currenttime ())
 			   
 			   
 			   EndSwitch

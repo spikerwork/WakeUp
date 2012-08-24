@@ -38,7 +38,7 @@ If $firstrun==1 Then
 	  Sleep(2000)
 	  SendData($ServerIP, "ToServer|MAC" & "|" & $ipdetails[2][0], $TCPport)
 	  Sleep(2000)
-	  SendData($ServerIP, "ToServer|TestRuns" & "|" & $runs_all, $TCPport)
+	  SendData($ServerIP, "ToServer|TestRuns" & "|" & $runs_all-1, $TCPport)
 	  Sleep(2000)
 	  SendData($ServerIP, "ToServer|OptionsOSH" & "|" & $test_options, $TCPport) ; Halt, Reboot, Hibernate 111 or 000
 	  Sleep(2000)
@@ -65,11 +65,13 @@ Else
 	  $test_sleep_time=IniRead($resultini, $current_run, "Sleep", 0) 
 	  
 	  If $test_sleep_time==0 Then
+		 Sleep(5000)
 		 
 		 FileDelete (@StartupCommonDir & "\WakeClient.lnk")
 		 
 		 FileCreateShortcut ($ScriptFolder & "\" & $WakeDaemon, @StartupCommonDir & "\WakeDaemon.lnk", ""," Sleep")
 		 SendData($ServerIP, "ToServer|Sleep|" & $run, $TCPport)
+		 Sleep(5000)
 		 halt("sleep")
 		 
 	  Else
