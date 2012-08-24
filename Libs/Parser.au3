@@ -32,19 +32,68 @@
 		 
 		 
 		 $Packetarray=StringSplit($NetworkData, "|")
-		 history ("PacketArray — " & $Packetarray[0])
 		 
-		 If @error Then
+		 history ("Lol — | " & $Packetarray[0] & " ||| " & $Packetarray[1] & " ||| " & $Packetarray[2])
+		 
+		 If $Packetarray[0]==1 Then
+			
 			history ("Unrecognized data recieved — | " & $NetworkData & " | Nothing to do")
+			
 		 Else
 			
-			If $Packetarray[0]=="ToServer" Then
+			Local $packettype=$Packetarray[2]
+			
+			If $Packetarray[1]=="ToServer" Then
 			   ; Client sending to server
-			history ("Client is sending data... ")
+			   
+			history ("Client is sending data, so...")
+			
+			   Switch $packettype
+			   
+			   Case "StoreValues"
+			   
+			   history ("Start storing vars in ini file")
+			   IniWrite($resultini, "Network", "Time", currenttime ())
+			   
+			   Case "MAC"
+			   
+			   history ("MAC accepted" & $Packetarray[3])
+			   IniWrite($resultini, "Network", "MAC", $Packetarray[3])
+			   
+			   Case "TestRuns"
+			   
+			   history ("Number of test" & $Packetarray[3])
+			   IniWrite($resultini, "Network", "TestRuns", $Packetarray[3])
+			   
+			   Case "OptionsHRH"
+			   
+			   history ("Number of test" & $Packetarray[3])
+			   IniWrite($resultini, "Network", "OptionsHRH", $Packetarray[3])
+			   
+			   Case "StoreValuesFinish"
+			   
+			   history ("Finish storing values")
+			   Sleep(2000)
+			   SendData($clientIP, "ToClient|Done", $TCPport+1)
+			   Sleep(5000)
+			   SendData($clientIP, "Exit", $TCPport+1)
+			   
+			   EndSwitch
+			   
 		    
-			ElseIf $Packetarray[0]=="ToClient" Then
+			ElseIf $Packetarray[1]=="ToClient" Then
 			   ; Server sending to client
-			history ("Server is sending data... ")
+			   
+			history ("Server is sending data, so...")
+			
+			   Switch $packettype
+			   
+			   Case "Done"
+			   $Done = 1
+			   history ("Done - " & $Done)
+			   
+			   EndSwitch
+			
 		       
 			EndIf
 		 

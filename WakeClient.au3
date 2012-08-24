@@ -43,7 +43,7 @@ If $firstrun==1 Then
 	  SendData($ServerIP, "ToServer|OptionsHRH" & "|" & $test_options, $TCPport) ; Halt, Reboot, Hibernate 111 or 000
 	  Sleep(2000)
 	  SendData($ServerIP, "ToServer|StoreValuesFinish", $TCPport)
-	  Sleep(2000)
+	  Sleep(1000)
 	  $socket = StartTCPServer($Client_IP,$TCPport+1)
 	  RecieveData ($socket)
 	  
