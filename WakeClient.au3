@@ -11,15 +11,15 @@ $ipdetails=_IPDetail()
 
 ; Load vars from ini
 $firstrun=IniRead($resultini, "Runs", "First Run", 1)
-$runs_all=IniRead($inifile, "Client", "TestRepeat", 5)
+$runs_all=IniRead($inifile, "Client", "TestRepeat", 5)+1
 $runs_left=IniRead($resultini, "Runs", "Left", "")
 $run=$runs_all-$runs_left
 $current_run="Current run #" & $run
 If $runs_left==1 Then $lastrun=1
-$test_halt=IniRead($resultini, "Client", "Halt",  1)
+$test_halt=IniRead($resultini, "Client", "Off",  1)
 $test_sleep=IniRead($resultini, "Client", "Sleep",  1)
 $test_hiber=IniRead($resultini, "Client", "Hibernate",  1)
-Local $test_options=$test_halt & $test_sleep & $test_hiber
+Local $test_options=$test_halt & $test_sleep & $test_hiber ; OSH (Off, Sleep, Hibernate)
 
 
 
@@ -40,7 +40,7 @@ If $firstrun==1 Then
 	  Sleep(2000)
 	  SendData($ServerIP, "ToServer|TestRuns" & "|" & $runs_all, $TCPport)
 	  Sleep(2000)
-	  SendData($ServerIP, "ToServer|OptionsHRH" & "|" & $test_options, $TCPport) ; Halt, Reboot, Hibernate 111 or 000
+	  SendData($ServerIP, "ToServer|OptionsOSH" & "|" & $test_options, $TCPport) ; Halt, Reboot, Hibernate 111 or 000
 	  Sleep(2000)
 	  SendData($ServerIP, "ToServer|StoreValuesFinish", $TCPport)
 	  Sleep(1000)
@@ -51,16 +51,41 @@ If $firstrun==1 Then
 		 history ("###Vars stored on server###")
 	  
 		 IniWrite($resultini, "Runs", "First Run", 0)
-		 IniWrite($resultini, "Runs", "Left", $run+1)
+		 IniWrite($resultini, "Runs", "Left", $run-1)
 		 Sleep(2000)
-		 ;halt("reboot")
+		 halt("reboot")
 		 
 		 EndIf
    EndIf
    
 Else
    
-   IniWrite($resultini, "Runs", "Left", $runs_left-1)
+   If $test_sleep==1 Then
+	     
+	  $test_sleep_time=IniRead($resultini, $current_run, "Sleep", 0) 
+	  
+	  If $test_sleep_time==0 Then
+		 
+		 FileDelete (@StartupCommonDir & "\WakeClient.lnk")
+		 
+		 FileCreateShortcut ($ScriptFolder & "\" & $WakeDaemon, @StartupCommonDir & "\WakeDaemon.lnk", ""," Sleep")
+		 SendData($ServerIP, "ToServer|Sleep|" & $run, $TCPport)
+		 halt("sleep")
+		 
+	  Else
+		 
+		 
+	  EndIf
+	  
+   EndIf
+
+	  
+   ;IniWrite($resultini, $current_run, "Reboot", 1)
+   ;IniWrite($resultini, $current_run, "Hibernate", 1)
+   ;IniWrite($resultini, $current_run, "Halt", 1)
+   
+   
+   
    
    If $lastrun==1 Then
 	  

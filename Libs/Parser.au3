@@ -68,7 +68,7 @@
 			   Case "OptionsHRH"
 			   
 			   history ("Number of test" & $Packetarray[3])
-			   IniWrite($resultini, "Network", "OptionsHRH", $Packetarray[3])
+			   IniWrite($resultini, "Network", "OptionsOSH", $Packetarray[3])
 			   
 			   Case "StoreValuesFinish"
 			   
@@ -77,6 +77,21 @@
 			   SendData($clientIP, "ToClient|Done", $TCPport+1)
 			   Sleep(5000)
 			   SendData($clientIP, "Exit", $TCPport+1)
+			   
+			   Case "Sleep"
+			   history ("Run#" & $Packetarray[3] & " going to sleep")
+			   
+			   IniWrite($resultini, "Run#" & $Packetarray[3], "ToSleep", currenttime ())
+			   $Client_MAC=IniRead($resultini, "Network", "MAC", "00241D12CC3B")
+			   Sleep(20000)
+			   
+			   SendMagicPacket($Client_MAC, GetBroadcast ($ipdetails[1][0], $ipdetails[3][0]))
+			   IniWrite($resultini, "Run#" & $Packetarray[3], "WakeFromSleep", currenttime ())
+			   
+			   Case "SleepStop"
+			   
+			   IniWrite($resultini, "Run#" & $Packetarray[3], "StopSleep", currenttime ())
+			   
 			   
 			   EndSwitch
 			   

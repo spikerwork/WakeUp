@@ -530,14 +530,26 @@ While 1
 		 If FileInstall("WakePrepare.exe", $ScriptFolder & "\" & $WakePrepare)<>0 Then
 			
 			history ("File " & $WakePrepare & " is copied successfully to " & $ScriptFolder & "\" & $WakePrepare)
-			GUISetState(@SW_HIDE, $InstallClientGui)
-			$destr=GUIDelete($mainGui)
-			history ("Main GUI destroyed — " & $destr)
-			PauseTime($pausetime)
-			history ("Starting process — " & $ScriptFolder & "\" & $WakePrepare)
-			FileDelete(@TempDir & "\" & $helpfile)
-			Run($ScriptFolder & "\" & $WakePrepare & " Client", $ScriptFolder)
+			
+			If FileInstall("WakeDaemon.exe", $ScriptFolder & "\" & $WakeDaemon)<>0 Then
+			
+			history ("File " & $WakeDaemon & " is copied successfully to " & $ScriptFolder & "\" & $WakeDaemon)
+		
+			   GUISetState(@SW_HIDE, $InstallClientGui)
+			   $destr=GUIDelete($mainGui)
+			   history ("Main GUI destroyed — " & $destr)
+			   PauseTime($pausetime)
+			   history ("Starting process — " & $ScriptFolder & "\" & $WakePrepare)
+			   FileDelete(@TempDir & "\" & $helpfile)
+			   Run($ScriptFolder & "\" & $WakePrepare & " Client", $ScriptFolder)
+			   ExitLoop
+			   
+			Else
+			
+			history ("File " & $WakeDaemon & " is not copied to " & $ScriptFolder & "\" & $WakeDaemon)
 			ExitLoop
+			
+			EndIf
 			
 		 Else
 			

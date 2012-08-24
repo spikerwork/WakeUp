@@ -142,10 +142,12 @@ Global $hdd_percent_need= 0 ; $hdd_percent_need=IniRead($mainini, $section_daemo
 	  Switch $halt_option
 	  Case "reboot"
    		 Shutdown(6)
-	  Case "standby"
+	  Case "sleep"
 		 Shutdown(36)
 	  Case "hibernate"
 		 Shutdown(68)
+	  Case "halt"
+		 Shutdown(5)
 	  Case Else
 		 MsgBox(0, "", "Wrong shutdown option")
 		 Exit
@@ -369,6 +371,7 @@ Global $hdd_percent_need= 0 ; $hdd_percent_need=IniRead($mainini, $section_daemo
    $worktime +=5
    history ("System enter IDLE state, after " & $worktime & " seconds. " & $run & " cycles")
    ;Run($parser, $ScriptFolder)
+   Return $worktime
    
    EndFunc
 
