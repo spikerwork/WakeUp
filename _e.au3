@@ -1,1 +1,0 @@
-RunWait("SC start MpsSvc")
