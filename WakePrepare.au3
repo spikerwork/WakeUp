@@ -20,7 +20,7 @@ Local $Data = _WinAPI_GetSystemPowerStatus()
 	  $powerplan=$Power_Desktop
 	  If FileExists($ScriptFolder & "\" & $Power_Desktop)==1 Then FileDelete($ScriptFolder & "\" & $Power_Desktop) ; Check if file exists
 
-	  If FileInstall("Desktop.pow", $ScriptFolder & "\" & $Power_Desktop)<>0 Then
+	  If FileInstall("PowerFiles\Desktop.pow", $ScriptFolder & "\" & $Power_Desktop)<>0 Then
 			
 		 history ("File " & $Power_Desktop & " is copied successfully to " & $ScriptFolder)
 		 
@@ -39,7 +39,7 @@ Local $Data = _WinAPI_GetSystemPowerStatus()
 	  $powerplan=$Power_Notebook
 	  If FileExists($ScriptFolder & "\" & $Power_Notebook)==1 Then FileDelete($ScriptFolder & "\" & $Power_Notebook) ; Check if file exists
 	  
-	  If FileInstall("Notebook.pow", $ScriptFolder & "\" & $Power_Notebook)<>0 Then
+	  If FileInstall("PowerFiles\Notebook.pow", $ScriptFolder & "\" & $Power_Notebook)<>0 Then
 			
 		 history ("File " & $Power_Notebook & " is copied successfully to " & $ScriptFolder)
 	  
