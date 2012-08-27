@@ -33,7 +33,7 @@
 		 
 		 $Packetarray=StringSplit($NetworkData, "|")
 		 
-		 history ("Lol — | " & $Packetarray[0] & " ||| " & $Packetarray[1] & " ||| " & $Packetarray[2])
+		 ;history ("Lol — | " & $Packetarray[0] & " ||| " & $Packetarray[1] & " ||| " & $Packetarray[2])
 		 
 		 If $Packetarray[0]==1 Then
 			
@@ -66,11 +66,12 @@
 			   IniWrite($resultini, "Network", "TestRuns", $Packetarray[3])
 			   
 			   Case "OptionsHRH"
-			   
+			   ; Need to add parser!!!
 			   history ("Number of test" & $Packetarray[3])
 			   IniWrite($resultini, "Network", "OptionsOSH", $Packetarray[3])
 			   
-			   ; Need to add parser
+			
+			   ; Finishing recieve settings of PC
 			   
 			   Case "StoreValuesFinish"
 			   
@@ -81,13 +82,34 @@
 			   SendData($clientIP, "Exit", $TCPport+1)
 			   
 			   
-			   ; Sleep TEST
+			   ; WakeDaemon send a signal to stop timer
+			   Case "Sleep", "Hiber", "Halt"
 			   
-			   Case "SleepTest" ;  WakeClient send
+			   $TimerD = TimerDiff($TimerStart)
+
+			   history ($packettype & " test finish in " & $TimerD & " msec. DaemonTime:" & $Packetarray[4] & ". DaemonCycles:" & $Packetarray[5])
 			   
-			   history ("Run#" & $Packetarray[3] & " going to sleep")
+			   IniWrite($resultini, "Run#" & $Packetarray[3], $packettype & "Timer", $TimerD)
+			   IniWrite($resultini, "Run#" & $Packetarray[3], $packettype & "StopReciveAt", currenttime ())
+			   IniWrite($resultini, "Run#" & $Packetarray[3], $packettype & "DaemonTime", $Packetarray[4])
+			   IniWrite($resultini, "Run#" & $Packetarray[3], $packettype & "DaemonCycles", $Packetarray[5])
 			   
-			   IniWrite($resultini, "Run#" & $Packetarray[3], "ToSleep", currenttime ())
+			   PauseTime($ServerPause)
+			   SendData($clientIP, "ToClient|Time|" & $packettype & "|" & $TimerD, $TCPport+1)
+			   PauseTime($ServerPause+5)
+			   SendData($clientIP, "Exit", $TCPport+1)
+			   $TimerStart=0
+			   $TimerD=0
+			  
+						
+			   ; WakeClient send a signal to begin test
+			   Case "SleepTest", "HiberTest", "HaltTest" ;  
+			   
+			   Local $testtype=StringTrimright($packettype, 4)
+			   
+			   history ("Run#" & $Packetarray[3] & " going to " & $testtype)
+			   
+			   IniWrite($resultini, "Run#" & $Packetarray[3], "To" & $testtype, currenttime ())
 			   $Client_MAC=IniRead($resultini, "Network", "MAC", "00241D12CC3B")
 			   $Client_MAC=StringReplace($Client_MAC, ":", "")
 			   
@@ -97,93 +119,7 @@
 			   
 			   SendMagicPacket($Client_MAC, $broadcast)
 			   $TimerStart=TimerInit()
-			   IniWrite($resultini, "Run#" & $Packetarray[3], "WakeFromSleepSendAt", currenttime ())
-			   
-			   Case "Sleep" ; WakeDaemon send
-			   $TimerD = TimerDiff($TimerStart)
-
-			   history ("Sleep test finish in " & $TimerD & " msec. DaemonTime:" & $Packetarray[4] & ". DaemonCycles:" & $Packetarray[5])
-			   
-			   IniWrite($resultini, "Run#" & $Packetarray[3], "StopSleepReciveAt", currenttime ())
-			   IniWrite($resultini, "Run#" & $Packetarray[3], "SleepDaemonTime", $Packetarray[4])
-			   IniWrite($resultini, "Run#" & $Packetarray[3], "SleepDaemonCycles", $Packetarray[5])
-			   
-			   PauseTime($ServerPause)
-			   SendData($clientIP, "ToClient|Time|" & $packettype & "|" & $TimerD, $TCPport+1)
-			   PauseTime($ServerPause+5)
-			   SendData($clientIP, "Exit", $TCPport+1)
-			   $TimerStart=0
-			   $TimerD=0
-			   
-			   ; Hiber TEST
-			   
-			   Case "HiberTest" ;  WakeClient send
-			   
-			   history ("Run#" & $Packetarray[3] & " going to hibernate")
-			   
-			   IniWrite($resultini, "Run#" & $Packetarray[3], "ToHiber", currenttime ())
-			   $Client_MAC=IniRead($resultini, "Network", "MAC", "00241D12CC3B")
-			   $Client_MAC=StringReplace($Client_MAC, ":", "")
-			   
-			   PauseTime(90)
-			   
-			   $broadcast=GetBroadcast ($ipdetails[1][0], $ipdetails[3][0])
-			   
-			   SendMagicPacket($Client_MAC, $broadcast)
-			   $TimerStart=TimerInit()
-			   IniWrite($resultini, "Run#" & $Packetarray[3], "WakeFromHiberSendAt", currenttime ())
-			   
-			   
-			   Case "Hiber" ; WakeDaemon send
-			   $TimerD = TimerDiff($TimerStart)
-
-			   history ("Hiber test finish in " & $TimerD & " msec. DaemonTime:" & $Packetarray[4] & ". DaemonCycles:" & $Packetarray[5])
-			   
-			   IniWrite($resultini, "Run#" & $Packetarray[3], "StopHiberReciveAt", currenttime ())
-			   IniWrite($resultini, "Run#" & $Packetarray[3], "HiberDaemonTime", $Packetarray[4])
-			   IniWrite($resultini, "Run#" & $Packetarray[3], "HiberDaemonCycles", $Packetarray[5])
-			   
-			   PauseTime($ServerPause)
-			   SendData($clientIP, "ToClient|Time|" & $packettype & "|" & $TimerD, $TCPport+1)
-			   PauseTime($ServerPause+5)
-			   SendData($clientIP, "Exit", $TCPport+1)
-			   $TimerStart=0
-			   $TimerD=0
-			   
-			   ; Halt TEST
-			   
-			   Case "HaltTest" ;  WakeClient send
-			   
-			   history ("Run#" & $Packetarray[3] & " going to hibernate")
-			   
-			   IniWrite($resultini, "Run#" & $Packetarray[3], "ToHalt", currenttime ())
-			   $Client_MAC=IniRead($resultini, "Network", "MAC", "00241D12CC3B")
-			   $Client_MAC=StringReplace($Client_MAC, ":", "")
-			   
-			   PauseTime(120)
-			   
-			   $broadcast=GetBroadcast ($ipdetails[1][0], $ipdetails[3][0])
-			   
-			   SendMagicPacket($Client_MAC, $broadcast)
-			   $TimerStart=TimerInit()
-			   IniWrite($resultini, "Run#" & $Packetarray[3], "WakeFromHaltSendAt", currenttime ())
-			   
-			   
-			   Case "Halt" ; WakeDaemon send
-			   $TimerD = TimerDiff($TimerStart)
-
-			   history ("Halt test finish in " & $TimerD & " msec. DaemonTime:" & $Packetarray[4] & ". DaemonCycles:" & $Packetarray[5])
-			   
-			   IniWrite($resultini, "Run#" & $Packetarray[3], "StopHaltReciveAt", currenttime ())
-			   IniWrite($resultini, "Run#" & $Packetarray[3], "HaltDaemonTime", $Packetarray[4])
-			   IniWrite($resultini, "Run#" & $Packetarray[3], "HaltDaemonCycles", $Packetarray[5])
-			   
-			   PauseTime($ServerPause)
-			   SendData($clientIP, "ToClient|Time|" & $packettype & "|" & $TimerD, $TCPport+1)
-			   PauseTime($ServerPause+5)
-			   SendData($clientIP, "Exit", $TCPport+1)
-			   $TimerStart=0
-			   $TimerD=0
+			   IniWrite($resultini, "Run#" & $Packetarray[3], "WakeFrom" & $testtype & "SendAt", currenttime ())
 			   
    
 			   EndSwitch
