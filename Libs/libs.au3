@@ -414,7 +414,7 @@ Global $hdd_percent_need= 0 ; $hdd_percent_need=IniRead($mainini, $section_daemo
 	  history ("Try to convert ini to XLS")
 	  $oExcel = ObjCreate('Excel.Application')
 	  If @error Then
-	  history ("Convert to XLS disabled. Exel not found in system.")
+	  history ("Convert to XLS disabled. Excel not found in system.")
 	  Else
 		 Local $file = FileOpen($ini, 0)
 
@@ -553,20 +553,20 @@ Global $hdd_percent_need= 0 ; $hdd_percent_need=IniRead($mainini, $section_daemo
    EndFunc   ;==>_RegSearch
  
  
- 
+   ; Add to registry PnPCapabilites record (256 - good)
    Func PnPCapabilites ($GUID)
 
-   $Results = _RegSearch($SearchKey, $GUID)
-   history ("Searching " & $GUID & " in " & $SearchKey)
-   $result = StringInStr($Results, "NetCfgInstanceId")
-   $result=StringTrimLeft($Results,$result-6)
-   $result=StringLeft($result,4)
+	  $Results = _RegSearch($SearchKey, $GUID)
+	  history ("Searching " & $GUID & " in " & $SearchKey)
+	  $result = StringInStr($Results, "NetCfgInstanceId")
+	  $result=StringTrimLeft($Results,$result-6)
+	  $result=StringLeft($result,4)
 
-   $var=RegRead($SearchKey & "\" & $result, "PnPCapabilities")
-   history ("Found key " & $GUID & ". PnPCapabilities=" & $var)
-   
-   if $var<>"256" Then
-	 RegWrite($SearchKey & "\" & $result, "PnPCapabilities", "REG_DWORD", "256")
-   EndIf
+	  $var=RegRead($SearchKey & "\" & $result, "PnPCapabilities")
+	  history ("Found key " & $GUID & ". PnPCapabilities=" & $var)
+	  
+	  if $var<>"256" Then
+		RegWrite($SearchKey & "\" & $result, "PnPCapabilities", "REG_DWORD", "256")
+	  EndIf
 	  
    EndFunc

@@ -38,6 +38,14 @@
 			$Ready=1
 			PauseTime($ServerPause)
 	  
+	  ; Client finished all tests
+	  Case "ClientOff"
+	  
+			history ("Client test finished! Remove ini file.")
+			$newfile="Result_" & currenttime () & "_.txt"
+			FileMove($resultini, $ScriptFolder & "\" & $newfile)
+
+		 
 	  ; Else data
 	  Case Else
 		 

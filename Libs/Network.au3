@@ -12,6 +12,7 @@
   
    ;
    ; Work with Magic Packets
+   ; http://www.autoitscript.com/forum/topic/29772-copyright-free-wake-on-lan-script/
    ;
    
    ; Send Magic Packet to computer with specified MAC
@@ -19,7 +20,7 @@
    history ("Call to SendMagicPacket(). Broadcast IP: " & $send_IP & " (External MAC " & $Dest_Mac & ")")
   
    Local $MACAddress = $Dest_Mac ; WakeUp computer MAC 
-   Local $IPAddress = $send_IP ; This is the broadcast address !
+   Local $IPAddress = $send_IP ; This is the broadcast address 
    
    UDPStartUp()
    $connexion = UDPOpen($IPAddress, $UDPport)
@@ -94,6 +95,8 @@
    ; $avArray[4][$iCount] — Ven/Dev info
    ; $avArray[5][$iCount] — Physic (1 or 0)
    ; $avArray[6][$iCount] — GUID of adapter
+   ;
+   ; This function from http://www.autoitscript.com/forum/topic/128276-display-ip-address-default-gateway-dns-servers/
    
    Func _IPDetail()
     history ("Call to network function IPDetail(). Get main information of network adapters")
@@ -149,6 +152,8 @@
    EndFunc   
  
    ; Calculate broadcast address for IP/Netmask
+   ; From http://www.autoitscript.com/forum/topic/27637-filereadtoarray-multiple-entries-to-be-processed/
+   
    Func GetBroadcast ($ip, $netmask)
 	  
 	  history ("Call to network function GetBroadcast(). Param: IP - " & $ip & ", Netmask - " & $netmask)
@@ -336,8 +341,9 @@
    EndFunc
    
    
-   ;Add/Enable/Disable Firewall Exception (http://www.autoitscript.com/forum/topic/124739-addenabledisable-windows-firewall-exceptions/)
-   ; Working only with main firewall profile.
+   ; Add/Enable/Disable Firewall Exception (http://www.autoitscript.com/forum/topic/124739-addenabledisable-windows-firewall-exceptions/)
+   ; Working only with main firewall profile!!!
+   
    Func _FirewallException($_intEnableDisable, $_appName, $_applicationFullPath)
 	   $Firewall = ObjCreate("HNetCfg.FwMgr")
 	   $Policy = $Firewall.LocalPolicy

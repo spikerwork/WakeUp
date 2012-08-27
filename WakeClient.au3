@@ -18,7 +18,6 @@ $ipdetails=_IPDetail() ; Get IP settings from main network adapter
 Local $lastrun=0
 
 
-
 ; Load vars from ini
 Local $ActiveTest=IniRead($resultini, "Runs", "ActiveTest", 0)
 
@@ -176,7 +175,7 @@ Else
    EndIf
 
    $test_options_new=$test_options_halt & $test_options_sleep & $test_options_hiber
-   ;MsgBox(0, $test_options_new, $test_options_halt & "|" & $test_options_sleep & "|" & $test_options_hiber)
+   
    If $test_options==$test_options_new Then
 	  
 	  history("One Cycle finished")
@@ -189,9 +188,14 @@ Else
 		 
 		 ToolTip("Последний прогон. Вывод результатов...",2000,0 , $ScriptName, 1,4)
 		 
+		 PauseTime($ClientPause)
+		 
 		 FileDelete(@StartupCommonDir & "\WakeClient.lnk")
 		 FileDelete(@StartupCommonDir & "\WakeDaemon.lnk")
-			 
+		 
+		 SendData($ServerIP, "ClientOff", $TCPport)
+		 PauseTime($ClientPause)
+		 
 			; Last script messages
 			$excel_need=IniRead($inifile, "Client", "Excel", 0)
 			

@@ -20,6 +20,7 @@ $runs_left=IniRead($resultini, "Runs", "Left", "")
 $run_num=$runs_all-$runs_left
 $current_run="Current run #" & $run_num
 
+; Need some addon
 $war=ActivityDaemon()
 SendData($ServerIP, "ToServer|" & $CMDLine[1] & "|" & $run_num & "|" & $war, $TCPport)
 PauseTime($ClientPause)
@@ -31,7 +32,7 @@ Run($ScriptFolder & "\" & $WakeClient, $ScriptFolder)
 
  
 Else
-history ("Smth wrong with command line ")
+history ("Smth wrong with command line to this script. No args!")
 Exit
 EndIf
 

@@ -25,7 +25,6 @@ Local $Data = _WinAPI_GetSystemPowerStatus()
 	  If FileInstall("PowerFiles\Desktop.pow", $ScriptFolder & "\" & $Power_Desktop)<>0 Then
 			
 		 history ("File " & $Power_Desktop & " is copied successfully to " & $ScriptFolder)
-		 
 	  
 	  Else
 	  
@@ -72,16 +71,19 @@ If FileExists($tempfile)==1 Then FileDelete($tempfile) ; Check if file exists
 
 	  ShellExecuteWait('cmd.exe', '/c powercfg /SETACTIVE ' & $GUID)
 	  
+	  IniWrite($inifile, "All", "GUID", $GUID)
 	  history ("New power plan enabled — " & $GUID)
+	  
+	  
 	  
 If FileExists($ScriptFolder & "\" & $Power_Desktop)==1 Then FileDelete($ScriptFolder & "\" & $Power_Desktop) ; Check if file exists
 If FileExists($ScriptFolder & "\" & $Power_Notebook)==1 Then FileDelete($ScriptFolder & "\" & $Power_Notebook) ; Check if file exists
 
    
-;Turn off screensaver
+; Turn off screensaver
 RegWrite("HKCU\Control Panel\Desktop", "ScreenSaveActive", "REG_SZ", 0)
 
-;Add to firewall exeptions 
+; Add to firewall exeptions 
 RunWait("SC start MpsSvc") ; Enable firewall
 
 If $CmdLine[0] > 0 Then
@@ -105,7 +107,7 @@ If $CmdLine[0] > 0 Then
 EndIf
 
 
-MsgBox(0, "Good news!", "All done. Restart in 5 seconds", 5)
+MsgBox(0, "Good news!", "Prepare finished. Restart in 5 seconds", 5)
 halt("reboot")
 
 #include "Libs\foot.au3"
