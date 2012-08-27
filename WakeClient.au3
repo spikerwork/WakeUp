@@ -66,31 +66,6 @@ If $firstrun==1 Then
    
 Else
    
-    If $lastrun==1 Then ; Not approved
-	  
-   ToolTip("Последний прогон. Вывод результатов...",2000,0 , $ScriptName, 1,4)
-   
-   
-   ; Last script messages
-   $excel_need=IniRead($inifile, "Client", "Excel", 0)
-   
-   If $excel_need==0 then
-	  
-	  MsgBox(0,"","Script Done. Open BTResult.ini for results")
-   
-   Else
-   
-	  resulttoxls ()
-	  MsgBox(0,"","Script Done. Results stored in BTresults.xls")
-   
-   EndIf
-   
-   
-   EndIf
-   
-   
-   
-   
    ; Sleep test
    
    If $test_sleep==1 Then
@@ -114,9 +89,11 @@ Else
 	  ElseIf $ActiveTest=="Sleep" Then
 	  
 	  MsgBox(0, "Sleep test", "Finished",10)
-	  $test_options_sleep=1
+	  
 	  IniWrite($resultini, "Runs", "ActiveTest", 1)
-	 
+	  $test_options_sleep=1
+	  else 
+	  $test_options_sleep=1
 	  
 	  EndIf
 	  
@@ -148,7 +125,8 @@ Else
 	  MsgBox(0, "Hiber test", "Finished",10)
 	  IniWrite($resultini, "Runs", "ActiveTest", 2)
 	  $test_options_hiber=1
-	  
+	  Else
+	  $test_options_hiber=1
 	  EndIf
 	  
    EndIf
@@ -183,20 +161,50 @@ Else
 	  MsgBox(0, "Halt test", "Finished",10)
 	  IniWrite($resultini, "Runs", "ActiveTest", 0)
 	  $test_options_halt=1
-	  
+	  Else
+	  $test_options_halt=1
 	  EndIf
 	  
    EndIf
 
-
    $test_options_new=$test_options_halt & $test_options_sleep & $test_options_hiber
+   ;MsgBox(0, $test_options_new, $test_options_halt & "|" & $test_options_sleep & "|" & $test_options_hiber)
    If $test_options==$test_options_new Then
 	  
 	  history("One Cycle finished")
 	  IniWrite($resultini, "Runs", "Left", $runs_left-1)	  
-	  MsgBox(0, "All test", "All Done")
+	  MsgBox(0, "All test", "One Cycle finished", 10)
+	  
+		 If $lastrun<>1 Then
+		 halt("reboot")
+		 Else
+		 
+		 ToolTip("Последний прогон. Вывод результатов...",2000,0 , $ScriptName, 1,4)
+		 
+		 FileDelete(@StartupCommonDir & "\WakeClient.lnk")
+		 FileDelete(@StartupCommonDir & "\WakeDaemon.lnk")
+			 
+			; Last script messages
+			$excel_need=IniRead($inifile, "Client", "Excel", 0)
+			
+			If $excel_need==0 then
+			   
+			   MsgBox(0,"","Script Done. Open BTResult.ini for results")
+			
+			Else
+			
+			   resulttoxls ()
+			   MsgBox(0,"","Script Done. Results stored in BTresults.xls")
+			
+			EndIf
+		 
+		 
+		 EndIf
 	  
    EndIf
+
+   
+   
    
   
 

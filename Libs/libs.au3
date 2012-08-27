@@ -175,7 +175,7 @@ Global $hdd_percent_need= 0 ; $hdd_percent_need=IniRead($mainini, $section_daemo
 		  MsgBox(0, "Error", "Unable to create or open log file.")
 		  Exit
 	   EndIf
-	   
+	  If $linedebug==1 Then ToolTip("Time - " & $time & @CRLF & $post & @CRLF, 2000, 0, @ScriptName, 2,4)
 	  FileWrite($file, $time & " Script (" & @ScriptName & ") — - — " & $post & @CRLF)
 	  FileClose($file)
 	  
