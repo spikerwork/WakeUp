@@ -100,8 +100,9 @@ history ("INI file not found, use default vars")
 EndIf
 
 
-Global $ClientPause=3
-Global $ServerPause=2
+Global $ClientPause=3 ; Pause between calls of TCP send function for client
+Global $ServerPause=2 ; Pause between calls of TCP send function for server
+Global $WakeUpPause=180 ; Pause between halt option and wakeup signal
 
 Global $cpu_need= 1 ; $cpu_need=IniRead($mainini, $section_daemon, "CPU", 1)
 Global $cpu_percent_need= 5 ;$cpu_percent_need=IniRead($mainini, $section_daemon, "CPU_percent", 5)

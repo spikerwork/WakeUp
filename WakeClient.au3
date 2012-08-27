@@ -1,12 +1,10 @@
 #include "Libs\libs.au3"
 #include "Libs\head.au3"
 
+$ipdetails=_IPDetail() ; Get IP settings from main network adapter
 
-;;;;;;;   $ipdetails=_IPDetail()
-;;;;;;;   _ArrayDisplay($ipdetails, "$avArray as a 2D array")
 Local $lastrun=0
 
-$ipdetails=_IPDetail()
 
 
 ; Load vars from ini
@@ -42,7 +40,7 @@ If $firstrun==1 Then
 	  PauseTime($ClientPause)
 	  SendData($ServerIP, "ToServer|StoreValues", $TCPport)
 	  PauseTime($ClientPause)
-	  SendData($ServerIP, "ToServer|MAC" & "|" & $ipdetails[2][0], $TCPport)
+	  SendData($ServerIP, "ToServer|MAC" & "|" & $ipdetails[2][0], $TCPport) ; Need to redesign this varible - get the MAC from ini
 	  PauseTime($ClientPause)
 	  SendData($ServerIP, "ToServer|TestRuns" & "|" & $runs_all-1, $TCPport)
 	  PauseTime($ClientPause)
@@ -74,9 +72,8 @@ Else
 	  
 	  If $test_sleep_time==0 And $ActiveTest==0 Then
 	  
-	  IniWrite($resultini, "Runs", "ActiveTest", "Sleep")
+		 IniWrite($resultini, "Runs", "ActiveTest", "Sleep")
 	  
-		 
 		 PauseTime(5)
 		 
 		 SendData($ServerIP, "ToServer|SleepTest|" & $run, $TCPport)
@@ -87,14 +84,14 @@ Else
 		 halt("sleep")
 		 
 	  ElseIf $ActiveTest=="Sleep" Then
-	  
-	  MsgBox(0, "Sleep test", "Finished",10)
-	  
-	  IniWrite($resultini, "Runs", "ActiveTest", 1)
-	  $test_options_sleep=1
-	  else 
-	  $test_options_sleep=1
-	  
+		 
+		 PauseTime(10)
+		 IniWrite($resultini, "Runs", "ActiveTest", 1)
+		 $test_options_sleep=1
+	  Else 
+		 
+		 $test_options_sleep=1
+		 
 	  EndIf
 	  
    EndIf
@@ -121,8 +118,7 @@ Else
 		 halt("hibernate")
 		 
 	  ElseIf $ActiveTest=="Hiber" Then
-	   
-	  MsgBox(0, "Hiber test", "Finished",10)
+	  PauseTime(10)
 	  IniWrite($resultini, "Runs", "ActiveTest", 2)
 	  $test_options_hiber=1
 	  Else
@@ -158,7 +154,7 @@ Else
 	  ElseIf $ActiveTest=="Halt" Then
 	  FileDelete(@StartupCommonDir & "\WakeDaemon.lnk")
 	  FileCreateShortcut ($ScriptFolder & "\" & $WakeClient, @StartupCommonDir & "\WakeClient.lnk")
-	  MsgBox(0, "Halt test", "Finished",10)
+	  PauseTime(10)
 	  IniWrite($resultini, "Runs", "ActiveTest", 0)
 	  $test_options_halt=1
 	  Else

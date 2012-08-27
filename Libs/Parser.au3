@@ -113,7 +113,7 @@
 			   $Client_MAC=IniRead($resultini, "Network", "MAC", "00241D12CC3B")
 			   $Client_MAC=StringReplace($Client_MAC, ":", "")
 			   
-			   PauseTime(60)
+			   PauseTime($WakeUpPause)
 			   
 			   $broadcast=GetBroadcast ($ipdetails[1][0], $ipdetails[3][0])
 			   
