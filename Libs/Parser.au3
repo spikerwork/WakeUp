@@ -1,4 +1,15 @@
-; Parse network data from RecieveData() function. "Stop transfering" function implemented in RecieveData()
+#cs --------------------------------------------------------------------
+
+ AutoIt Version: 3.3.8.1
+ Author:         Sp1ker
+
+ Script Function:
+	
+   The part of WakeUp Script Time Checker (WSTC)
+   Parse and analyze network data from RecieveData() function. "Stop transfering" function implemented in RecieveData()
+
+#ce --------------------------------------------------------------------
+
    Func ParseData($NetworkData, $clientIP)
 	  
 	  history ("Call to ParseData()")
@@ -31,13 +42,11 @@
 	  Case Else
 		 
 		 
-		 $Packetarray=StringSplit($NetworkData, "|")
-		 
-		 ;history ("Lol — | " & $Packetarray[0] & " ||| " & $Packetarray[1] & " ||| " & $Packetarray[2])
+		 $Packetarray=StringSplit($NetworkData, "|") ; Extract data to array
 		 
 		 If $Packetarray[0]==1 Then
 			
-			history ("Unrecognized data recieved — | " & $NetworkData & " | Nothing to do")
+			history ("Unrecognized data recieved — | " & $NetworkData & " |. Nothing to do")
 			
 		 Else
 			
@@ -126,16 +135,19 @@
 			   
 		    
 			ElseIf $Packetarray[1]=="ToClient" Then
+			
 			   ; Server sending to client
 			   
 			history ("Server is sending data, so...")
 			
 			   Switch $packettype
 			   
+			   ; First greeting with server
 			   Case "Done"
 			   $Done = 1
 			   history ("Done - " & $Done)
 			   
+			   ; WakeClient write the time data from server
 			   Case "Time"
 			   
 			   history ("Time - " & $Packetarray[4])

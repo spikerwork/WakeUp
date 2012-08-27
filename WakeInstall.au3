@@ -4,9 +4,11 @@
  Author:         Sp1ker
 
  Script Function:
-	Install main scripts on PC
+	
+   The part of WakeUp Script Time Checker (WSTC)
+   Main installer. Includes all nessasary files
 
-#ce ---
+#ce --------------------------------------------------------------------
 
 #include "Libs\libs.au3"
 #include "Libs\head.au3"

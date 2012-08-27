@@ -4,9 +4,11 @@
  Author:         Sp1ker
 
  Script Function:
-	Network Functions and work with IP
+	
+   The part of WakeUp Script Time Checker (WSTC)
+   It contains network functions and IP
 
-#ce 
+#ce --------------------------------------------------------------------
   
    ;
    ; Work with Magic Packets
@@ -61,7 +63,7 @@
    ; Work with computer IP settings
    ;
 	
-    ; Get the Hardware IDs of network adapter. Function for IPDetail()
+    ; Get the Hardware IDs and GUID of current network adapter. Addon for IPDetail()
    Func _GetPNPDeviceID($sAdapter)
 	  Local $arra[2]
 	  
@@ -91,7 +93,7 @@
    ; $avArray[3][$iCount] — IPSubnet(0)
    ; $avArray[4][$iCount] — Ven/Dev info
    ; $avArray[5][$iCount] — Physic (1 or 0)
-   ;
+   ; $avArray[6][$iCount] — GUID of adapter
    
    Func _IPDetail()
     history ("Call to network function IPDetail(). Get main information of network adapters")
@@ -146,7 +148,7 @@
     Return "Not Available"
    EndFunc   
  
-   ; Calculate broadcast address
+   ; Calculate broadcast address for IP/Netmask
    Func GetBroadcast ($ip, $netmask)
 	  
 	  history ("Call to network function GetBroadcast(). Param: IP - " & $ip & ", Netmask - " & $netmask)
@@ -181,18 +183,19 @@
    EndFunc
 
 
-   ; Validation of IP
+   ; Validation of IP address
    Func _IsValidIP($sIP)
 	   If StringRegExp($sIP, "(?:(\d|[1-9]\d|1\d{2}|2[0-4]\d|25[0-5])(\.)){3}(?:(25[0-5]$|2[0-4]\d$|1\d{2}$|[1-9]\d$|\d$))") Then Return 1
 	   Return 0
    EndFunc
+
 
    ;
    ; Client/Server functions
    ;
 
 
-   ; Resolve client IP address
+   ; Resolve client IP address. Autoit example function
    Func SocketToIP($SHOCKET)
 	   Local $sockaddr, $aRet
 
@@ -213,7 +216,7 @@
    EndFunc   
 
 
-   ; Start TCP server
+   ; Start TCP server on IP:port
    Func StartTCPServer($ip, $port)
 	  
 	  history ("Starting TCP server....." & $ip)
@@ -251,10 +254,12 @@
 	  SendData ($ip, $dataS, $port)
 	  Else
 	  history ("To IP: " & $ip & " port:" & $port & ". Data | " & $dataS & " | Socket ID:" & $connexion)
-	  
+			
+			; console
 			If $serverconsole==1 Then
 			   GUICtrlSetData($console, $ip & " <-- Send: " & $dataS & @CRLF & GUICtrlRead($console))
 			EndIf
+			;
 			
 	  $res = TCPSend($connexion, StringToBinary($dataS, 4))
 	  history ("Bytes sent " & $res)
@@ -291,7 +296,7 @@
 			$msg = GUIGetMsg()
 			If $msg == $GUI_EVENT_CLOSE Then Exit
 			EndIf
-			
+			;
 			   
 	  Until $ConnectedSocket <> -1
 	  
@@ -309,18 +314,19 @@
 			   If $serverconsole==1 Then
 			   GUICtrlSetData($console, $clientIP & " --> Recieved: " & $dataR & @CRLF & GUICtrlRead($console))
 			   EndIf
-			
+			   ;
+			   
 			Local $t= TCPCloseSocket($ConnectedSocket)
 			history ("Close connection: " & $t)
 			
-			   if $dataR == "Exit" Then
+			   if $dataR == "Exit" Then ; Stop recieving. Terminates connection
 			   StopTCPServer($socket)
 			   ExitLoop
 			   EndIf
 			
 			ParseData($dataR,$clientIP)
 			
-			;;; Recursion
+			;;; Recursion - call to self
 			Call ("RecieveData", $socket)
 			ExitLoop
 		    EndIf
@@ -331,6 +337,7 @@
    
    
    ;Add/Enable/Disable Firewall Exception (http://www.autoitscript.com/forum/topic/124739-addenabledisable-windows-firewall-exceptions/)
+   ; Working only with main firewall profile.
    Func _FirewallException($_intEnableDisable, $_appName, $_applicationFullPath)
 	   $Firewall = ObjCreate("HNetCfg.FwMgr")
 	   $Policy = $Firewall.LocalPolicy

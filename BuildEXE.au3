@@ -1,4 +1,15 @@
-; Auto builder files for Wake script
+#cs --------------------------------------------------------------------
+
+ AutoIt Version: 3.3.8.1
+ Author:         Sp1ker
+
+ Script Function:
+	
+   The part of WakeUp Script Time Checker (WSTC)
+   This script build all nessasary EXE files to script. Works only when autoit insstalled.
+
+#ce --------------------------------------------------------------------
+
 #include "Libs\libs.au3"
 
 RunWait(@ProgramFilesDir & "\AutoIt3\Aut2Exe\Aut2exe.exe /in " & @ScriptDir & "\WakeClient.au3 /out " & @ScriptDir & "\" & $WakeClient & " /comp 4 /x86")

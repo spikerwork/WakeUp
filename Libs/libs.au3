@@ -4,7 +4,8 @@
  Author:         Sp1ker
 
  Script Function:
-	The main library for Windows StartUp/WakeUp Time Checker
+	The main library for WakeUp Script Time Checker (WSTC)
+	Contains vars and main functions
 
 #ce --------------------------------------------------------------------
 
@@ -20,6 +21,7 @@
 ; External libs
 #include "ArrayMore.au3" ; Support MultiDimension arrays
 #include "ArrayToXLS.au3" ; XLS parser
+; My external libs
 #include "Network.au3" ; Network functions
 #include "Parser.au3" ; Parser for Client/Server data
 

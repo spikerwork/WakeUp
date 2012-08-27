@@ -4,7 +4,9 @@
  Author:         Sp1ker
 
  Script Function:
-	It contains the beginning of each script
+	
+   The part of WakeUp Script Time Checker (WSTC)
+  It contains the beginning of each script
 
 #ce --------------------------------------------------------------------
 
@@ -19,7 +21,7 @@ If IsAdmin()==0 Then
 Else 
    history ("Admin check passed")
 EndIf
-;;;
+;;;;
 
 ; Systeminfo
 history ("Run on system: " & $osversion & "(" & @OSBuild & ") " & $osarch & " " & "Language" & " (" & $oslang & ") [0419=Rus 0409=En]"  & " autoitX64 - " & @AutoItX64 )

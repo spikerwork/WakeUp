@@ -4,9 +4,11 @@
  Author:         Sp1ker
 
  Script Function:
-	Install main scripts on PC
+	
+   The part of WakeUp Script Time Checker (WSTC)
+   Prepare script.
 
-#ce ---
+#ce --------------------------------------------------------------------
 
 #include "Libs\libs.au3"
 #include "Libs\head.au3"
@@ -76,11 +78,11 @@ If FileExists($ScriptFolder & "\" & $Power_Desktop)==1 Then FileDelete($ScriptFo
 If FileExists($ScriptFolder & "\" & $Power_Notebook)==1 Then FileDelete($ScriptFolder & "\" & $Power_Notebook) ; Check if file exists
 
    
-;отключение экранной заставки
+;Turn off screensaver
 RegWrite("HKCU\Control Panel\Desktop", "ScreenSaveActive", "REG_SZ", 0)
 
-;Отключение firewall
-;RunWait("SC stop MpsSvc")
+;Add to firewall exeptions 
+RunWait("SC start MpsSvc") ; Enable firewall
 
 If $CmdLine[0] > 0 Then
    
@@ -89,7 +91,6 @@ If $CmdLine[0] > 0 Then
    
    _FirewallException(1, $WakeServer, $ScriptFolder & "\" & $WakeServer)
    
-   ;Run($ScriptFolder & "\" & $WakeServer, $ScriptFolder)
    FileCreateShortcut ($ScriptFolder & "\" & $WakeServer, @StartupCommonDir & "\WakeServer.lnk")
 	
    ElseIf $CMDLine[1] == "Client" Then
@@ -97,7 +98,6 @@ If $CmdLine[0] > 0 Then
 	  
    _FirewallException(1, $WakeClient, $ScriptFolder & "\" & $WakeClient)
    
-   ;Run($ScriptFolder & "\" & $WakeClient, $ScriptFolder)
    FileCreateShortcut ($ScriptFolder & "\" & $WakeClient, @StartupCommonDir & "\WakeClient.lnk")
 		 
    EndIf
@@ -105,7 +105,7 @@ If $CmdLine[0] > 0 Then
 EndIf
 
 
-MsgBox(0, "Good news!", "Все прошло успешно. Перезагрузка через 5 секунд", 5)
+MsgBox(0, "Good news!", "All done. Restart in 5 seconds", 5)
 halt("reboot")
 
 #include "Libs\foot.au3"

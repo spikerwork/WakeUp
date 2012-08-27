@@ -4,13 +4,14 @@
  Author:         Sp1ker
 
  Script Function:
-	It contains the ending of each script
+	
+   The part of WakeUp Script Time Checker (WSTC)
+   It contains the ending of each script
 
 #ce --------------------------------------------------------------------
 
 
-
-;;; End of script
 history ("Errors " & @error)
 history ("Program halted")
 history ("------------------------------------------------------------------------")
+;;; End of script
