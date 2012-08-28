@@ -13,11 +13,12 @@
 #include "Libs\libs.au3"
 #include "Libs\head.au3"
 
-$GUID=1
-$NewGUID=1
-ShellExecuteWait('cmd.exe', '/c powercfg /SETACTIVE ' & $GUID)
-ShellExecuteWait('cmd.exe', '/c powercfg -DELETE ' & $NewGUID)
-			
+Local $ipdetails=_IPDetail()
 
-;SendData($ServerIP, "ClientOff", $TCPport)
+$broadcast=GetBroadcast ($ipdetails[1][0], $ipdetails[3][0])
+$Client_MAC=IniRead($resultini, "Network", "MAC", "00241D12CC3B")
+
+SendMagicPacket($Client_MAC, $broadcast)
+
+
 #include "Libs\foot.au3"
