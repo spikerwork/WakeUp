@@ -14,7 +14,8 @@
 #include "Libs\head.au3"
 
 ; Setting power options
-Local $Data = _WinAPI_GetSystemPowerStatus()
+Local $tempfile=@HomeDrive & "\powercfg.txt" ; Temp file
+Local $Data = _WinAPI_GetSystemPowerStatus() ; Get battery information
 
    If $Data[1]=128 Then
 	  
@@ -54,7 +55,7 @@ Local $Data = _WinAPI_GetSystemPowerStatus()
 	  
    EndIf
 
-Local $tempfile=@HomeDrive & "\powercfg.txt"
+IniWrite($inifile, "PowerPlan", "Type", $powerplan)
 
 If FileExists($tempfile)==1 Then FileDelete($tempfile) ; Check if file exists
 
@@ -70,7 +71,7 @@ If FileExists($tempfile)==1 Then FileDelete($tempfile) ; Check if file exists
 	  FileClose($file)
 	  FileDelete($tempfile)
 	  
-	  IniWrite($inifile, "All", "Old_GUID", $GUID)
+	  IniWrite($inifile, "PowerPlan", "Old", $GUID)
 	  history ("Old power plan  — " & $GUID)
 	  
 	  ShellExecuteWait('cmd.exe', '/c powercfg -IMPORT ' & $ScriptFolder & "\" & $powerplan & '  | find /I "GUID" > ' & $tempfile)
@@ -85,7 +86,7 @@ If FileExists($tempfile)==1 Then FileDelete($tempfile) ; Check if file exists
 
 	  ShellExecuteWait('cmd.exe', '/c powercfg /SETACTIVE ' & $GUID)
 	  
-	  IniWrite($inifile, "All", "GUID", $GUID)
+	  IniWrite($inifile, "PowerPlan", "New", $GUID)
 	  history ("New power plan enabled — " & $GUID)
 	  
 	  

@@ -102,7 +102,8 @@
 			   Case "Sleep", "Hiber", "Halt"
 			   
 			   $TimerD = TimerDiff($TimerStart)
-
+			   $TimerD = Round($TimerD/1000,2) ; Returns time in seconds
+			   
 			   history ($packettype & " test finish in " & $TimerD & " msec. DaemonTime:" & $Packetarray[4] & ". DaemonCycles:" & $Packetarray[5])
 			   
 			   IniWrite($resultini, "Run#" & $Packetarray[3], $packettype & "Timer", $TimerD)

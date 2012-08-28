@@ -20,8 +20,8 @@ Local $lastrun=0
 
 ; Load vars from ini
 Local $ActiveTest=IniRead($resultini, "Runs", "ActiveTest", 0)
-Local $GUID=IniRead($inifile, "All", "Old_GUID", "")
-Local $NewGUID=IniRead($inifile, "All", "GUID", "")
+Local $GUID=IniRead($inifile, "PowerPlan", "Old", "")
+Local $NewGUID=IniRead($inifile, "PowerPlan", "New", "")
 $firstrun=IniRead($resultini, "Runs", "First Run", 1)
 $runs_all=IniRead($inifile, "Client", "TestRepeat", 5)+1
 $runs_left=IniRead($resultini, "Runs", "Left", "")
@@ -39,6 +39,7 @@ Local $test_options_hiber=0
 
 
 If $firstrun==1 Then 
+   
    ToolTip("Идет подготовка к запуску теста " & $ScriptName,2000,0 , "Первый запуск", 1,4)
    PauseTime($ClientPause)
    SendData($ServerIP, "Test", $TCPport)
@@ -64,13 +65,14 @@ If $firstrun==1 Then
 	  RecieveData ($socket)
 	  
 		 if $Done==1 Then
-		 history ("###Vars stored on server###")
-	  
-		 IniWrite($resultini, "Runs", "First Run", 0)
-		 IniWrite($resultini, "Runs", "Left", $run-1)
-		 PauseTime($ClientPause)
-		 halt("reboot")
+			
+			history ("###Vars stored on server###")
 		 
+			IniWrite($resultini, "Runs", "First Run", 0)
+			IniWrite($resultini, "Runs", "Left", $run-1)
+			PauseTime($ClientPause)
+			halt("reboot")
+			
 		 EndIf
    EndIf
    
@@ -100,6 +102,7 @@ Else
 		 PauseTime(10)
 		 IniWrite($resultini, "Runs", "ActiveTest", 1)
 		 $test_options_sleep=1
+		 
 	  Else 
 		 
 		 $test_options_sleep=1
@@ -130,11 +133,15 @@ Else
 		 halt("hibernate")
 		 
 	  ElseIf $ActiveTest=="Hiber" Then
-	  PauseTime(10)
-	  IniWrite($resultini, "Runs", "ActiveTest", 2)
-	  $test_options_hiber=1
+		 
+		 PauseTime(10)
+		 IniWrite($resultini, "Runs", "ActiveTest", 2)
+		 $test_options_hiber=1
+		 
 	  Else
-	  $test_options_hiber=1
+		 
+		 $test_options_hiber=1
+		 
 	  EndIf
 	  
    EndIf
@@ -164,13 +171,17 @@ Else
 		 halt("halt")
 		 
 	  ElseIf $ActiveTest=="Halt" Then
-	  FileDelete(@StartupCommonDir & "\WakeDaemon.lnk")
-	  FileCreateShortcut ($ScriptFolder & "\" & $WakeClient, @StartupCommonDir & "\WakeClient.lnk")
-	  PauseTime(10)
-	  IniWrite($resultini, "Runs", "ActiveTest", 0)
-	  $test_options_halt=1
+		 
+		 FileDelete(@StartupCommonDir & "\WakeDaemon.lnk")
+		 FileCreateShortcut ($ScriptFolder & "\" & $WakeClient, @StartupCommonDir & "\WakeClient.lnk")
+		 PauseTime(10)
+		 IniWrite($resultini, "Runs", "ActiveTest", 0)
+		 $test_options_halt=1
+		 
 	  Else
-	  $test_options_halt=1
+		 
+		 $test_options_halt=1
+	  
 	  EndIf
 	  
    EndIf
@@ -184,22 +195,24 @@ Else
 	  MsgBox(0, "All test", "One Cycle finished", 10)
 	  
 		 If $lastrun<>1 Then
-		 halt("reboot")
+			
+			halt("reboot")
+		 
 		 Else
 		 
-		 ToolTip("Последний прогон. Вывод результатов...",2000,0 , $ScriptName, 1,4)
-		 
-		 PauseTime($ClientPause)
-		 
-		 FileDelete(@StartupCommonDir & "\WakeClient.lnk")
-		 FileDelete(@StartupCommonDir & "\WakeDaemon.lnk")
-		 
-		 SendData($ServerIP, "ClientOff", $TCPport)
-		 PauseTime($ClientPause)
-		 
-		 ; Set old power plan
-		 ShellExecuteWait('cmd.exe', '/c powercfg /SETACTIVE ' & $GUID)
-		 ShellExecuteWait('cmd.exe', '/c powercfg -DELETE ' & $NewGUID)
+			ToolTip("Последний прогон. Вывод результатов...",2000,0 , $ScriptName, 1,4)
+			
+			PauseTime($ClientPause)
+			
+			FileDelete(@StartupCommonDir & "\WakeClient.lnk")
+			FileDelete(@StartupCommonDir & "\WakeDaemon.lnk")
+			
+			SendData($ServerIP, "ClientOff", $TCPport)
+			PauseTime($ClientPause)
+			
+			; Set old power plan
+			ShellExecuteWait('cmd.exe', '/c powercfg /SETACTIVE ' & $GUID)
+			ShellExecuteWait('cmd.exe', '/c powercfg -DELETE ' & $NewGUID)
 			
 			; Last script messages
 			$excel_need=IniRead($resultini, "Client", "Excel", 0)

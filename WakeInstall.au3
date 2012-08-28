@@ -128,11 +128,11 @@ While 1
 	  $cpu_activity=GUICtrlCreateCheckbox("Analyze HDD ", 40, 180, 120, 20)
 	  $hdd_activity=GUICtrlCreateCheckbox("Analyze CPU ", 40, 200, 120, 20)
 	  GuiCtrlCreateLabel("Max CPU Load, %  ", 160, 204, 120, 20, $SS_RIGHT)
-	  $cpu_time = GUICtrlCreateInput ("5", 320, 200, 40, 20, $SS_RIGHT)
+	  $cpu_time = GUICtrlCreateInput ($cpu_percent_need, 320, 200, 40, 20, $SS_RIGHT)
 	  GUICtrlCreateUpdown($cpu_time)
 	  GUICtrlSetLimit ($cpu_time, 2 , 1)
 	  GuiCtrlCreateLabel("Количество прогонов теста:", 40, 234, 250, 20)
-	  $TestRepeat = GUICtrlCreateInput ("5", 320, 230, 40, 20, $SS_RIGHT)
+	  $TestRepeat = GUICtrlCreateInput ($testrepeats, 320, 230, 40, 20, $SS_RIGHT)
 	  GUICtrlCreateUpdown($TestRepeat)
 	  GUICtrlSetLimit ($TestRepeat, 2 , 1)
 	  GuiCtrlCreateLabel("Results ", 40, 260, 150, 20)
@@ -379,16 +379,18 @@ While 1
 	  If FileExists($inifile)==1 Then FileDelete($inifile) ; Check if file exists
 	  If FileExists($resultini)==1 Then FileDelete($resultini) ; Check if file exists
 		 
-	  history ("Deleted old files " & $WakeServer & ", " & $WakePrepare & ", " & $inifile)
+	  history ("Deleted old files " & $WakeServer & ", " & $WakePrepare & ", " & $inifile & ", " & $resultini)
 	  
 	  IniWrite($inifile, "Network", "TCPport", $INI_TCP)
 	  IniWrite($inifile, "Network", "UDPport", $INI_UDP)
 	  IniWrite($inifile, "Network", "IP", $INI_IP)
 	  IniWrite($inifile, "Network", "Broadcast", $INI_Broadcast)
-	  IniWrite($inifile, "All", "Log", 1)
-	  IniWrite($inifile, "All", "LineDebug", 1)
-	  IniWrite($inifile, "All", "Console", 1)
-	  
+	  IniWrite($inifile, "All", "Log", $log)
+	  IniWrite($inifile, "All", "LineDebug", $linedebug)
+	  IniWrite($inifile, "All", "Console", 1) ; Default server option
+	  IniWrite($inifile, "Time", "WakeUpPause", $WakeUpPause )
+	  IniWrite($inifile, "Time", "ServerPause", $ServerPause )
+	  IniWrite($inifile, "Time", "ClientPause", $ClientPause )
 	  
 
 	  If FileInstall("WakeServer.exe", $ScriptFolder & "\" & $WakeServer)<>0 Then
@@ -519,9 +521,12 @@ While 1
 	  IniWrite($inifile, "Network", "TCPport", $INI_TCP)
 	  IniWrite($inifile, "Network", "IP", $INI_IP)
 	  IniWrite($inifile, "Network", "Client_IP", $INI_CIP)
-	  IniWrite($inifile, "All", "Log", 1)
-	  IniWrite($inifile, "All", "LineDebug", 0)
-	  IniWrite($inifile, "All", "Console", 0)
+	  IniWrite($inifile, "All", "Log", $log)
+	  IniWrite($inifile, "All", "LineDebug", $linedebug)
+	  IniWrite($inifile, "All", "Console", 0) ; Default client option
+	  IniWrite($inifile, "Time", "WakeUpPause", $WakeUpPause )
+	  IniWrite($inifile, "Time", "ServerPause", $ServerPause )
+	  IniWrite($inifile, "Time", "ClientPause", $ClientPause )
 	  IniWrite($resultini, "Client", "TestRepeat",  $INI_TestRepeat)
 	  IniWrite($resultini, "Client", "Cpu_activity",  $INI_cpu_activity)
 	  IniWrite($resultini, "Client", "CPU_load",  $INI_cpu_time)

@@ -12,5 +12,15 @@
 
 #include "Libs\libs.au3"
 #include "Libs\head.au3"
-SendData($ServerIP, "ClientOff", $TCPport)
+
+Local $begin = TimerInit()
+Sleep(3000)
+Local $TimerD = TimerDiff($begin)
+$TimerD=Round($TimerD/1000,2)
+;If IsInt($seconds) Then $seconds&=".00"
+   
+MsgBox(0, "Time Difference", $seconds)
+
+
+;SendData($ServerIP, "ClientOff", $TCPport)
 #include "Libs\foot.au3"
