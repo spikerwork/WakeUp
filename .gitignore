@@ -128,6 +128,7 @@ Desktop.ini
 
 # Exe files
 *.exe
+*.EXE
 
 #############
 ## Python

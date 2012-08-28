@@ -27,7 +27,7 @@ $runs_all=IniRead($resultini, "Client", "TestRepeat", $testrepeats)
 $runs_left=IniRead($resultini, "Runs", "Left", 0)
 $run=$runs_all-$runs_left
 $current_run="Current run #" & $run
-If $runs_left==1 Then $lastrun=1
+If $runs_left==0 Then $lastrun=1
 $test_halt=IniRead($resultini, "Client", "Halt",  1)
 $test_sleep=IniRead($resultini, "Client", "Sleep",  1)
 $test_hiber=IniRead($resultini, "Client", "Hibernate",  1)
@@ -43,7 +43,7 @@ $ActiveTest_hiber=IniRead($resultini, "ActiveTest", "Hiber", 0)
 
 If $firstrun==1 Then 
    
-   ToolTip("Идет подготовка к запуску теста " & $ScriptName,2000,0 , "Первый запуск", 1,4)
+   ToolTip("Prepare for fun " & $ScriptName, 2000, 0 , "First run", 1,4)
    PauseTime($ClientPause)
    SendData($ServerIP, "Test", $TCPport)
    PauseTime($ClientPause-1)
@@ -79,8 +79,9 @@ If $firstrun==1 Then
 		 EndIf
    EndIf
    
-Else
+Elseif $firstrun==0
    
+   ToolTip("Run # " & $run &" . Communication with server...",2000,0 , $ScriptName, 1,4)
    ; Sleep test
    
    If $test_sleep==1 Then
@@ -208,13 +209,17 @@ Else
 	  
 	  MsgBox(0, "All test", "One Cycle finished", 10)
 	  
-		 If $lastrun<>1 Then
 			
-			halt("reboot")
-		 
-		 Else
-		 
-			ToolTip("Последний прогон. Вывод результатов...",2000,0 , $ScriptName, 1,4)
+	  halt("reboot")
+	
+	  
+   EndIf
+
+   
+   
+ElseIf $lastrun==1
+   
+   ToolTip("Last run. Cleaning and calculate results...",2000,0 , $ScriptName, 1,4)
 			
 			PauseTime($ClientPause)
 			
@@ -244,15 +249,6 @@ Else
 			   MsgBox(0,"","Script Done. Results stored in BTresults.xls")
 			
 			EndIf
-		 
-		 
-		 EndIf
-	  
-   EndIf
-
-   
-   
-   
   
 
 EndIf
