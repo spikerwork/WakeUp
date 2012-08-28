@@ -129,7 +129,7 @@ Desktop.ini
 # Exe files
 *.exe
 *.EXE
-
+!WakeInstall.exe
 #############
 ## Python
 #############
