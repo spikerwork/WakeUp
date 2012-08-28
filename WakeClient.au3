@@ -37,6 +37,9 @@ Local $test_options_sleep=0
 Local $test_options_halt=0
 Local $test_options_hiber=0
 
+$ActiveTest_halt=IniRead($resultini, "ActiveTest", "Halt", 0)
+$ActiveTest_sleep=IniRead($resultini, "ActiveTest", "Sleep", 0)
+$ActiveTest_hiber=IniRead($resultini, "ActiveTest", "Hiber", 0)
 
 If $firstrun==1 Then 
    
@@ -81,12 +84,12 @@ Else
    ; Sleep test
    
    If $test_sleep==1 Then
-	     
+	  
 	  $test_sleep_time=IniRead($resultini, $current_run, "Sleep", 0) 
 	  
-	  If $test_sleep_time==0 And $ActiveTest==0 Then
+	  If $test_sleep_time==0 And $ActiveTest_sleep==0 Then
 	  
-		 IniWrite($resultini, "Runs", "ActiveTest", "Sleep")
+		 IniWrite($resultini, "ActiveTest", "Sleep", "Sleep")
 	  
 		 PauseTime(5)
 		 
@@ -95,27 +98,24 @@ Else
 		 PauseTime($ClientPause)
 		 
 		 Run($ScriptFolder & "\" & $WakeDaemon & " Sleep", $ScriptFolder)
+		 
 		 halt("sleep")
 		 
-	  ElseIf $ActiveTest=="Sleep" Then
+	  ElseIf $ActiveTest_sleep="Sleep" Then
 		 
 		 PauseTime(10)
-		 IniWrite($resultini, "Runs", "ActiveTest", 1)
 		 $test_options_sleep=1
 		 
-	  Else 
-		 
-		 $test_options_sleep=1
-		 
+	  		 
 	  EndIf
+		  
    Else
 	  
-	  $ActiveTest=1
-	  IniWrite($resultini, "Runs", "ActiveTest", 1)
+	 $test_options_sleep=0
 	
    EndIf
 
-   $ActiveTest=IniRead($resultini, "Runs", "ActiveTest", 0)
+   
 
    ; Hiber test
    
@@ -123,9 +123,9 @@ Else
 	     
 	  $test_hiber_time=IniRead($resultini, $current_run, "Hiber", 0) 
 	  
-	  If $test_hiber_time==0 And $ActiveTest==1 Then
+	  If $test_hiber_time==0 And $ActiveTest_hiber==0 Then
 		 
-		 IniWrite($resultini, "Runs", "ActiveTest", "Hiber")
+		 IniWrite($resultini, "ActiveTest", "Hiber", "Hiber")
 		 
 		 PauseTime(5)
 		 
@@ -136,26 +136,19 @@ Else
 		 Run($ScriptFolder & "\" & $WakeDaemon & " Hiber", $ScriptFolder)
 		 halt("hibernate")
 		 
-	  ElseIf $ActiveTest=="Hiber" Then
+	  ElseIf $ActiveTest_hiber=="Hiber" Then
 		 
 		 PauseTime(10)
-		 IniWrite($resultini, "Runs", "ActiveTest", 2)
-		 $test_options_hiber=1
-		 
-	  Else
-		 
 		 $test_options_hiber=1
 		 
 	  EndIf
    
    Else
 	  
-	  $ActiveTest=2
-	  IniWrite($resultini, "Runs", "ActiveTest", 2)
+	  $test_options_hiber=0
    
    EndIf
 
-   $ActiveTest=IniRead($resultini, "Runs", "ActiveTest", 0)
 
 
  ; Shutdown test
@@ -164,9 +157,9 @@ Else
 	     
 	  $test_halt_time=IniRead($resultini, $current_run, "Halt", 0) 
 	  
-	  If $test_halt_time==0 And $ActiveTest==2 Then
+	  If $test_halt_time==0 And $ActiveTest_halt==0 Then
 		 
-		 IniWrite($resultini, "Runs", "ActiveTest", "Halt")
+		 IniWrite($resultini, "ActiveTest", "Halt", "Halt")
 		 
 		 PauseTime(5)
 		 
@@ -176,24 +169,27 @@ Else
 		 
 		 FileDelete(@StartupCommonDir & "\WakeClient.lnk")
 		 FileCreateShortcut ($ScriptFolder & "\" & $WakeDaemon, @StartupCommonDir & "\WakeDaemon.lnk", $ScriptFolder, " Halt")
-		 ;Run($ScriptFolder & "\" & $WakeDaemon & " Halt", $ScriptFolder)
+		 
 		 halt("halt")
 		 
-	  ElseIf $ActiveTest=="Halt" Then
+	  ElseIf $ActiveTest_halt=="Halt" Then
 		 
 		 FileDelete(@StartupCommonDir & "\WakeDaemon.lnk")
 		 FileCreateShortcut ($ScriptFolder & "\" & $WakeClient, @StartupCommonDir & "\WakeClient.lnk")
+		 
 		 PauseTime(10)
-		 IniWrite($resultini, "Runs", "ActiveTest", 0)
 		 $test_options_halt=1
 		 
-	  Else
-		 
-		 $test_options_halt=1
 	  
 	  EndIf
+
+   Else
 	  
+	  $test_options_halt=0
+   
    EndIf
+
+
 
    $test_options_new=$test_options_halt & $test_options_sleep & $test_options_hiber
    history("Test options: " & $test_options & ". Test options new " & $test_options_new)
@@ -201,7 +197,12 @@ Else
    If $test_options==$test_options_new Then
 	  
 	  history("One Cycle finished")
-	  IniWrite($resultini, "Runs", "Left", $runs_left-1)	  
+	  IniWrite($resultini, "Runs", "Left", $runs_left-1)
+	  IniWrite($resultini, "ActiveTest", "Halt", 0)
+	  IniWrite($resultini, "ActiveTest", "Hiber", 0)
+	  IniWrite($resultini, "ActiveTest", "Sleep", 0)
+	  
+	  
 	  MsgBox(0, "All test", "One Cycle finished", 10)
 	  
 		 If $lastrun<>1 Then
@@ -220,13 +221,12 @@ Else
 			SendData($ServerIP, "ClientOff", $TCPport)
 			PauseTime($ClientPause)
 			
-			history("Old " & $GUID & " New " & $NewGUID)
+			history("Remove test powerplan - " & $NewGUID & " Enable old plan - " & $GUID)
 			 
 			; Set old power plan
-			$lol=ShellExecuteWait('cmd.exe', '/c powercfg /SETACTIVE ' & $GUID)
-			history($lol)
-			$lol=ShellExecuteWait('cmd.exe', '/c powercfg -DELETE ' & $NewGUID)
-			history($lol)
+			ShellExecuteWait('cmd.exe', '/c powercfg /SETACTIVE ' & $GUID)
+			ShellExecuteWait('cmd.exe', '/c powercfg -DELETE ' & $NewGUID)
+			
 			
 			; Last script messages
 			$excel_need=IniRead($resultini, "Client", "Excel", 0)
@@ -237,7 +237,7 @@ Else
 			
 			Else
 			
-			   resulttoxls ()
+			   resulttoxls ($resultini,$resultsfile)
 			   MsgBox(0,"","Script Done. Results stored in BTresults.xls")
 			
 			EndIf
