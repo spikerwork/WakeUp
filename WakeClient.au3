@@ -23,8 +23,8 @@ Local $ActiveTest=IniRead($resultini, "Runs", "ActiveTest", 0)
 Local $GUID=IniRead($inifile, "PowerPlan", "Old", "")
 Local $NewGUID=IniRead($inifile, "PowerPlan", "New", "")
 $firstrun=IniRead($resultini, "Runs", "First Run", 1)
-$runs_all=IniRead($resultini, "Client", "TestRepeat", $testrepeats)+1
-$runs_left=IniRead($resultini, "Runs", "Left", "")
+$runs_all=IniRead($resultini, "Client", "TestRepeat", $testrepeats)
+$runs_left=IniRead($resultini, "Runs", "Left", 0)
 $run=$runs_all-$runs_left
 $current_run="Current run #" & $run
 If $runs_left==1 Then $lastrun=1
@@ -58,7 +58,7 @@ If $firstrun==1 Then
 	  PauseTime($ClientPause)
 	  SendData($ServerIP, "ToServer|MAC" & "|" & $ipdetails[2][0], $TCPport) ; Need to redesign this varible - get the MAC from ini
 	  PauseTime($ClientPause)
-	  SendData($ServerIP, "ToServer|TestRuns" & "|" & $runs_all-1, $TCPport)
+	  SendData($ServerIP, "ToServer|TestRuns" & "|" & $runs_all, $TCPport)
 	  PauseTime($ClientPause)
 	  SendData($ServerIP, "ToServer|OptionsOSH" & "|" & $test_options, $TCPport) ; Halt, Reboot, Hibernate 111 or 000
 	  PauseTime($ClientPause)
@@ -72,7 +72,7 @@ If $firstrun==1 Then
 			history ("###Vars stored on server###")
 		 
 			IniWrite($resultini, "Runs", "First Run", 0)
-			IniWrite($resultini, "Runs", "Left", $run-1)
+			IniWrite($resultini, "Runs", "Left", $run)
 			PauseTime($ClientPause)
 			halt("reboot")
 			

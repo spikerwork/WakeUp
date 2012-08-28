@@ -15,8 +15,8 @@
 
 If $CmdLine[0] > 0 Then
 
-$runs_all=IniRead($inifile, "Client", "TestRepeat", 5)+1
-$runs_left=IniRead($resultini, "Runs", "Left", "")
+$runs_all=IniRead($resultini, "Client", "TestRepeat", $testrepeats)
+$runs_left=IniRead($resultini, "Runs", "Left", 0)
 $run_num=$runs_all-$runs_left
 $current_run="Current run #" & $run_num
 
