@@ -58,6 +58,20 @@ Local $tempfile=@HomeDrive & "\powercfg.txt"
 
 If FileExists($tempfile)==1 Then FileDelete($tempfile) ; Check if file exists
 
+	  ShellExecuteWait('cmd.exe', '/c powercfg GETACTIVESCHEME | find /I ":" > ' & $tempfile)
+
+	  $file=FileOpen($tempfile, 0)
+	  $line = FileReadLine($file)
+	  $result = StringInStr($line, ":")
+	  $GUID=StringTrimLeft($line,$result+1)
+	  $result = StringInStr($GUID, " ")
+	  $GUID=StringTrimright($GUID,$result-7)
+
+	  FileClose($file)
+	  FileDelete($tempfile)
+	  
+	  IniWrite($inifile, "All", "Old_GUID", $GUID)
+	  history ("Old power plan  — " & $GUID)
 	  
 	  ShellExecuteWait('cmd.exe', '/c powercfg -IMPORT ' & $ScriptFolder & "\" & $powerplan & '  | find /I "GUID" > ' & $tempfile)
  
@@ -73,7 +87,6 @@ If FileExists($tempfile)==1 Then FileDelete($tempfile) ; Check if file exists
 	  
 	  IniWrite($inifile, "All", "GUID", $GUID)
 	  history ("New power plan enabled — " & $GUID)
-	  
 	  
 	  
 If FileExists($ScriptFolder & "\" & $Power_Desktop)==1 Then FileDelete($ScriptFolder & "\" & $Power_Desktop) ; Check if file exists

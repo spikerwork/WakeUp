@@ -87,16 +87,16 @@ Global $UDPport = IniRead($inifile, "Network", "UDPport", 7 ) ; UDP port for Mag
 Global $ServerIP = IniRead($inifile, "Network", "IP", "10.0.0.254" ) ; Default Server IP address
 Global $Client_IP = IniRead($inifile, "Network", "Client_IP", "192.168.1.3" ) ; Default Client IP address
 Global $log = IniRead($inifile, "All", "Log", "1" ) ; Log on/off
-Global $linedebug = IniRead($inifile, "All", "LineDebug", 1 )  ; Enables trayicondebug mode
-Global $serverconsole = IniRead($inifile, "All", "Console", 1 )  ; Server console on/off
+Global $linedebug = IniRead($inifile, "All", "LineDebug", 0 )  ; Enables trayicondebug mode
+Global $serverconsole = IniRead($inifile, "All", "Console", 0 )  ; Server console on/off
 history ("INI file found — " & $inifile)
 Else
 Global $TCPport = 65432 ; Transfer between TCP server and client 
 Global $UDPport = 7 ; Broadcast port for Magic Packet
 Global $ServerIP = "10.0.0.254" ; Default server IP   
 Global $log = 1 
-Global $linedebug = 1
-Global $serverconsole = 1 
+Global $linedebug = 0
+Global $serverconsole = 0 
 Global $Client_IP = "192.168.1.3"
 history ("INI file not found, use default vars")
 EndIf

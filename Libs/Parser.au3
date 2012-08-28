@@ -41,10 +41,9 @@
 	  ; Client finished all tests
 	  Case "ClientOff"
 	  
-			history ("Client test finished! Remove ini file.")
-			$newfile="Result_" & currenttime () & "_.txt"
+			$newfile="Result_" & @YDAY & "-" & @WDAY & ".txt"
 			FileMove($resultini, $ScriptFolder & "\" & $newfile)
-
+			history ("Client test finished! Move ini file to " & $ScriptFolder & "\" & $newfile)
 		 
 	  ; Else data
 	  Case Else

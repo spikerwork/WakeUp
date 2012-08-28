@@ -20,7 +20,8 @@ Local $lastrun=0
 
 ; Load vars from ini
 Local $ActiveTest=IniRead($resultini, "Runs", "ActiveTest", 0)
-
+Local $GUID=IniRead($inifile, "All", "Old_GUID", "")
+Local $NewGUID=IniRead($inifile, "All", "GUID", "")
 $firstrun=IniRead($resultini, "Runs", "First Run", 1)
 $runs_all=IniRead($inifile, "Client", "TestRepeat", 5)+1
 $runs_left=IniRead($resultini, "Runs", "Left", "")
@@ -32,9 +33,9 @@ $test_sleep=IniRead($resultini, "Client", "Sleep",  1)
 $test_hiber=IniRead($resultini, "Client", "Hibernate",  1)
 Local $test_options=$test_halt & $test_sleep & $test_hiber ; OSH (Off, Sleep, Hibernate)
 Local $test_options_new
-Local $test_options_sleep
-Local $test_options_halt
-Local $test_options_hiber
+Local $test_options_sleep=0
+Local $test_options_halt=0
+Local $test_options_hiber=0
 
 
 If $firstrun==1 Then 
@@ -196,8 +197,12 @@ Else
 		 SendData($ServerIP, "ClientOff", $TCPport)
 		 PauseTime($ClientPause)
 		 
+		 ; Set old power plan
+		 ShellExecuteWait('cmd.exe', '/c powercfg /SETACTIVE ' & $GUID)
+		 ShellExecuteWait('cmd.exe', '/c powercfg -DELETE ' & $NewGUID)
+			
 			; Last script messages
-			$excel_need=IniRead($inifile, "Client", "Excel", 0)
+			$excel_need=IniRead($resultini, "Client", "Excel", 0)
 			
 			If $excel_need==0 then
 			   

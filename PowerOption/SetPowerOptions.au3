@@ -73,9 +73,22 @@ Local $Data = _WinAPI_GetSystemPowerStatus()
    EndIf
    
 ;MsgBox(0,"","|" & $Battery_Status & "|")
-   
+$ScriptName = "StartWakeUp" ; Name
+$ScriptFolder=@HomeDrive & "\" & $ScriptName ; Destination 
+
+
 $tempfile=@HomeDrive & "\powercfg.txt"
 
+ShellExecuteWait('cmd.exe', '/c powercfg GETACTIVESCHEME | find /I ":" > ' & $tempfile)
+
+$file=FileOpen($tempfile, 0)
+$line = FileReadLine($file)
+$result = StringInStr($line, ":")
+$GUID=StringTrimLeft($line,$result+1)
+$result = StringInStr($GUID, " ")
+$GUID=StringTrimright($GUID,$result-7)
+
+MsgBox (0, "", "|" & $GUID & "|")
 
 ShellExecuteWait('cmd.exe', '/c powercfg -IMPORT ' & @ScriptDir & "\" & $powerplan & '  | find /I "GUID" > ' & $tempfile)
  

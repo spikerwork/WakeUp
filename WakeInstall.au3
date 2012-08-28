@@ -520,7 +520,7 @@ While 1
 	  IniWrite($inifile, "Network", "IP", $INI_IP)
 	  IniWrite($inifile, "Network", "Client_IP", $INI_CIP)
 	  IniWrite($inifile, "All", "Log", 1)
-	  IniWrite($inifile, "All", "LineDebug", 1)
+	  IniWrite($inifile, "All", "LineDebug", 0)
 	  IniWrite($inifile, "All", "Console", 0)
 	  IniWrite($resultini, "Client", "TestRepeat",  $INI_TestRepeat)
 	  IniWrite($resultini, "Client", "Cpu_activity",  $INI_cpu_activity)
