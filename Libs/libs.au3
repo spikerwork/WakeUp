@@ -79,10 +79,6 @@ Global  $WakeBT="WakeBT.exe"
 ;;; Vars may store in ini files
 ;;;
 
-
-; Default
-If FileExists($inifile)==1 Then 
-   
    Global $TCPport = IniRead($inifile, "Network", "TCPport", 65432 ) ; TCP port for server. Client has TCPport+1
    Global $UDPport = IniRead($inifile, "Network", "UDPport", 7 ) ; UDP port for MagicPacket
    Global $ServerIP = IniRead($inifile, "Network", "IP", "10.0.0.254" ) ; Default Server IP address
@@ -93,36 +89,27 @@ If FileExists($inifile)==1 Then
    Global $ClientPause = IniRead($inifile, "Time", "ClientPause", 2 )
    Global $ServerPause = IniRead($inifile, "Time", "ServerPause", 3 )
    Global $WakeUpPause = IniRead($inifile, "Time", "WakeUpPause", 180 )
-   Global $testrepeats = IniRead($resultini, "Client", "TestRepeat",  5)
+   ; Client settings
+   Global $testrepeats = IniRead($resultini, "Client", "TestRepeat", 5)
    Global $cpu_need = IniRead($resultini, "Client", "Cpu_activity",  1)
    Global $cpu_percent_need = IniRead($resultini, "Client", "CPU_load",  5)
    Global $hdd_need = IniRead($resultini, "Client", "Hdd_activity",  1)
-   
 
+Global $hdd_percent_need= 0 
+
+
+; Default
+If FileExists($inifile)==1 Then 
+   
    history ("INI file found — " & $inifile)
 
 Else
    
-   Global $TCPport = 65432 ; Transfer between TCP server and client 
-   Global $UDPport = 7 ; Broadcast port for Magic Packet
-   Global $ServerIP = "10.0.0.254" ; Default server IP   
-   Global $log = 1 
-   Global $linedebug = 0
-   Global $serverconsole = 0 
-   Global $Client_IP = "192.168.1.3"
-   Global $ClientPause=3 ; Pause between calls of TCP send function for client
-   Global $ServerPause=2 ; Pause between calls of TCP send function for server
-   Global $WakeUpPause=180 ; Pause between halt option and wakeup signal
-   Global $cpu_need= 1 
-   Global $cpu_percent_need= 5 
-   Global $hdd_need= 1  
-   Global $testrepeats=5
-
    history ("INI file not found, use default vars")
    
 EndIf
 
-Global $hdd_percent_need= 0 
+
    
 
 

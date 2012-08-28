@@ -23,7 +23,7 @@ Local $ActiveTest=IniRead($resultini, "Runs", "ActiveTest", 0)
 Local $GUID=IniRead($inifile, "PowerPlan", "Old", "")
 Local $NewGUID=IniRead($inifile, "PowerPlan", "New", "")
 $firstrun=IniRead($resultini, "Runs", "First Run", 1)
-$runs_all=IniRead($inifile, "Client", "TestRepeat", 5)+1
+$runs_all=IniRead($resultini, "Client", "TestRepeat", $testrepeats)+1
 $runs_left=IniRead($resultini, "Runs", "Left", "")
 $run=$runs_all-$runs_left
 $current_run="Current run #" & $run
@@ -210,6 +210,8 @@ Else
 			SendData($ServerIP, "ClientOff", $TCPport)
 			PauseTime($ClientPause)
 			
+			 history("Old " & $GUID & " New " & $NewGUID)
+			 
 			; Set old power plan
 			ShellExecuteWait('cmd.exe', '/c powercfg /SETACTIVE ' & $GUID)
 			ShellExecuteWait('cmd.exe', '/c powercfg -DELETE ' & $NewGUID)
@@ -242,4 +244,5 @@ EndIf
 
 
 #include "Libs\foot.au3"
+
 

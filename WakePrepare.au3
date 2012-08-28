@@ -66,7 +66,7 @@ If FileExists($tempfile)==1 Then FileDelete($tempfile) ; Check if file exists
 	  $result = StringInStr($line, ":")
 	  $GUID=StringTrimLeft($line,$result+1)
 	  $result = StringInStr($GUID, " ")
-	  $GUID=StringTrimright($GUID,$result-7)
+	  $GUID=StringLeft($GUID,$result-1)
 
 	  FileClose($file)
 	  FileDelete($tempfile)

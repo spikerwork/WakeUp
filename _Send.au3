@@ -13,14 +13,11 @@
 #include "Libs\libs.au3"
 #include "Libs\head.au3"
 
-Local $begin = TimerInit()
-Sleep(3000)
-Local $TimerD = TimerDiff($begin)
-$TimerD=Round($TimerD/1000,2)
-;If IsInt($seconds) Then $seconds&=".00"
-   
-MsgBox(0, "Time Difference", $seconds)
-
+$GUID=1
+$NewGUID=1
+ShellExecuteWait('cmd.exe', '/c powercfg /SETACTIVE ' & $GUID)
+ShellExecuteWait('cmd.exe', '/c powercfg -DELETE ' & $NewGUID)
+			
 
 ;SendData($ServerIP, "ClientOff", $TCPport)
 #include "Libs\foot.au3"

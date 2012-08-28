@@ -86,20 +86,7 @@ $line = FileReadLine($file)
 $result = StringInStr($line, ":")
 $GUID=StringTrimLeft($line,$result+1)
 $result = StringInStr($GUID, " ")
-$GUID=StringTrimright($GUID,$result-7)
+$GUID=StringLeft($GUID,$result-1)
 
 MsgBox (0, "", "|" & $GUID & "|")
-
-ShellExecuteWait('cmd.exe', '/c powercfg -IMPORT ' & @ScriptDir & "\" & $powerplan & '  | find /I "GUID" > ' & $tempfile)
- 
-$file=FileOpen($tempfile, 0)
-$line = FileReadLine($file)
-$result = StringInStr($line, ":")
-$GUID=StringTrimLeft($line,$result+1)
-;MsgBox(0,"","|" & $GUID & "|")
-FileClose($file)
-FileDelete($tempfile)
-
-ShellExecuteWait('cmd.exe', '/c powercfg /SETACTIVE ' & $GUID)
-
 
