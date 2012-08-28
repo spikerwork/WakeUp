@@ -93,7 +93,7 @@
 			   Case "StoreValuesFinish"
 			   
 				  history ("Finish storing values")
-				  PauseTime($ServerPause)
+				  PauseTime($ServerPause+2)
 				  SendData($clientIP, "ToClient|Done", $TCPport+1)
 				  PauseTime(5)
 				  SendData($clientIP, "Exit", $TCPport+1)

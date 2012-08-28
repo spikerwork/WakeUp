@@ -28,7 +28,7 @@ $runs_left=IniRead($resultini, "Runs", "Left", "")
 $run=$runs_all-$runs_left
 $current_run="Current run #" & $run
 If $runs_left==1 Then $lastrun=1
-$test_halt=IniRead($resultini, "Client", "Off",  1)
+$test_halt=IniRead($resultini, "Client", "Halt",  1)
 $test_sleep=IniRead($resultini, "Client", "Sleep",  1)
 $test_hiber=IniRead($resultini, "Client", "Hibernate",  1)
 Local $test_options=$test_halt & $test_sleep & $test_hiber ; OSH (Off, Sleep, Hibernate)
@@ -108,7 +108,11 @@ Else
 		 $test_options_sleep=1
 		 
 	  EndIf
+   Else
 	  
+	  $ActiveTest=1
+	  IniWrite($resultini, "Runs", "ActiveTest", 1)
+	
    EndIf
 
    $ActiveTest=IniRead($resultini, "Runs", "ActiveTest", 0)
@@ -143,7 +147,12 @@ Else
 		 $test_options_hiber=1
 		 
 	  EndIf
+   
+   Else
 	  
+	  $ActiveTest=2
+	  IniWrite($resultini, "Runs", "ActiveTest", 2)
+   
    EndIf
 
    $ActiveTest=IniRead($resultini, "Runs", "ActiveTest", 0)
@@ -187,6 +196,7 @@ Else
    EndIf
 
    $test_options_new=$test_options_halt & $test_options_sleep & $test_options_hiber
+   history("Test options: " & $test_options & ". Test options new " & $test_options_new)
    
    If $test_options==$test_options_new Then
 	  
@@ -210,11 +220,13 @@ Else
 			SendData($ServerIP, "ClientOff", $TCPport)
 			PauseTime($ClientPause)
 			
-			 history("Old " & $GUID & " New " & $NewGUID)
+			history("Old " & $GUID & " New " & $NewGUID)
 			 
 			; Set old power plan
-			ShellExecuteWait('cmd.exe', '/c powercfg /SETACTIVE ' & $GUID)
-			ShellExecuteWait('cmd.exe', '/c powercfg -DELETE ' & $NewGUID)
+			$lol=ShellExecuteWait('cmd.exe', '/c powercfg /SETACTIVE ' & $GUID)
+			history($lol)
+			$lol=ShellExecuteWait('cmd.exe', '/c powercfg -DELETE ' & $NewGUID)
+			history($lol)
 			
 			; Last script messages
 			$excel_need=IniRead($resultini, "Client", "Excel", 0)
@@ -244,5 +256,4 @@ EndIf
 
 
 #include "Libs\foot.au3"
-
 
