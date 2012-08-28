@@ -100,6 +100,7 @@ Else
 		 Run($ScriptFolder & "\" & $WakeDaemon & " Sleep", $ScriptFolder)
 		 
 		 halt("sleep")
+		 exit
 		 
 	  ElseIf $ActiveTest_sleep="Sleep" Then
 		 
@@ -135,6 +136,7 @@ Else
 		 
 		 Run($ScriptFolder & "\" & $WakeDaemon & " Hiber", $ScriptFolder)
 		 halt("hibernate")
+		 exit
 		 
 	  ElseIf $ActiveTest_hiber=="Hiber" Then
 		 
@@ -171,6 +173,7 @@ Else
 		 FileCreateShortcut ($ScriptFolder & "\" & $WakeDaemon, @StartupCommonDir & "\WakeDaemon.lnk", $ScriptFolder, " Halt")
 		 
 		 halt("halt")
+		 exit
 		 
 	  ElseIf $ActiveTest_halt=="Halt" Then
 		 

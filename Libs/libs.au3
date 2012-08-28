@@ -95,7 +95,7 @@ Global  $WakeBT="WakeBT.exe"
    Global $cpu_percent_need = IniRead($resultini, "Client", "CPU_load",  5)
    Global $hdd_need = IniRead($resultini, "Client", "Hdd_activity",  1)
 
-Global $hdd_percent_need= 0 
+Global $hdd_percent_need = 0 
 
 
 ; Default
@@ -108,10 +108,6 @@ Else
    history ("INI file not found, use default vars")
    
 EndIf
-
-
-   
-
 
 
    ; ===================================================================
