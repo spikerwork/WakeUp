@@ -41,7 +41,7 @@
 	  ; Client finished all tests
 	  Case "ClientOff"
 	  
-			$newfile="Result_" & @YDAY & "-" & @WDAY & ": " & @HOUR & @MIN & ".txt"
+			$newfile="Result_" & @YDAY & "-" & @WDAY & " " & @HOUR & @MIN & ".txt"
 			FileMove($resultini, $ScriptFolder & "\" & $newfile)
 			history ("Client test finished! Move ini file to " & $ScriptFolder & "\" & $newfile)
 		 

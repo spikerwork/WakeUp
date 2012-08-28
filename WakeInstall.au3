@@ -86,6 +86,7 @@ GuiCtrlCreateLabel("Press F1 for help", 240, 0, 150, 15, $SS_RIGHT)
 $Button_1 = GUICtrlCreateButton("Install Client", 130, 60, 150, 40)
 $Button_2 = GUICtrlCreateButton("Install Server", 130, 130, 150, 40)
 $Button_3 = GUICtrlCreateButton("Install BootTime", 130, 200, 150, 40)
+GuiCtrlCreateLabel("(Old version of script)", 160, 240, 150, 20)
 ;GUICtrlSetState ($Button_3, $GUI_DISABLE )
 
 GUISwitch($mainGui)
