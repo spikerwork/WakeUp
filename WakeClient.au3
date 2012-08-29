@@ -28,9 +28,9 @@ $runs_left=IniRead($resultini, "Runs", "Left", 0)
 $run=$runs_all-$runs_left
 $current_run="Current run #" & $run
 
-If $run==$runs_all Then
+If $run==$runs_all And $firstrun<>1 Then
    $lastrun=1
-   $firstrun=""
+   $firstrun=2
 EndIf
 
 $test_halt=IniRead($resultini, "Client", "Halt",  1)
