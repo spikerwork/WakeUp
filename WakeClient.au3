@@ -28,7 +28,7 @@ $runs_left=IniRead($resultini, "Runs", "Left", 0)
 $run=$runs_all-$runs_left
 $current_run="Current run #" & $run
 
-If $runs_left==0 Then
+If $run==$runs_all Then
    $lastrun=1
    $firstrun=""
 EndIf
