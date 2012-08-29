@@ -79,7 +79,7 @@ If $firstrun==1 Then
 		 EndIf
    EndIf
    
-Elseif $firstrun==0
+Elseif $firstrun==0 Then
    
    ToolTip("Run # " & $run &" . Communication with server...",2000,0 , $ScriptName, 1,4)
    ; Sleep test
@@ -217,7 +217,7 @@ Elseif $firstrun==0
 
    
    
-ElseIf $lastrun==1
+ElseIf $lastrun==1 Then
    
    ToolTip("Last run. Cleaning and calculate results...",2000,0 , $ScriptName, 1,4)
 			
