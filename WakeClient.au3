@@ -27,7 +27,12 @@ $runs_all=IniRead($resultini, "Client", "TestRepeat", $testrepeats)
 $runs_left=IniRead($resultini, "Runs", "Left", 0)
 $run=$runs_all-$runs_left
 $current_run="Current run #" & $run
-If $runs_left==0 Then $lastrun=1
+
+If $runs_left==0 Then
+   $lastrun=1
+   $firstrun=""
+EndIf
+
 $test_halt=IniRead($resultini, "Client", "Halt",  1)
 $test_sleep=IniRead($resultini, "Client", "Sleep",  1)
 $test_hiber=IniRead($resultini, "Client", "Hibernate",  1)
@@ -79,6 +84,10 @@ If $firstrun==1 Then
 		 EndIf
    EndIf
    
+
+
+
+
 Elseif $firstrun==0 Then
    
    ToolTip("Run # " & $run &" . Communication with server...",2000,0 , $ScriptName, 1,4)
@@ -219,7 +228,7 @@ Elseif $firstrun==0 Then
    
 ElseIf $lastrun==1 Then
    
-   ToolTip("Last run. Cleaning and calculate results...",2000,0 , $ScriptName, 1,4)
+   ToolTip("Last run. Cleaning and calculating results...",2000,0 , $ScriptName, 1,4)
 			
 			PauseTime($ClientPause)
 			

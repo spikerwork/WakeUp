@@ -20,7 +20,8 @@ $runs_left=IniRead($resultini, "Runs", "Left", 0)
 $run_num=$runs_all-$runs_left
 $current_run="Current run #" & $run_num
 
-; Need some addon
+; Need some addon $worktime & "|" & $run
+
 $war=ActivityDaemon()
 SendData($ServerIP, "ToServer|" & $CMDLine[1] & "|" & $run_num & "|" & $war, $TCPport)
 PauseTime($ClientPause)
