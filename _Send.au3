@@ -1,24 +1,23 @@
-#cs --------------------------------------------------------------------
 
- AutoIt Version: 3.3.8.1
- Author:         Sp1ker
+#include <GUIConstantsEx.au3>
 
- Script Function:
-	
-   The part of WakeUp Script Time Checker (WSTC)
-   Server script. Waiting for connections and interact with clients
+Example()
 
-#ce --------------------------------------------------------------------
+Func Example()
+    Local $sFile = RegRead("HKEY_LOCAL_MACHINE\SOFTWARE\AutoIt v3\AutoIt", "InstallDir") & "\icons\filetype1.ico"
+    Local $msg
 
-#include "Libs\libs.au3"
-#include "Libs\head.au3"
+    GUICreate("My GUI new icon") ; will create a dialog box that when displayed is centered
 
-Local $ipdetails=_IPDetail()
+    GUISetIcon($sFile) ; will change icon
 
-$broadcast=GetBroadcast ($ipdetails[1][0], $ipdetails[3][0])
-$Client_MAC=IniRead($resultini, "Network", "MAC", "00241D12CC3B")
+    GUISetState(); will display an empty dialog box
 
-SendMagicPacket($Client_MAC, $broadcast)
+    ; Run the GUI until the dialog is closed
+    While 1
+        $msg = GUIGetMsg()
 
+        If $msg = $GUI_EVENT_CLOSE Then ExitLoop
+    WEnd
+EndFunc   ;==>Example
 
-#include "Libs\foot.au3"

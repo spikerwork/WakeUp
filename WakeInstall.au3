@@ -26,6 +26,7 @@ Local $ServerFormHigh=400
 Local $Button_4
 Local $Button_5
 Local $Button_6
+Local $Button_7
 Local $FilesArray[1]
 Local $combo
 Local $t=0
@@ -76,18 +77,21 @@ EndIf
 
 Local $ipdetails=_IPDetail()
 
-; Creating install GUI
-$mainGui=GuiCreate("Install WakeScript", $FirstFormWidth, $FirstFormHigh)
+; Creating main GUI
+$mainGui=GuiCreate("Install WakeScript (WSTC)", $FirstFormWidth, $FirstFormHigh)
 GUISetHelp(@ComSpec & ' /C start ' & @TempDir & "\" & $helpfile) ; Display Help file
 Opt("GUICoordMode", 1)
 
 GuiCtrlCreateLabel("Press F1 for help", 240, 0, 150, 15, $SS_RIGHT)
 
-$Button_1 = GUICtrlCreateButton("Install Client", 130, 60, 150, 40)
-$Button_2 = GUICtrlCreateButton("Install Server", 130, 130, 150, 40)
-$Button_3 = GUICtrlCreateButton("Install BootTime", 130, 200, 150, 40)
-GuiCtrlCreateLabel("(Old version of script)", 160, 240, 150, 20)
-;GUICtrlSetState ($Button_3, $GUI_DISABLE )
+$Button_7 = GUICtrlCreateButton("Start Client", 130, 40, 150, 40)
+$Button_1 = GUICtrlCreateButton("Install Client", 130, 100, 150, 40)
+$Button_2 = GUICtrlCreateButton("Install Server", 130, 160, 150, 40)
+$Button_3 = GUICtrlCreateButton("Install BootTime", 130, 220, 150, 40)
+
+GuiCtrlCreateLabel("(Old version of script)", 160, 260, 150, 20)
+
+GUICtrlSetState ($Button_7, $GUI_DISABLE )
 
 GUISwitch($mainGui)
 GUISetState ()

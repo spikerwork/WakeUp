@@ -49,4 +49,5 @@ Opt("TrayOnEventMode", 1)
 Opt("TrayMenuMode", 0) ; Default tray menu items (Script Paused/Exit) will be shown.
 Opt("TrayAutoPause", 0) ; Autopause disabled
 TraySetOnEvent($TRAY_EVENT_PRIMARYDOUBLE, "OpenLog") ; Function called when doubleclicked on tray icon
+TraySetIcon(@Scriptname) ; Sets tray icon 
 TraySetState()
