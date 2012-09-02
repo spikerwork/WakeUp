@@ -53,6 +53,8 @@ $logfile = $ScriptFolder & "\" & $logfile
 $Power_Notebook="Notebook.pow"
 $Power_Desktop="Desktop.pow"
 
+;Icon | used only for build.exe script
+$icon="alert.ico"
 
 ; System info
 $osarch = @OSArch ; OS architecture
@@ -73,6 +75,7 @@ Global  $WakeClient="WakeClient.exe"
 Global  $WakePrepare="WakePrepare.exe"
 Global  $WakeDaemon="WakeDaemon.exe"
 Global  $WakeBT="WakeBT.exe"
+
 
 
 ;;;
@@ -98,14 +101,23 @@ Global  $WakeBT="WakeBT.exe"
 Global $hdd_percent_need = 0 
 
 
-; Default
+; Detect Client/Server install
+Global $ScriptInstalled
+Global $ScriptInstalledType
+
 If FileExists($inifile)==1 Then 
    
+   $ScriptInstalled=1
    history ("INI file found — " & $inifile)
-
+   If FileExists($ScriptFolder & "\" & $WakeClient) Then $ScriptInstalledType="Client"
+   If FileExists($ScriptFolder & "\" & $WakeServer) Then $ScriptInstalledType="Server"
+   history ("Detected type - " & $ScriptInstalledType)
+   
 Else
    
+   $ScriptInstalled=0
    history ("INI file not found, use default vars")
+   $ScriptInstalledType="Script"
    
 EndIf
 

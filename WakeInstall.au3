@@ -56,16 +56,17 @@ Local $S_input
 Local $S_TCP_input
 Local $Adapter_GUID
 
+
 history ("Starting install...")
 If FileExists($inifile)==1 Then 
 history ("Skip settings of existing ini file")
 EndIf
 
 If DirGetSize($ScriptFolder) <> -1 Then
-DirRemove($ScriptFolder, 1)
-history ("Old directory removed")
-EndIf
+;DirRemove($ScriptFolder, 1)
+history ("Directory found")
 
+EndIf
 
 
 ; Help file install
@@ -84,14 +85,22 @@ Opt("GUICoordMode", 1)
 
 GuiCtrlCreateLabel("Press F1 for help", 240, 0, 150, 15, $SS_RIGHT)
 
-$Button_7 = GUICtrlCreateButton("Start Client", 130, 40, 150, 40)
-$Button_1 = GUICtrlCreateButton("Install Client", 130, 100, 150, 40)
-$Button_2 = GUICtrlCreateButton("Install Server", 130, 160, 150, 40)
-$Button_3 = GUICtrlCreateButton("Install BootTime", 130, 220, 150, 40)
+$Button_7 = GUICtrlCreateButton("Start " & $ScriptInstalledType, 130, 30, 150, 40)
+$Button_1 = GUICtrlCreateButton("Install Client", 130, 90, 150, 40)
+$Button_2 = GUICtrlCreateButton("Install Server", 130, 150, 150, 40)
+$Button_3 = GUICtrlCreateButton("Install BootTime", 130, 210, 150, 40)
 
-GuiCtrlCreateLabel("(Old version of script)", 160, 260, 150, 20)
+GuiCtrlCreateLabel("(Old version of script)", 157, 255, 150, 20)
+If $ScriptInstalled==0 Then GUICtrlSetState ($Button_7, $GUI_DISABLE ) ; Disable start script button
+If $ScriptInstalled==1 Then
+   
+   If $ScriptInstalledType=="Client" Then
+   GUICtrlSetState ($Button_1, $GUI_DISABLE ) ; Disable client install button
+   ElseIf $ScriptInstalledType=="Server" Then
+   GUICtrlSetState ($Button_2, $GUI_DISABLE ) ; Disable server install button
+   EndIf
 
-GUICtrlSetState ($Button_7, $GUI_DISABLE )
+EndIf
 
 GUISwitch($mainGui)
 GUISetState ()
@@ -133,11 +142,11 @@ While 1
 	  $cpu_activity=GUICtrlCreateCheckbox("Analyze HDD ", 40, 180, 120, 20)
 	  $hdd_activity=GUICtrlCreateCheckbox("Analyze CPU ", 40, 200, 120, 20)
 	  GuiCtrlCreateLabel("Max CPU Load, %  ", 160, 204, 120, 20, $SS_RIGHT)
-	  $cpu_time = GUICtrlCreateInput ($cpu_percent_need, 320, 200, 40, 20, $SS_RIGHT)
+	  $cpu_time = GUICtrlCreateInput (5, 320, 200, 40, 20, $SS_RIGHT)
 	  GUICtrlCreateUpdown($cpu_time)
 	  GUICtrlSetLimit ($cpu_time, 2 , 1)
 	  GuiCtrlCreateLabel("Количество прогонов теста:", 40, 234, 250, 20)
-	  $TestRepeat = GUICtrlCreateInput ($testrepeats, 320, 230, 40, 20, $SS_RIGHT)
+	  $TestRepeat = GUICtrlCreateInput (5, 320, 230, 40, 20, $SS_RIGHT)
 	  GUICtrlCreateUpdown($TestRepeat)
 	  GUICtrlSetLimit ($TestRepeat, 2 , 1)
 	  GuiCtrlCreateLabel("Results ", 40, 260, 150, 20)
@@ -464,13 +473,138 @@ While 1
 	  FileDelete(@TempDir & "\" & $helpfile)
 	  history ("Installation canceled")
 	  ExitLoop
+	  
    Case $msg == $Button_6
    ; Go to next step
    
 	  GUICtrlSetState($maintab, $GUI_HIDE)
 	  GUICtrlSetState($Button_6,$GUI_DISABLE) 
 	  GUICtrlSetState($secondtab, $GUI_SHOW)
+   
+   
+   Case $msg == $Button_7
+   
+   history ("Choosed option *Start Client* " & $Button_7)
 	  
+	  $InstallClientGui=GuiCreate("Install WakeScript client", $ClientFormWidth, $ClientFormHigh)
+	  
+	  GUISwitch($InstallClientGui)
+	  GUISetState(@SW_HIDE, $mainGui)
+	  GUISetState(@SW_SHOW, $InstallClientGui)
+	  
+	  $tab = GUICtrlCreateTab(20, 20, $ClientFormWidth-40, $ClientFormHigh-40)
+	  
+	  ; First tab
+	  $maintab = GUICtrlCreateTabItem("Main")
+	  
+	  GuiCtrlCreateLabel("Test preset ", 40, 50, 150, 20)
+	  GUICtrlSetFont (-1, 8.5, 800, 0, "Tahoma")
+	  $timer_sleep=GUICtrlCreateCheckbox("Sleep ", 40, 80, 120, 20)
+	  $timer_hiber=GUICtrlCreateCheckbox("Hibernation ", 40, 100, 120, 20)
+	  $timer_halt=GUICtrlCreateCheckbox("Halt (not tested)", 40, 120, 120, 20)
+	  GuiCtrlCreateLabel("PC load algorithm ", 40, 160, 150, 20)
+	  GUICtrlSetFont (-1, 8.5, 800, 0, "Tahoma")
+	  $cpu_activity=GUICtrlCreateCheckbox("Analyze HDD ", 40, 180, 120, 20)
+	  $hdd_activity=GUICtrlCreateCheckbox("Analyze CPU ", 40, 200, 120, 20)
+	  GuiCtrlCreateLabel("Max CPU Load, %  ", 160, 204, 120, 20, $SS_RIGHT)
+	  $cpu_time = GUICtrlCreateInput ($cpu_percent_need, 320, 200, 40, 20, $SS_RIGHT)
+	  GUICtrlCreateUpdown($cpu_time)
+	  GUICtrlSetLimit ($cpu_time, 2 , 1)
+	  GuiCtrlCreateLabel("Количество прогонов теста:", 40, 234, 250, 20)
+	  $TestRepeat = GUICtrlCreateInput ($testrepeats, 320, 230, 40, 20, $SS_RIGHT)
+	  GUICtrlCreateUpdown($TestRepeat)
+	  GUICtrlSetLimit ($TestRepeat, 2 , 1)
+	  GuiCtrlCreateLabel("Results ", 40, 260, 150, 20)
+	  GUICtrlSetFont (-1, 8.5, 800, 0, "Tahoma")
+	  $excel_enabled=GUICtrlCreateCheckbox("Export to Excel ", 40, 280, 170, 20)
+	  
+	  GUICtrlSetState ($cpu_activity, $GUI_CHECKED )
+	  GUICtrlSetState ($hdd_activity, $GUI_CHECKED )
+	  GUICtrlSetState ($timer_sleep, $GUI_CHECKED )
+	  GUICtrlSetState ($timer_hiber, $GUI_CHECKED )
+	  GUICtrlSetState ($timer_halt, $GUI_CHECKED )
+	  
+	  ; Check the excel
+	  $oExcel = ObjCreate('Excel.Application')
+		 If @error Then
+		 GUICtrlSetState ($excel_enabled, $GUI_DISABLE)
+		 Else
+		 GUICtrlSetState ($excel_enabled, $GUI_CHECKED)
+	  EndIf
+	  
+	  $Button_6 = GUICtrlCreateButton("Next", 130, 320, 150, 40)
+	  
+	  GUISetState ()
+	  
+	  ; Second tab
+	  $secondtab=GUICtrlCreateTabItem("Network")
+	   
+	 
+	   While $t <= UBound($ipdetails, 2)-1
+			
+			if $ipdetails[0][$t]<>"" Then
+			   $adapters+=1
+			   If $ipdetails[5][$t]==1 Then
+				  
+				  $PhysicAdapters +=1
+				  $MainAdapter=$ipdetails[0][$t]
+				  $MainAdapter_ip=$ipdetails[1][$t]
+				  $MainAdapter_netmask=$ipdetails[3][$t]
+				  $Adapter_GUID=$ipdetails[6][$t]
+				  PnPCapabilites ($Adapter_GUID)
+				  
+			   EndIf
+			   
+			   $adapterList=$adapterList & "|" & $ipdetails[0][$t]
+			   
+			EndIf
+			$t+=1
+
+		 WEnd
+		 
+		 If $t==0 Then
+		 history ("Active network adapters not found! Run script again...")
+		 Exit
+		 EndIf
+		 
+		 If $PhysicAdapters==0 Then
+		 history ("Warning! Physical network adapters not found.")
+		 Else
+		 history ("Using main adapter — " & $MainAdapter)
+		 EndIf
+		 
+		 $INI_IP=$ServerIP
+		 $INI_CIP=$MainAdapter_ip
+		 $INI_TCP=$TCPport
+		 
+		
+		 GUICtrlCreateLabel("Use this network adapter:", 30, 50, 320, 20)
+
+		 $combo=GUICtrlCreateCombo("Adapters", 30, 70, 330, 20) 
+		 GUICtrlSetData(-1, $adapterList, $MainAdapter) 
+		 
+		 GUICtrlCreateLabel("Client IP address:", 30, 100, 300, 20) 
+		 $ip_input=GUICtrlCreateInput($INI_CIP, 30, 120, 300, 20)
+		 
+		 GUICtrlCreateLabel("Server IP address:", 30, 150, 300, 20) 
+		 $S_input=GUICtrlCreateInput($INI_IP, 30, 170, 300, 20)
+		 
+		 GUICtrlCreateLabel("Server TCP port:", 30, 200, 300, 20) 
+		 $S_TCP_input=GUICtrlCreateInput($TCPport, 30, 220, 300, 20)
+		 
+		 GUICtrlCreateLabel("Client TCP port:", 30, 250, 300, 20) 
+		 $C_TCP_input=GUICtrlCreateInput($TCPport+1, 30, 270, 300, 20)
+		 GUICtrlSetState($C_TCP_input, $GUI_DISABLE)
+		 
+		 $Button_5 = GUICtrlCreateButton("Finish!", 130, 320, 150, 40)
+		 GUISetState ()
+
+	  
+	  GUICtrlSetState($maintab, $GUI_SHOW) ; will be display the current tab
+  
+	  
+   
+   
    Case $msg == $Button_5
    ; Install Client last step
    

@@ -11,7 +11,6 @@
 #ce --------------------------------------------------------------------
 
 #include "Libs\libs.au3"
-$icon="alert.ico"
 
 RunWait(@ProgramFilesDir & "\AutoIt3\Aut2Exe\Aut2exe.exe /in " & @ScriptDir & "\WakeClient.au3 /out " & @ScriptDir & "\" & $WakeClient & " /comp 4 /x86 /icon " & $icon)
 RunWait(@ProgramFilesDir & "\AutoIt3\Aut2Exe\Aut2exe.exe /in " & @ScriptDir & "\WakeDaemon.au3 /out " & @ScriptDir & "\" & $WakeDaemon & " /comp 4 /x86 /icon " & $icon)
