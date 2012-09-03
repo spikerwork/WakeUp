@@ -113,7 +113,7 @@
 				  IniWrite($resultini, "Run#" & $Packetarray[3], $packettype & "DaemonCycles", $Packetarray[5])
 				  
 				  PauseTime($ServerPause)
-				  SendData($clientIP, "ToClient|Time|" & $packettype & "|" & $TimerD, $TCPport+1)
+				  SendData($clientIP, "ToClient|Time|" & $packettype & "|" & $TimerD & "|" & $Packetarray[4], $TCPport+1)
 				  PauseTime($ServerPause+5)
 				  SendData($clientIP, "Exit", $TCPport+1)
 				  $TimerStart=0
@@ -162,7 +162,10 @@
 			   Case "Time"
 			   
 				  history ("Time - " & $Packetarray[4])
-				  IniWrite($resultini, $current_run, $Packetarray[3], $Packetarray[4])
+				  IniWrite($resultini, $current_run, $Packetarray[3], $Packetarray[4]-5) ; Exclude 5 seconds idle time
+				  Local $short_time=$Packetarray[4]-$Packetarray[5]
+				  history ("Short time - " & $short_time)
+				  IniWrite($resultini, $current_run, $Packetarray[3] & "_short", $short_time) ; Exlude all daemon time
 				  
 			   EndSwitch
 			
