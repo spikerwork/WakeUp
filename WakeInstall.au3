@@ -58,15 +58,8 @@ Local $Adapter_GUID
 
 
 history ("Starting install...")
-If FileExists($inifile)==1 Then 
-history ("Skip settings of existing ini file")
-EndIf
 
-If DirGetSize($ScriptFolder) <> -1 Then
 ;DirRemove($ScriptFolder, 1)
-history ("Directory found")
-
-EndIf
 
 
 ; Help file install
@@ -105,6 +98,7 @@ EndIf
 GUISwitch($mainGui)
 GUISetState ()
 
+; Main cycle
 
 While 1
    
@@ -112,16 +106,15 @@ While 1
 	
    Select
    
-   
    ;
    ;
-   ; Install Client
+   ; Install Client (Step 1)
    ;
    ;
    Case $msg == $Button_1
    history ("Choosed option *Install Client* " & $Button_1)
 	  
-	  $InstallClientGui=GuiCreate("Install WakeScript client", $ClientFormWidth, $ClientFormHigh)
+	  $InstallClientGui=GuiCreate("Install WSTC Client", $ClientFormWidth, $ClientFormHigh)
 	  
 	  GUISwitch($InstallClientGui)
 	  GUISetState(@SW_HIDE, $mainGui)
@@ -136,8 +129,8 @@ While 1
 	  GUICtrlSetFont (-1, 8.5, 800, 0, "Tahoma")
 	  $timer_sleep=GUICtrlCreateCheckbox("Sleep ", 40, 80, 120, 20)
 	  $timer_hiber=GUICtrlCreateCheckbox("Hibernation ", 40, 100, 120, 20)
-	  $timer_halt=GUICtrlCreateCheckbox("Halt (not tested)", 40, 120, 120, 20)
-	  GuiCtrlCreateLabel("PC load algorithm ", 40, 160, 150, 20)
+	  $timer_halt=GUICtrlCreateCheckbox("Halt (enabled in BIOS?)", 40, 120, 120, 20)
+	  GuiCtrlCreateLabel("Analyze PC load algorithm ", 40, 160, 150, 20)
 	  GUICtrlSetFont (-1, 8.5, 800, 0, "Tahoma")
 	  $cpu_activity=GUICtrlCreateCheckbox("Analyze HDD ", 40, 180, 120, 20)
 	  $hdd_activity=GUICtrlCreateCheckbox("Analyze CPU ", 40, 200, 120, 20)
@@ -264,10 +257,11 @@ While 1
    ;
    
    Case $msg == $Button_2
-   ; Install Server first step
+   
+   ; Install Server (Step 1)
    history ("Choosed option *Install Server* " & $Button_2)
    
-	  $InstallServerGui=GuiCreate("Install WakeScript server", $ServerFormWidth, $ServerFormHigh)
+	  $InstallServerGui=GuiCreate("Install WSTC server", $ServerFormWidth, $ServerFormHigh)
 	  GUISetHelp(@ComSpec & ' /C start ' & @TempDir & "\" & $helpfile) ; Display Help file
 	  Opt("GUICoordMode", 1)
 		 
@@ -383,10 +377,11 @@ While 1
    
    
    Case $msg == $Button_4
-   ; Install Server last step
+   ; Install Server (Step 2)
    
    history ("Choosed option *Ready to start install server* " & $Button_4)
 	  
+	  ; Reload all files in directory
 	  
 	  If FileExists($ScriptFolder & "\" & $WakeServer)==1 Then FileDelete($ScriptFolder & "\" & $WakeServer) ; Check if file exists
 	  If FileExists($ScriptFolder & "\" & $WakePrepare)==1 Then FileDelete($ScriptFolder & "\" & $WakePrepare) ; Check if file exists
@@ -395,6 +390,7 @@ While 1
 		 
 	  history ("Deleted old files " & $WakeServer & ", " & $WakePrepare & ", " & $inifile & ", " & $resultini)
 	  
+	  ; Write vars to ini files
 	  IniWrite($inifile, "Network", "TCPport", $INI_TCP)
 	  IniWrite($inifile, "Network", "UDPport", $INI_UDP)
 	  IniWrite($inifile, "Network", "IP", $INI_IP)
@@ -432,8 +428,8 @@ While 1
 	  	 		
 	  Else
 				
-		 ExitLoop
 		 history ("File " & $WakeServer & " is not copied to " & $ScriptFolder & "\" & $WakeServer)   
+		 ExitLoop
 		 
 	  EndIf
    
@@ -444,8 +440,9 @@ While 1
    ; Install BootTime
    ;
    ;
+   
    Case $msg == $Button_3
-   ; Install BootTime
+   ; Install BootTime (Old script for test)
    history ("Choosed option *Install BootTime* " & $Button_2)
 	  
 	  If FileExists(@TempDir & "\" & $WakeBT)==1 Then FileDelete(@TempDir & "\" & $WakeBT) ; Check if file exists
@@ -483,8 +480,11 @@ While 1
    
    
    Case $msg == $Button_7
+   ; Start Client/Server Button
    
-   history ("Choosed option *Start Client* " & $Button_7)
+   history ("Choosed option *Start Client/Server* " & $Button_7)
+	  
+   if $ScriptInstalledType=="Client" Then
 	  
 	  $InstallClientGui=GuiCreate("Install WakeScript client", $ClientFormWidth, $ClientFormHigh)
 	  
@@ -601,8 +601,12 @@ While 1
 
 	  
 	  GUICtrlSetState($maintab, $GUI_SHOW) ; will be display the current tab
-  
-	  
+   
+   ElseIf $ScriptInstalledType=="Server" Then
+   
+   Run($ScriptFolder & "\" & $WakeServer, $ScriptFolder)
+   
+   EndIf
    
    
    Case $msg == $Button_5
