@@ -36,6 +36,8 @@ Local $adapterList
 Local $MainAdapter_ip
 Local $MainAdapter
 Local $MainAdapter_netmask
+Local $MainAdapter_MAC
+Local $INI_MAC
 Local $INI_Broadcast
 Local $INI_IP
 Local $INI_TCP
@@ -177,6 +179,7 @@ While 1
 				  $PhysicAdapters +=1
 				  $MainAdapter=$ipdetails[0][$t]
 				  $MainAdapter_ip=$ipdetails[1][$t]
+				  $MainAdapter_MAC=$ipdetails[2][$t]
 				  $MainAdapter_netmask=$ipdetails[3][$t]
 				  $Adapter_GUID=$ipdetails[6][$t]
 				  PnPCapabilites ($Adapter_GUID)
@@ -204,6 +207,7 @@ While 1
 		 $INI_IP=$ServerIP
 		 $INI_CIP=$MainAdapter_ip
 		 $INI_TCP=$TCPport
+		 $INI_MAC=$MainAdapter_MAC
 		 
 		
 		 GUICtrlCreateLabel("Use this network adapter:", 30, 50, 320, 20)
@@ -274,6 +278,7 @@ While 1
 				  $PhysicAdapters +=1
 				  $MainAdapter=$ipdetails[0][$t]
 				  $MainAdapter_ip=$ipdetails[1][$t]
+				  $MainAdapter_MAC=$ipdetails[2][$t]
 				  $MainAdapter_netmask=$ipdetails[3][$t]
 				  
 			   EndIf
@@ -300,6 +305,7 @@ While 1
 		 $INI_IP=$MainAdapter_ip
 		 $INI_TCP=$TCPport
 		 $INI_UDP=$UDPport
+		 $INI_MAC=$MainAdapter_MAC
 		 
 		 GUISwitch($InstallServerGui)
 		 GUISetState(@SW_HIDE, $mainGui)
@@ -362,6 +368,8 @@ While 1
 		 
 		 $MainAdapter_ip=$ipdetails[1][$t]
 		 $MainAdapter_netmask=$ipdetails[3][$t]
+		 $MainAdapter_MAC=$ipdetails[2][$t]
+		 $INI_MAC=$MainAdapter_MAC
 		 $INI_IP=$MainAdapter_ip
 		 $INI_Broadcast=GetBroadcast($MainAdapter_ip, $MainAdapter_netmask)
 		 GUICtrlSetData($ip_input, $INI_IP) 
@@ -402,7 +410,6 @@ While 1
 	  IniWrite($inifile, "Time", "ServerPause", $ServerPause )
 	  IniWrite($inifile, "Time", "ClientPause", $ClientPause )
 	  
-
 	  If FileInstall("WakeServer.exe", $ScriptFolder & "\" & $WakeServer)<>0 Then
 		 
 		 history ("File " & $WakeServer & " is copied successfully to " & $ScriptFolder & "\" & $WakeServer)
@@ -549,6 +556,7 @@ While 1
 				  $PhysicAdapters +=1
 				  $MainAdapter=$ipdetails[0][$t]
 				  $MainAdapter_ip=$ipdetails[1][$t]
+				  $MainAdapter_MAC=$ipdetails[2][$t]
 				  $MainAdapter_netmask=$ipdetails[3][$t]
 				  $Adapter_GUID=$ipdetails[6][$t]
 				  PnPCapabilites ($Adapter_GUID)
@@ -576,6 +584,7 @@ While 1
 		 $INI_IP=$ServerIP
 		 $INI_CIP=$MainAdapter_ip
 		 $INI_TCP=$TCPport
+		 $INI_MAC=$MainAdapter_MAC
 		 
 		
 		 GUICtrlCreateLabel("Use this network adapter:", 30, 50, 320, 20)
@@ -668,6 +677,7 @@ While 1
 	  IniWrite($inifile, "Network", "TCPport", $INI_TCP)
 	  IniWrite($inifile, "Network", "IP", $INI_IP)
 	  IniWrite($inifile, "Network", "Client_IP", $INI_CIP)
+	  IniWrite($inifile, "Network", "MAC", $INI_MAC)
 	  IniWrite($inifile, "All", "Log", $log)
 	  IniWrite($inifile, "All", "LineDebug", $linedebug)
 	  IniWrite($inifile, "All", "Console", 0) ; Default client option

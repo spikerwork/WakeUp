@@ -61,7 +61,7 @@ If $firstrun==1 Then
 	  PauseTime($ClientPause)
 	  SendData($ServerIP, "ToServer|StoreValues", $TCPport)
 	  PauseTime($ClientPause)
-	  SendData($ServerIP, "ToServer|MAC" & "|" & $ipdetails[2][0], $TCPport) ; Need to redesign this varible - get the MAC from ini
+	  SendData($ServerIP, "ToServer|MAC" & "|" & $MAC, $TCPport) ; $ipdetails[2][0]
 	  PauseTime($ClientPause)
 	  SendData($ServerIP, "ToServer|TestRuns" & "|" & $runs_all, $TCPport)
 	  PauseTime($ClientPause)

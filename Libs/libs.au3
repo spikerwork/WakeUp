@@ -86,12 +86,14 @@ Global  $WakeBT="WakeBT.exe"
    Global $UDPport = IniRead($inifile, "Network", "UDPport", 7 ) ; UDP port for MagicPacket
    Global $ServerIP = IniRead($inifile, "Network", "IP", "10.0.0.254" ) ; Default Server IP address
    Global $Client_IP = IniRead($inifile, "Network", "Client_IP", "192.168.1.3" ) ; Default Client IP address
+   Global $MAC = IniRead($inifile, "Network", "MAC", "00:24:1D:12:CC:3B" ) ; Default Server IP address
    Global $log = IniRead($inifile, "All", "Log", 1 ) ; Log on/off. Always on.
    Global $linedebug = IniRead($inifile, "All", "LineDebug", 0 )  ; Enables trayicondebug mode + traytip func. Always off.
    Global $serverconsole = IniRead($inifile, "All", "Console", 0 )  ; Server console on/off. Server always on. Client - off.
    Global $ClientPause = IniRead($inifile, "Time", "ClientPause", 2 )
    Global $ServerPause = IniRead($inifile, "Time", "ServerPause", 3 )
    Global $WakeUpPause = IniRead($inifile, "Time", "WakeUpPause", 180 )
+   Global $server_broadcast=IniRead($inifile, "Network", "Broadcast", "10.0.0.255")
    ; Client settings
    Global $testrepeats = IniRead($resultini, "Client", "TestRepeat", 5)
    Global $cpu_need = IniRead($resultini, "Client", "Cpu_activity",  1)

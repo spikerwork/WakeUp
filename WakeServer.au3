@@ -16,8 +16,6 @@
 Local $ipdetails=_IPDetail()
 
 
-
-
 Global $TimerStart
 
 $socket = StartTCPServer($ServerIP,$TCPport)

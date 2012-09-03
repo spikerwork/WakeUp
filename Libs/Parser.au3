@@ -128,14 +128,15 @@
 				  history ("Run#" & $Packetarray[3] & " going to " & $testtype)
 				  
 				  IniWrite($resultini, "Run#" & $Packetarray[3], "To" & $testtype, currenttime ())
-				  $Client_MAC=IniRead($resultini, "Network", "MAC", "00241D12CC3B")
+				  $Client_MAC=IniRead($resultini, "Network", "MAC", "00:24:1D:12:CC:3B")
 				  $Client_MAC=StringReplace($Client_MAC, ":", "")
 				  
 				  PauseTime($WakeUpPause)
 				  
-				  $broadcast=GetBroadcast ($ipdetails[1][0], $ipdetails[3][0])
+				  $broadcast=GetBroadcast ($ipdetails[1][0], $ipdetails[3][0]) ; Need to redesign this varible - get the Broadcast IP and netmask from ini
+				  history ("Broadcast address - " & $broadcast & ". Broadcast from ini - " & $server_broadcast)
 				  
-				  SendMagicPacket($Client_MAC, $broadcast)
+				  SendMagicPacket($Client_MAC, $server_broadcast)
 				  $TimerStart=TimerInit()
 				  IniWrite($resultini, "Run#" & $Packetarray[3], "WakeFrom" & $testtype & "SendAt", currenttime ())
 				  
