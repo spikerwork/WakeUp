@@ -129,7 +129,7 @@ While 1
 	  GUICtrlSetFont (-1, 8.5, 800, 0, "Tahoma")
 	  $timer_sleep=GUICtrlCreateCheckbox("Sleep ", 40, 80, 120, 20)
 	  $timer_hiber=GUICtrlCreateCheckbox("Hibernation ", 40, 100, 120, 20)
-	  $timer_halt=GUICtrlCreateCheckbox("Halt (enabled in BIOS?)", 40, 120, 120, 20)
+	  $timer_halt=GUICtrlCreateCheckbox("Halt (enabled in BIOS?)", 40, 160, 120, 20)
 	  GuiCtrlCreateLabel("Analyze PC load algorithm ", 40, 160, 150, 20)
 	  GUICtrlSetFont (-1, 8.5, 800, 0, "Tahoma")
 	  $cpu_activity=GUICtrlCreateCheckbox("Analyze HDD ", 40, 180, 120, 20)
@@ -605,6 +605,10 @@ While 1
    ElseIf $ScriptInstalledType=="Server" Then
    
    Run($ScriptFolder & "\" & $WakeServer, $ScriptFolder)
+   $destr=GUIDelete($mainGui)
+   history ("Main GUI destroyed — " & $destr)
+   FileDelete(@TempDir & "\" & $helpfile)
+   ExitLoop
    
    EndIf
    
