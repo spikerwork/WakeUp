@@ -22,7 +22,7 @@
 	  
 			PauseTime($ServerPause)
 			history ("Found new client! Wrote IP to ini file.")
-			IniWrite($inifile, "Network", "Client_IP", $clientIP)
+			;IniWrite($inifile, "Network", "Client_IP", $clientIP) ; For what?
 			IniWrite($resultini, "Network", "Client_IP", $clientIP)
 			SendData($clientIP, "Passed", $TCPport+1)
 			

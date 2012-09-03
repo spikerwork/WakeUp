@@ -13,7 +13,7 @@
 #include "Libs\libs.au3"
 #include "Libs\head.au3"
 
-$ipdetails=_IPDetail() ; Get IP settings from main network adapter
+$ipdetails=_IPDetail() ; Need to test to remove this function
 
 Local $lastrun=0
 
