@@ -15,6 +15,42 @@
 
 Global $TimerStart
 
+; PowerPlan vars
+Local $tempfile=@HomeDrive & "\powercfg.txt" ; Temp file
+If FileExists($tempfile)==1 Then FileDelete($tempfile) ; Check if file exists
+Local $OldGUID=IniRead($inifile, "PowerPlan", "Old", "")
+Local $NewGUID=IniRead($inifile, "PowerPlan", "New", "")
+
+; Check active powerplan
+
+
+	  ShellExecuteWait('cmd.exe', '/c powercfg GETACTIVESCHEME | find /I ":" > ' & $tempfile)
+
+	  $file=FileOpen($tempfile, 0)
+	  $line = FileReadLine($file)
+	  $result = StringInStr($line, ":")
+	  $GUID=StringTrimLeft($line,$result+1)
+	  $result = StringInStr($GUID, " ")
+	  $GUID=StringLeft($GUID,$result-1)
+
+	  FileClose($file)
+	  FileDelete($tempfile)
+	  
+	  If $GUID==$NewGUID Then
+	  
+	  history ("Found that new powerplan enabled  — " & $GUID)
+	  
+	  ElseIf $GUID==$OldGUID Then
+	  
+	  history ("Found that old powerplan enabled  — " & $GUID)
+	  
+	  ShellExecuteWait('cmd.exe', '/c powercfg /SETACTIVE ' & $NewGUID)
+	  
+	  history ("Enabling powerplan — " & $NewGUID)
+	  
+	  EndIf
+
+
 $socket = StartTCPServer($ServerIP,$TCPport)
 
 ; console enable
