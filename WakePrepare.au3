@@ -105,14 +105,14 @@ If $CmdLine[0] > 0 Then
    If $CMDLine[1] == "Server" Then
    history ("Detected Server install — " & $CMDLine[1])
    
-   _FirewallException(1, $WakeServer, $ScriptFolder & "\" & $WakeServer)
+   AddToFirewall($WakeServer, $ScriptFolder & "\" & $WakeServer)
    
    FileCreateShortcut ($ScriptFolder & "\" & $WakeServer, @StartupCommonDir & "\WakeServer.lnk")
 	
    ElseIf $CMDLine[1] == "Client" Then
    history ("Detected Client install — " & $CMDLine[1])
-	  
-   _FirewallException(1, $WakeClient, $ScriptFolder & "\" & $WakeClient)
+   
+   AddToFirewall($WakeClient,, $ScriptFolder & "\" & $WakeClient,)
    
    FileCreateShortcut ($ScriptFolder & "\" & $WakeClient, @StartupCommonDir & "\WakeClient.lnk")
 		 

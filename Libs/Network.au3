@@ -341,21 +341,7 @@
    EndFunc
    
    
-   ; Add/Enable/Disable Firewall Exception (http://www.autoitscript.com/forum/topic/124739-addenabledisable-windows-firewall-exceptions/)
-   ; Working only with main firewall profile!!!
-   
-   Func _FirewallException($_intEnableDisable, $_appName, $_applicationFullPath)
-	   $Firewall = ObjCreate("HNetCfg.FwMgr")
-	   $Policy = $Firewall.LocalPolicy
-	   $Profile = $Policy.GetProfileByType(1)
-	   $colApplications = $Profile.AuthorizedApplications
-	   $newApplication = ObjCreate("HNetCfg.FwAuthorizedApplication")
-	   $newApplication.Name = $_appName
-	   $newApplication.IpVersion = 2
-	   $newApplication.ProcessImageFileName = $_applicationFullPath
-	   $newApplication.RemoteAddresses = "*"
-	   $newApplication.Scope = 1
-	   $newApplication.Enabled = $_intEnableDisable
-	   $colApplications.Add($newApplication)
-   EndFunc   ;==>_FirewallException
-   
+   ; Add to Firewall Exception. Need admin rights
+   Func AddToFirewall ($appName, $applicationFullPath)
+	  RunWait ('netsh advfirewall firewall add rule name="' & $appName &'" dir=in action=allow program="' & $applicationFullPath & '" enable=yes profile=any')
+   EndFunc
