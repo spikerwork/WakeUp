@@ -16,6 +16,7 @@
 
 EnvSet("SEE_MASK_NOZONECHECKS", "1") ; Skip zone checks
 
+Run ("msiexec /i " & $WakeXperfInstallExe & " /quiet")
 ShellExecuteWait($WakeXperfInstallExe)
 
 #include "Libs\foot.au3"
