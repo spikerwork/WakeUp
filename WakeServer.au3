@@ -13,9 +13,6 @@
 #include "Libs\libs.au3"
 #include "Libs\head.au3"
 
-Local $ipdetails=_IPDetail() ; Need to test to remove this function
-
-
 Global $TimerStart
 
 $socket = StartTCPServer($ServerIP,$TCPport)

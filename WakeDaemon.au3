@@ -23,6 +23,7 @@ $current_run="Current run #" & $run_num
 ; Need some addon $worktime & "|" & $run
 
 $war=ActivityDaemon()
+ToolTip($current_run, 2000, 0, @ScriptName, 2,4)
 SendData($ServerIP, "ToServer|" & $CMDLine[1] & "|" & $run_num & "|" & $war, $TCPport)
 PauseTime($ClientPause)
 

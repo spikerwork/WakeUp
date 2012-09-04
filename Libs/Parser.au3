@@ -133,8 +133,7 @@
 				  
 				  PauseTime($WakeUpPause)
 				  
-				  $broadcast=GetBroadcast ($ipdetails[1][0], $ipdetails[3][0]) ; Need to redesign this varible - get the Broadcast IP and netmask from ini
-				  history ("Broadcast address - " & $broadcast & ". Broadcast from ini - " & $server_broadcast)
+				  history ("Broadcast from ini - " & $server_broadcast)
 				  
 				  SendMagicPacket($Client_MAC, $server_broadcast)
 				  $TimerStart=TimerInit()

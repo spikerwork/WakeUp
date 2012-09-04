@@ -13,10 +13,7 @@
 #include "Libs\libs.au3"
 #include "Libs\head.au3"
 
-$ipdetails=_IPDetail() ; Need to test to remove this function
-
 Local $lastrun=0
-
 
 ; Load vars from ini
 Local $ActiveTest=IniRead($resultini, "Runs", "ActiveTest", 0)
