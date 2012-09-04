@@ -50,6 +50,7 @@ Local $NewGUID=IniRead($inifile, "PowerPlan", "New", "")
 	  
 	  EndIf
 
+; Main functions of server
 
 $socket = StartTCPServer($ServerIP,$TCPport)
 

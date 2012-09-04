@@ -340,8 +340,3 @@
  
    EndFunc
    
-   
-   ; Add to Firewall Exception. Need admin rights
-   Func AddToFirewall ($appName, $applicationFullPath)
-	  RunWait ('netsh advfirewall firewall add rule name="' & $appName &'" dir=in action=allow program="' & $applicationFullPath & '" enable=yes profile=any')
-   EndFunc

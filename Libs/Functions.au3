@@ -269,8 +269,9 @@
 	  WEnd
    
    $worktime +=5
+   
    history ("System enter IDLE state, after " & $worktime & " seconds. " & $run & " cycles")
-   ;Run($parser, $ScriptFolder)
+   
    Return $worktime & "|" & $run
    
    EndFunc
@@ -299,8 +300,8 @@
 
    _Array2DInsert($resultarray,0, "Parameter | Value")
    _Array2DEmptyDel($resultarray)
-   ;_ArrayDisplay($resultarray, "$avArray set manually 1D")
    _ArrayToXLS($resultarray, $xls)
+   
    EndFunc
    
    ; Convert ini file to XLS file
@@ -464,4 +465,10 @@
 		RegWrite($SearchKey & "\" & $result, "PnPCapabilities", "REG_DWORD", "256")
 	  EndIf
 	  
+   EndFunc
+   
+   
+    ; Add to Firewall Exception. Need admin rights
+   Func AddToFirewall ($appName, $applicationFullPath)
+	  RunWait ('netsh advfirewall firewall add rule name="' & $appName &'" dir=in action=allow program="' & $applicationFullPath & '" enable=yes profile=any')
    EndFunc
