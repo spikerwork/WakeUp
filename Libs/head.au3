@@ -38,6 +38,26 @@ Else
 EndIf
 ;;;
 
+;;;; Detect Client/Server install ;;;;
+
+If FileExists($inifile)==1 Then 
+   
+   $ScriptInstalled=1
+   history ("INI file found — " & $inifile)
+   If FileExists($ScriptFolder & "\" & $WakeClient) Then $ScriptInstalledType="Client"
+   If FileExists($ScriptFolder & "\" & $WakeServer) Then $ScriptInstalledType="Server"
+   history ("Detected type - " & $ScriptInstalledType)
+   
+Else
+   
+   $ScriptInstalled=0
+   history ("INI file not found, use default vars")
+   $ScriptInstalledType="Script"
+   
+EndIf
+
+
+
 
 ;;;
 ;;; Tray settings
