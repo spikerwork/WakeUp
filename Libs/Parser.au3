@@ -44,7 +44,9 @@
 			$newfile="Result_" & @YDAY & "-" & @WDAY & " " & @HOUR & @MIN & ".txt"
 			FileMove($resultini, $ScriptFolder & "\" & $newfile)
 			history ("Client test finished! Move ini file to " & $ScriptFolder & "\" & $newfile)
-		 
+			ShellExecuteWait('cmd.exe', '/c powercfg /SETACTIVE ' & $OldGUID)
+			Exit
+			
 	  ; Else data
 	  Case Else
 		 

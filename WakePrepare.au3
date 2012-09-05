@@ -112,7 +112,8 @@ If $CmdLine[0] > 0 Then
    ElseIf $CMDLine[1] == "Client" Then
    history ("Detected Client install — " & $CMDLine[1])
    
-   AddToFirewall($WakeClient,, $ScriptFolder & "\" & $WakeClient,)
+   AddToFirewall($WakeClient, $ScriptFolder & "\" & $WakeClient)
+   AddToFirewall($WakeDaemon, $ScriptFolder & "\" & $WakeDaemon)
    
    FileCreateShortcut ($ScriptFolder & "\" & $WakeClient, @StartupCommonDir & "\WakeClient.lnk")
 		 
