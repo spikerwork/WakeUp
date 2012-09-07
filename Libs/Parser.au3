@@ -45,6 +45,7 @@
 			FileMove($resultini, $ScriptFolder & "\" & $newfile)
 			history ("Client test finished! Move ini file to " & $ScriptFolder & "\" & $newfile)
 			ShellExecuteWait('cmd.exe', '/c powercfg /SETACTIVE ' & $OldGUID)
+			FileDelete(@StartupCommonDir & "\WakeServer.lnk")
 			Exit
 			
 	  ; Else data
