@@ -14,7 +14,7 @@
 #AutoIt3Wrapper_Compile_both=n
 #AutoIt3Wrapper_Res_Comment="Wake Install"
 #AutoIt3Wrapper_Res_Description="WakeUp Script Time Checker (WSTC)"
-#AutoIt3Wrapper_Res_Fileversion=0.2.0.2
+#AutoIt3Wrapper_Res_Fileversion=0.2.0.3
 #AutoIt3Wrapper_Res_FileVersion_AutoIncrement=y
 #AutoIt3Wrapper_Res_Field=ProductName|WakeUp Script Time Checker
 #AutoIt3Wrapper_Res_Field=ProductVersion|0.1.0.0
@@ -28,25 +28,34 @@
 #include "Libs\libs.au3"
 #include "Libs\head.au3"
 
+
+;;; Local Vars ;;;
+
 Local $pausetime=5
+
+;;; Form
 
 Local $FirstFormWidth=400
 Local $FirstFormHigh=300
+
 Local $ClientFormWidth=400
 Local $ClientFormHigh=400
+
 Local $ServerFormWidth=400
 Local $ServerFormHigh=400
 
+;;; Empty
 
+Local $Button_1
+Local $Button_2
+Local $Button_3
 Local $Button_4
 Local $Button_5
 Local $Button_6
 Local $Button_7
-Local $FilesArray[1]
+Local $Button_8
+Local $Button_9
 Local $combo
-Local $t=0
-Local $adapters=0
-Local $PhysicAdapters=0
 Local $adapterList
 Local $MainAdapter_ip
 Local $MainAdapter
@@ -72,12 +81,13 @@ Local $UDP_input
 Local $S_input
 Local $S_TCP_input
 Local $Adapter_GUID
-
+;;; Filled vars
+Local $t=0
+Local $adapters=0
+Local $PhysicAdapters=0
+Local $ipdetails=_IPDetail() ; Gather information of network adapters
 
 history ("Starting install...")
-
-;DirRemove($ScriptFolder, 1)
-
 
 ; Help file install
 If FileInstall("help.txt", @TempDir & "\" & $helpfile, 1)<>0 Then
@@ -86,7 +96,7 @@ Else
 history ("File " & $helpfile & " is not copied to" & @TempDir & "\" & $helpfile)
 EndIf
 
-Local $ipdetails=_IPDetail()
+
 
 ; Creating main GUI
 $mainGui=GuiCreate("Install WakeScript (WSTC)", $FirstFormWidth, $FirstFormHigh)
@@ -95,13 +105,13 @@ Opt("GUICoordMode", 1)
 
 GuiCtrlCreateLabel("Press F1 for help", 240, 0, 150, 15, $SS_RIGHT)
 
-$Button_7 = GUICtrlCreateButton("Start " & $ScriptInstalledType, 130, 30, 150, 40)
+$Button_4 = GUICtrlCreateButton("Start " & $ScriptInstalledType, 130, 30, 150, 40)
 $Button_1 = GUICtrlCreateButton("Install Client", 130, 90, 150, 40)
 $Button_2 = GUICtrlCreateButton("Install Server", 130, 150, 150, 40)
 $Button_3 = GUICtrlCreateButton("Install BootTime", 130, 210, 150, 40)
 
 GuiCtrlCreateLabel("(Old version of script)", 157, 255, 150, 20)
-If $ScriptInstalled==0 Then GUICtrlSetState ($Button_7, $GUI_DISABLE ) ; Disable start script button
+If $ScriptInstalled==0 Then GUICtrlSetState ($Button_4, $GUI_DISABLE ) ; Disable start script button
 If $ScriptInstalled==1 Then
 
    If $ScriptInstalledType=="Client" Then
@@ -344,7 +354,7 @@ While 1
 		 $UDP_input=GUICtrlCreateInput($UDPport, 10, 280, 300, 20)
 		 GUICtrlSetState($UDP_input, $GUI_DISABLE)
 
-		 $Button_4 = GUICtrlCreateButton("Let`s Go!", 130, 340, 150, 40)
+		 $Button_9 = GUICtrlCreateButton("Let`s Go!", 130, 340, 150, 40)
 		 GUISetState ()
 
 
@@ -399,10 +409,10 @@ While 1
 
 
 
-   Case $msg == $Button_4
+   Case $msg == $Button_9
    ; Install Server (Step 2)
 
-   history ("Choosed option *Ready to start install server* " & $Button_4)
+   history ("Choosed option *Ready to start install server* " & $Button_9)
 
 	  ; Reload all files in directory
 
@@ -501,10 +511,10 @@ While 1
 	  GUICtrlSetState($secondtab, $GUI_SHOW)
 
 
-   Case $msg == $Button_7
+   Case $msg == $Button_4
    ; Start Client/Server Button
 
-   history ("Choosed option *Start Client/Server* " & $Button_7)
+   history ("Choosed option *Start Client/Server* " & $Button_4)
 
    if $ScriptInstalledType=="Client" Then
 

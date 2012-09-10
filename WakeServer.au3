@@ -15,7 +15,7 @@
 #AutoIt3Wrapper_Compile_both=n
 #AutoIt3Wrapper_Res_Comment="Wake Server"
 #AutoIt3Wrapper_Res_Description="WakeUp Script Time Checker (WSTC)"
-#AutoIt3Wrapper_Res_Fileversion=0.2.0.2
+#AutoIt3Wrapper_Res_Fileversion=0.2.0.3
 #AutoIt3Wrapper_Res_FileVersion_AutoIncrement=y
 #AutoIt3Wrapper_Res_Field=ProductName|WakeUp Script Time Checker
 #AutoIt3Wrapper_Res_Field=ProductVersion|0.1.0.0
@@ -28,8 +28,6 @@
 
 #include "Libs\libs.au3"
 #include "Libs\head.au3"
-
-Global $TimerStart
 
 ; PowerPlan vars
 Local $tempfile=@HomeDrive & "\powercfg.txt" ; Temp file

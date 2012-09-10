@@ -5,7 +5,7 @@
 
  Script Function:
 	The main library for WakeUp Script Time Checker (WSTC)
-	Contains vars 
+	Contains vars
 
 #ce --------------------------------------------------------------------
 
@@ -48,10 +48,13 @@ Global $CPULoadArray[1] ; For daemon function
 Global $HDDLoadArray[1] ; For daemon function
 Global $Ready=0 ; Use in client/server greetings
 Global $Done=0 ; Use in client/server first run
-Global $SearchKey = "HKLM\SYSTEM\ControlSet001\Control\Class\{4D36E972-E325-11CE-BFC1-08002BE10318}" ; For network adapters
+Global $SearchKey = "HKLM\SYSTEM\ControlSet001\Control\Class\{4D36E972-E325-11CE-BFC1-08002BE10318}" ; For network adapters Windows 7
+
+; Detect script more info in head.au3
 Global $ScriptInstalled
 Global $ScriptInstalledType
 
+Global $TimerStart
 
 ; Names of scripts
 Global  $WakeInstall="WakeInstall.exe"
@@ -85,5 +88,5 @@ Global  $WakeBT="WakeBT.exe"
    Global $cpu_percent_need = IniRead($resultini, "Client", "CPU_load",  5)
    Global $hdd_need = IniRead($resultini, "Client", "Hdd_activity",  1)
 
-Global $hdd_percent_need = 0 
+Global $hdd_percent_need = 0
 
