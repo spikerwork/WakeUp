@@ -9,15 +9,21 @@
    Main installer. Includes all nessasary files
 
 #ce --------------------------------------------------------------------
-;;; Compiling ;;;
+#Region AutoIt3Wrapper directives section
 
-#AutoIt3Wrapper_Run_Before=%scriptdir%\BuildEXE.exe
-#AutoIt3Wrapper_Res_Comment="lol"                    ;Comment field
-#AutoIt3Wrapper_Res_Description="lol"                ;Description field
-#AutoIt3Wrapper_Res_Fileversion=0.2.0.1
-#AutoIt3Wrapper_Res_FileVersion_AutoIncrement= y
+#AutoIt3Wrapper_Compile_both=n
+#AutoIt3Wrapper_Res_Comment="Wake Install"
+#AutoIt3Wrapper_Res_Description="WakeUp Script Time Checker (WSTC)"
+#AutoIt3Wrapper_Res_Fileversion=0.2.0.2
+#AutoIt3Wrapper_Res_FileVersion_AutoIncrement=y
+#AutoIt3Wrapper_Res_Field=ProductName|WakeUp Script Time Checker
+#AutoIt3Wrapper_Res_Field=ProductVersion|0.1.0.0
 #AutoIt3Wrapper_Run_AU3Check=n
+#AutoIt3Wrapper_Res_Language=2057
+#AutoIt3Wrapper_Res_LegalCopyright=Sp1ker (spiker@pmpc.ru)
+#AutoIt3Wrapper_res_requestedExecutionLevel=requireAdministrator
 
+#Endregion
 
 #include "Libs\libs.au3"
 #include "Libs\head.au3"
