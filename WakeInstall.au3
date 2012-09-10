@@ -9,15 +9,6 @@
    Main installer. Includes all nessasary files
 
 #ce --------------------------------------------------------------------
-;;; Compiling ;;;
-
-#AutoIt3Wrapper_Run_Before=%scriptdir%\BuildEXE.exe
-#AutoIt3Wrapper_Res_Comment="lol"                    ;Comment field
-#AutoIt3Wrapper_Res_Description="lol"                ;Description field
-#AutoIt3Wrapper_Res_Fileversion=0.2.0.1
-#AutoIt3Wrapper_Res_FileVersion_AutoIncrement= y
-#AutoIt3Wrapper_Run_AU3Check=n
-
 
 #include "Libs\libs.au3"
 #include "Libs\head.au3"
