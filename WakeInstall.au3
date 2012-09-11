@@ -14,7 +14,7 @@
 #AutoIt3Wrapper_Compile_both=n
 #AutoIt3Wrapper_Res_Comment="Wake Install"
 #AutoIt3Wrapper_Res_Description="WakeUp Script Time Checker (WSTC)"
-#AutoIt3Wrapper_Res_Fileversion=0.2.0.5
+#AutoIt3Wrapper_Res_Fileversion=0.2.0.6
 #AutoIt3Wrapper_Res_FileVersion_AutoIncrement=y
 #AutoIt3Wrapper_Res_Field=ProductName|WakeUp Script Time Checker
 #AutoIt3Wrapper_Res_Field=ProductVersion|0.1.0.0
@@ -81,6 +81,7 @@ Local $UDP_input
 Local $S_input
 Local $S_TCP_input
 Local $Adapter_GUID
+
 ;;; Filled vars
 Local $t=0
 Local $adapters=0
@@ -451,8 +452,7 @@ While 1
 			history ("Main GUI destroyed — " & $destr)
 			PauseTime($pausetime)
 			history ("Starting process — " & $ScriptFolder & "\" & $WakePrepare)
-			FileDelete(@TempDir & "\" & $helpfile)
-
+			FileMove(@TempDir & "\" & $helpfile, $ScriptFolder & "\" & $helpfile,1)
 			; Start Menu install
 			DirCreate(@ProgramsCommonDir & "\" & $ScriptName)
 			FileCreateShortcut($ScriptFolder & "\" & $WakeInstall, @ProgramsCommonDir & "\" & $ScriptName & "\WakeInstall.lnk", $ScriptFolder)
@@ -748,7 +748,7 @@ While 1
 			   history ("Main GUI destroyed — " & $destr)
 			   PauseTime($pausetime)
 			   history ("Starting process — " & $ScriptFolder & "\" & $WakePrepare)
-			   FileDelete(@TempDir & "\" & $helpfile)
+				FileMove(@TempDir & "\" & $helpfile, $ScriptFolder & "\" & $helpfile,1)
 
 			   ; Start Menu install
 				DirCreate(@ProgramsCommonDir & "\" & $ScriptName)
