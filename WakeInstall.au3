@@ -14,7 +14,7 @@
 #AutoIt3Wrapper_Compile_both=n
 #AutoIt3Wrapper_Res_Comment="Wake Install"
 #AutoIt3Wrapper_Res_Description="WakeUp Script Time Checker (WSTC)"
-#AutoIt3Wrapper_Res_Fileversion=0.2.0.3
+#AutoIt3Wrapper_Res_Fileversion=0.2.0.5
 #AutoIt3Wrapper_Res_FileVersion_AutoIncrement=y
 #AutoIt3Wrapper_Res_Field=ProductName|WakeUp Script Time Checker
 #AutoIt3Wrapper_Res_Field=ProductVersion|0.1.0.0
@@ -96,7 +96,7 @@ Else
 history ("File " & $helpfile & " is not copied to" & @TempDir & "\" & $helpfile)
 EndIf
 
-
+FileCopy(@ScriptFullPath,  $ScriptFolder, 1)
 
 ; Creating main GUI
 $mainGui=GuiCreate("Install WakeScript (WSTC)", $FirstFormWidth, $FirstFormHigh)
@@ -195,7 +195,7 @@ While 1
 	  $secondtab=GUICtrlCreateTabItem("Network")
 
 
-	   While $t <= UBound($ipdetails, 2)-1
+		While $t <= UBound($ipdetails, 2)-1
 
 			if $ipdetails[0][$t]<>"" Then
 			   $adapters+=1
@@ -207,7 +207,7 @@ While 1
 				  $MainAdapter_MAC=$ipdetails[2][$t]
 				  $MainAdapter_netmask=$ipdetails[3][$t]
 				  $Adapter_GUID=$ipdetails[6][$t]
-				  PnPCapabilites ($Adapter_GUID)
+				  PnPCapabilites($Adapter_GUID)
 
 			   EndIf
 
@@ -216,18 +216,18 @@ While 1
 			EndIf
 			$t+=1
 
-		 WEnd
+		WEnd
 
-		 If $t==0 Then
-		 history ("Active network adapters not found! Run script again...")
-		 Exit
-		 EndIf
+		If $t==0 Then
+			 history ("Active network adapters not found! Run script again...")
+			 Exit
+		EndIf
 
-		 If $PhysicAdapters==0 Then
-		 history ("Warning! Physical network adapters not found.")
-		 Else
-		 history ("Using main adapter — " & $MainAdapter)
-		 EndIf
+		If $PhysicAdapters==0 Then
+			history ("Warning! Physical network adapters not found.")
+		Else
+			history ("Using main adapter — " & $MainAdapter)
+		EndIf
 
 		 $INI_IP=$ServerIP
 		 $INI_CIP=$MainAdapter_ip
@@ -280,7 +280,7 @@ While 1
    ;
    ;
    ;
-   ; Install Server
+   ; Install Server (Step 1)
    ;
    ;
    ;
@@ -290,7 +290,7 @@ While 1
    ; Install Server (Step 1)
    history ("Choosed option *Install Server* " & $Button_2)
 
-	  $InstallServerGui=GuiCreate("Install WSTC server", $ServerFormWidth, $ServerFormHigh)
+	  $InstallServerGui=GuiCreate("Install WSTC Server", $ServerFormWidth, $ServerFormHigh)
 	  GUISetHelp(@ComSpec & ' /C start ' & @TempDir & "\" & $helpfile) ; Display Help file
 	  Opt("GUICoordMode", 1)
 
@@ -383,6 +383,7 @@ While 1
 
    Case $msg == $combo
    ; Refreshing IP and Broadcast address after combo select
+   ; Use in Client and Server setup
 
    history ("Selected network adapter — " & GUICtrlRead ($combo))
    $t=0
@@ -435,6 +436,9 @@ While 1
 	  IniWrite($inifile, "Time", "ServerPause", $ServerPause )
 	  IniWrite($inifile, "Time", "ClientPause", $ClientPause )
 
+	FileInstall("WakeUninstall.exe", $ScriptFolder & "\" & $WakeUninstall)
+
+
 	  If FileInstall("WakeServer.exe", $ScriptFolder & "\" & $WakeServer)<>0 Then
 
 		 history ("File " & $WakeServer & " is copied successfully to " & $ScriptFolder & "\" & $WakeServer)
@@ -448,6 +452,13 @@ While 1
 			PauseTime($pausetime)
 			history ("Starting process — " & $ScriptFolder & "\" & $WakePrepare)
 			FileDelete(@TempDir & "\" & $helpfile)
+
+			; Start Menu install
+			DirCreate(@ProgramsCommonDir & "\" & $ScriptName)
+			FileCreateShortcut($ScriptFolder & "\" & $WakeInstall, @ProgramsCommonDir & "\" & $ScriptName & "\WakeInstall.lnk", $ScriptFolder)
+			FileCreateShortcut($ScriptFolder & "\" & $WakeServer, @ProgramsCommonDir & "\" & $ScriptName & "\WakeServer.lnk", $ScriptFolder)
+			FileCreateShortcut($ScriptFolder & "\" & $WakeUninstall, @ProgramsCommonDir & "\" & $ScriptName & "\WakeUninstall.lnk", $ScriptFolder)
+
 			Run($ScriptFolder & "\" & $WakePrepare & " Server", $ScriptFolder)
 			ExitLoop
 
@@ -718,6 +729,7 @@ While 1
 	  IniWrite($resultini, "Client", "Hibernate",  $INI_hiber)
 	  IniWrite($resultini, "Client", "Excel",  $INI_excel)
 
+	FileInstall("WakeUninstall.exe", $ScriptFolder & "\" & $WakeUninstall)
 
 	  If FileInstall("WakeClient.exe", $ScriptFolder & "\" & $WakeClient)<>0 Then
 
@@ -737,6 +749,12 @@ While 1
 			   PauseTime($pausetime)
 			   history ("Starting process — " & $ScriptFolder & "\" & $WakePrepare)
 			   FileDelete(@TempDir & "\" & $helpfile)
+
+			   ; Start Menu install
+				DirCreate(@ProgramsCommonDir & "\" & $ScriptName)
+				FileCreateShortcut($ScriptFolder & "\" & $WakeInstall, @ProgramsCommonDir & "\" & $ScriptName & "\WakeInstall.lnk", $ScriptFolder)
+				FileCreateShortcut($ScriptFolder & "\" & $WakeUninstall, @ProgramsCommonDir & "\" & $ScriptName & "\WakeUninstall.lnk", $ScriptFolder)
+
 			   Run($ScriptFolder & "\" & $WakePrepare & " Client", $ScriptFolder)
 			   ExitLoop
 

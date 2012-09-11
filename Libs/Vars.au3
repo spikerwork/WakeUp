@@ -58,6 +58,7 @@ Global $TimerStart
 
 ; Names of scripts
 Global  $WakeInstall="WakeInstall.exe"
+Global  $WakeUninstall="WakeUninstall.exe"
 Global  $WakeServer="WakeServer.exe"
 Global  $WakeClient="WakeClient.exe"
 Global  $WakePrepare="WakePrepare.exe"
