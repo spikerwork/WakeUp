@@ -33,8 +33,7 @@ Local $lastrun=0
 
 ; Load vars from ini
 Local $ActiveTest=IniRead($resultini, "Runs", "ActiveTest", 0)
-Local $GUID=IniRead($inifile, "PowerPlan", "Old", "")
-Local $NewGUID=IniRead($inifile, "PowerPlan", "New", "")
+
 $firstrun=IniRead($resultini, "Runs", "First Run", 1)
 $runs_all=IniRead($resultini, "Client", "TestRepeat", $testrepeats)
 $runs_left=IniRead($resultini, "Runs", "Left", 0)
@@ -251,11 +250,10 @@ ElseIf $lastrun==1 Then
 			SendData($ServerIP, "ClientOff", $TCPport)
 			PauseTime($ClientPause)
 
-			history("Remove test powerplan - " & $NewGUID & " Enable old plan - " & $GUID)
+			history("Remove test powerplan - " & $NewGUID & " Enable old plan - " & $OldGUID)
 
 			; Set old power plan
-			ShellExecuteWait('cmd.exe', '/c powercfg /SETACTIVE ' & $GUID)
-			ShellExecuteWait('cmd.exe', '/c powercfg -DELETE ' & $NewGUID)
+			ShellExecuteWait('cmd.exe', '/c powercfg /SETACTIVE ' & $OldGUID)
 
 
 			; Last script messages

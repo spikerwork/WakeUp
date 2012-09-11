@@ -66,6 +66,8 @@ Global  $WakeDaemon="WakeDaemon.exe"
 Global  $WakeBT="WakeBT.exe"
 
 
+Global $tempfile=@HomeDrive & "\powercfg.txt" ; Temp file
+
 
 ;;;
 ;;; Vars may store in ini files
@@ -83,6 +85,8 @@ Global  $WakeBT="WakeBT.exe"
    Global $ServerPause = IniRead($inifile, "Time", "ServerPause", 3 )
    Global $WakeUpPause = IniRead($inifile, "Time", "WakeUpPause", 180 )
    Global $server_broadcast=IniRead($inifile, "Network", "Broadcast", "10.0.0.255")
+   Global $OldGUID=IniRead($inifile, "PowerPlan", "Old", "")
+   Global $NewGUID=IniRead($inifile, "PowerPlan", "New", "")
    ; Client settings
    Global $testrepeats = IniRead($resultini, "Client", "TestRepeat", 5)
    Global $cpu_need = IniRead($resultini, "Client", "Cpu_activity",  1)

@@ -30,10 +30,7 @@
 #include "Libs\head.au3"
 
 ; PowerPlan vars
-Local $tempfile=@HomeDrive & "\powercfg.txt" ; Temp file
 If FileExists($tempfile)==1 Then FileDelete($tempfile) ; Check if file exists
-Local $OldGUID=IniRead($inifile, "PowerPlan", "Old", "")
-Local $NewGUID=IniRead($inifile, "PowerPlan", "New", "")
 
 ; Check active powerplan
 

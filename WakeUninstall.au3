@@ -37,6 +37,39 @@ If FileExists($inifile)==1 Then FileDelete($inifile)
 If FileExists($resultini)==1 Then FileDelete($resultini)
 DirRemove(@ProgramsCommonDir & "\" & $ScriptName)
 
+If FileExists($tempfile)==1 Then FileDelete($tempfile) ; Check if file exists
+
+	; Check active powerplan
+
+	  ShellExecuteWait('cmd.exe', '/c powercfg GETACTIVESCHEME | find /I ":" > ' & $tempfile)
+
+	  $file=FileOpen($tempfile, 0)
+	  $line = FileReadLine($file)
+	  $result = StringInStr($line, ":")
+	  $GUID=StringTrimLeft($line,$result+1)
+	  $result = StringInStr($GUID, " ")
+	  $GUID=StringLeft($GUID,$result-1)
+
+	  FileClose($file)
+	  FileDelete($tempfile)
+
+	  If $GUID==$NewGUID Then
+
+	  history ("Found that new powerplan enabled  — " & $GUID)
+
+	  ShellExecuteWait('cmd.exe', '/c powercfg /SETACTIVE ' & $OldGUID)
+
+	  history ("Enabling powerplan — " & $NewGUID)
+
+	  ElseIf $GUID==$OldGUID Then
+
+	  history ("Found that old powerplan enabled  — " & $GUID)
+
+	  EndIf
+
+
+
+
 MsgBox(0,"Unistall succesful","WakeScript has removed", 5)
 ;@ProgramsCommonDir
 _SelfDelete()

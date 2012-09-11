@@ -29,7 +29,6 @@
 #include "Libs\head.au3"
 
 ; Setting power options
-Local $tempfile=@HomeDrive & "\powercfg.txt" ; Temp file
 Local $Data = _WinAPI_GetSystemPowerStatus() ; Get battery information
 
    If $Data[1]=128 Then
