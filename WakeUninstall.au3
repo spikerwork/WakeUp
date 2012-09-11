@@ -14,7 +14,7 @@
 #AutoIt3Wrapper_Compile_both=n
 #AutoIt3Wrapper_Res_Comment="Wake Install"
 #AutoIt3Wrapper_Res_Description="WakeUp Script Time Checker (WSTC)"
-#AutoIt3Wrapper_Res_Fileversion=0.2.0.1
+#AutoIt3Wrapper_Res_Fileversion=0.2.0.5
 #AutoIt3Wrapper_Res_FileVersion_AutoIncrement=y
 #AutoIt3Wrapper_Res_Field=ProductName|WakeUp Script Time Checker
 #AutoIt3Wrapper_Res_Field=ProductVersion|0.1.0.0
@@ -35,7 +35,7 @@ If FileExists($ScriptFolder & "\" & $WakeDaemon)==1 Then FileDelete($ScriptFolde
 If FileExists($ScriptFolder & "\" & $WakeInstall)==1 Then FileDelete($ScriptFolder & "\" & $WakeInstall)
 If FileExists($inifile)==1 Then FileDelete($inifile)
 If FileExists($resultini)==1 Then FileDelete($resultini)
-DirRemove(@ProgramsCommonDir & "\" & $ScriptName)
+DirRemove(@ProgramsCommonDir & "\" & $ScriptName, 1)
 
 If FileExists($tempfile)==1 Then FileDelete($tempfile) ; Check if file exists
 
@@ -59,11 +59,11 @@ If FileExists($tempfile)==1 Then FileDelete($tempfile) ; Check if file exists
 
 	  ShellExecuteWait('cmd.exe', '/c powercfg /SETACTIVE ' & $OldGUID)
 
-	  history ("Enabling powerplan — " & $NewGUID)
+	  history ("Enabling previous powerplan — " & $OldGUID)
 
 	  ElseIf $GUID==$OldGUID Then
 
-	  history ("Found that old powerplan enabled  — " & $GUID)
+	  history ("Found that previous powerplan enabled  — " & $GUID)
 
 	  EndIf
 

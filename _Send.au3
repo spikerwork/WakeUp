@@ -22,7 +22,7 @@
 ;SendMagicPacket($Client_MAC, $broadcast)
 DirCreate(@ProgramsCommonDir & "\" & $ScriptName)
 FileCreateShortcut($ScriptFolder & "\" & $WakeInstall, @ProgramsCommonDir & "\" & $ScriptName & "\WakeInstall.lnk", $ScriptFolder)
-
+DirRemove(@ProgramsCommonDir & "\" & $ScriptName,1)
 ;MsgBox(0,@StartMenuCommonDir,@ProgramsCommonDir)
 
 
