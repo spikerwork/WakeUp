@@ -52,7 +52,7 @@ Global $SearchKey = "HKLM\SYSTEM\ControlSet001\Control\Class\{4D36E972-E325-11CE
 
 ; Detect script more info in head.au3
 Global $ScriptInstalled
-Global $ScriptInstalledType
+Global $filesinfolder=0
 
 Global $TimerStart
 
@@ -65,6 +65,8 @@ Global  $WakeStart="WakeStart.exe"
 Global  $WakePrepare="WakePrepare.exe"
 Global  $WakeDaemon="WakeDaemon.exe"
 Global  $WakeBT="WakeBT.exe"
+
+Global 	$FilesArray[8]=[$WakeInstall,$WakeUninstall,$WakeBT, $WakeClient, $WakeDaemon, $WakePrepare, $WakeStart,$WakeServer]
 
 
 Global $tempfile=@HomeDrive & "\powercfg.txt" ; Temp file

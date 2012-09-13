@@ -20,10 +20,19 @@
 ;$Client_MAC=IniRead($resultini, "Network", "MAC", "00241D12CC3B")
 
 ;SendMagicPacket($Client_MAC, $broadcast)
-DirCreate(@ProgramsCommonDir & "\" & $ScriptName)
-FileCreateShortcut($ScriptFolder & "\" & $WakeInstall, @ProgramsCommonDir & "\" & $ScriptName & "\WakeInstall.lnk", $ScriptFolder)
-DirRemove(@ProgramsCommonDir & "\" & $ScriptName,1)
+;DirCreate(@ProgramsCommonDir & "\" & $ScriptName)
+;FileCreateShortcut($ScriptFolder & "\" & $WakeInstall, @ProgramsCommonDir & "\" & $ScriptName & "\WakeInstall.lnk", $ScriptFolder)
+;DirRemove(@ProgramsCommonDir & "\" & $ScriptName,1)
 ;MsgBox(0,@StartMenuCommonDir,@ProgramsCommonDir)
+$t=0
+While $t <= Ubound($FilesArray)-1
+
+	MsgBox(0,"", $FilesArray[$t])
+	$t+=1
+
+WEnd
+
+
 
 
 #include "Libs\foot.au3"
