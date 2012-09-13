@@ -14,7 +14,7 @@
 #AutoIt3Wrapper_Compile_both=n
 #AutoIt3Wrapper_Res_Comment="Wake Start"
 #AutoIt3Wrapper_Res_Description="WakeUp Script Time Checker (WSTC)"
-#AutoIt3Wrapper_Res_Fileversion=0.3.0.9
+#AutoIt3Wrapper_Res_Fileversion=0.3.0.10
 #AutoIt3Wrapper_Res_FileVersion_AutoIncrement=y
 #AutoIt3Wrapper_Res_Field=ProductName|WakeUp Script Time Checker
 #AutoIt3Wrapper_Res_Field=ProductVersion|0.2.0.0
@@ -95,6 +95,7 @@ If $filesinfolder<>$F_arra-1 Then
 EndIf
 
 
+
 ; Creating main GUI
 $mainGui=GuiCreate("Start WakeScript (WSTC)", $FirstFormWidth, $FirstFormHigh)
 GUISetHelp(@ComSpec & ' /C start ' & $ScriptFolder & "\" & $helpfile) ; Display Help file
@@ -143,8 +144,8 @@ While 1
 	  $timer_halt=GUICtrlCreateCheckbox("Halt (enabled in BIOS?)", 40, 120, 160, 20)
 	  GuiCtrlCreateLabel("Analyze PC load algorithm ", 40, 160, 150, 20)
 	  GUICtrlSetFont (-1, 8.5, 800, 0, "Tahoma")
-	  $cpu_activity=GUICtrlCreateCheckbox("Analyze HDD ", 40, 180, 120, 20)
-	  $hdd_activity=GUICtrlCreateCheckbox("Analyze CPU ", 40, 200, 120, 20)
+	  $hdd_activity=GUICtrlCreateCheckbox("Analyze HDD ", 40, 180, 120, 20)
+	  $cpu_activity=GUICtrlCreateCheckbox("Analyze CPU ", 40, 200, 120, 20)
 	  GuiCtrlCreateLabel("Max CPU Load, %  ", 160, 204, 120, 20, $SS_RIGHT)
 	  $cpu_time = GUICtrlCreateInput (5, 320, 200, 40, 20, $SS_RIGHT)
 	  GUICtrlCreateUpdown($cpu_time)
@@ -158,7 +159,15 @@ While 1
 	  $excel_enabled=GUICtrlCreateCheckbox("Export to Excel ", 40, 280, 170, 20)
 
 	  GUICtrlSetState ($cpu_activity, $GUI_CHECKED )
-	  GUICtrlSetState ($hdd_activity, $GUI_CHECKED )
+
+			If $osversion=="WIN_8" Then
+			history ("HDDLoad monitoring not effective in this OS")
+			GUICtrlSetState ($hdd_activity, $GUI_UNCHECKED )
+			GUICtrlSetState ($hdd_activity, $GUI_DISABLE )
+			Else
+			GUICtrlSetState ($hdd_activity, $GUI_CHECKED )
+			EndIf
+
 	  GUICtrlSetState ($timer_sleep, $GUI_CHECKED )
 	  GUICtrlSetState ($timer_hiber, $GUI_CHECKED )
 	  GUICtrlSetState ($timer_halt, $GUI_CHECKED )

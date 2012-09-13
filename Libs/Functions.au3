@@ -96,12 +96,12 @@
    ; Computer activity gatherer Daemon
    Func ActivityDaemon()
 
-   history ("Start watching daemon...")
+   history ("Start WMI daemon...")
 
 	  $objWMIService = ObjGet("winmgmts:{impersonationLevel=impersonate}\\.\root\cimv2")
 
-	  Local $time=0
-	  Local $worktime=0
+	  Local $time=0 ; Cycle timer
+	  Local $worktime=0 ; All timer
 
 	  While 1
 
@@ -114,9 +114,16 @@
 		 $run=$worktime/5+1
 	  EndIf
 
+
 	  $time=$time+0.5
 
+		If $cpu_need==0 and $hdd_need==0 Then
+		history ("Skiping WMI daemon. ")
+		ExitLoop
+		EndIf
+
 	  ; Gathering CPU WMI Information
+		If $cpu_need==1 Then
 
 		 $WMIQuery = $objWMIService.ExecQuery("SELECT * FROM Win32_Processor", "WQL",0x10+0x20)
 
@@ -129,17 +136,19 @@
 
 		 $CPU_Clock = "Current CPU Clock: " & $Current_Clock & " MHz"
 
-		 If $cpu_need==1 Then
+
 
 			$CPU_Load = "Average CPU Load: " & $Load & " %"
 
 		 Else
-
+			$CPU_Clock = ""
 			$CPU_Load = "CPULoad monitoring off"
 
 		 EndIf
 
 	  ; Gathering HDD WMI Information
+
+		If $hdd_need==1 Then
 
 		 $WMIQuery2 = $objWMIService.ExecQuery ("SELECT * FROM Win32_PerfFormattedData_PerfDisk_PhysicalDisk WHERE Name = '_Total'")
 
@@ -148,29 +157,23 @@
 			   $hdd_bytes = $obj2.DiskBytesPerSec
 		 Next
 
-		 _ArrayAdd($HDDLoadArray, $hdd_activity)
+		_ArrayAdd($HDDLoadArray, $hdd_activity)
 
-		 $HDD_bytes = "HDD bytes sent (DiskBytesPerSec): " &  $hdd_bytes
+		$HDD_bytes = "HDD bytes sent (DiskBytesPerSec): " &  $hdd_bytes
 
-		 If $hdd_need==1 Then
 
-			$HDD = "Average HDD Load (PercentDiskTime): " &  $hdd_activity
+		$HDD = "Average HDD Load (PercentDiskTime): " &  $hdd_activity
 
 		 Else
 
 			$HDD = "HDDLoad monitoring off"
+			$HDD_bytes=" "
 
 		 EndIf
 
-			; Check if it XP or 2003
-			If $osversion=="WIN_XP" or $osversion=="WIN_2003" Then
-			$HDD = "HDDLoad monitoring unsupported by OS"
-			$hdd_need=0
-			EndIf
-
 		 $idle = "Elapsed Time: " & $time & " sec"
 
-		 ToolTip("Cycle number " & $run & @CRLF & $CPU_Clock & @CRLF & $CPU_Load & @CRLF & $HDD & @CRLF & $HDD_bytes& @CRLF & $idle, 2000, 0, @ScriptName, 2,4)
+		 ToolTip("Cycle number " & $run & @CRLF & $CPU_Load & @CRLF & $CPU_Clock & @CRLF & $HDD & @CRLF & $HDD_bytes& @CRLF & $idle, 2000, 0, @ScriptName, 2,4)
 
 		 Sleep(500)
 
@@ -185,7 +188,6 @@
 			If $cpu_need==1 Then
 
 			   $r=Ubound($CPULoadArray)
-
 			   Do
 			   $i=$i+1
 			   $l=$l+$CPULoadArray[$i]
@@ -195,13 +197,16 @@
 
 			   $r=$r-1
 			   $AverageLoadCPU=$l/$r
-			   $AverageLoadCPU=StringFormat ( "%d", $AverageLoadCPU)
+
+				$AverageLoadCPU=StringFormat ( "%d", $AverageLoadCPU)
+
 
 			   ; CPU Load check
 			   $cpu_percent_need=Number($cpu_percent_need)
 			   $AverageLoadCPU=Number($AverageLoadCPU)
 
-			   history ("Current CPU Clock: " & $Current_Clock & " MHz")
+				history ("Current CPU Clock: " & $Current_Clock & " MHz")
+
 
 			   If $AverageLoadCPU == "" Then $AverageLoadCPU=100
 
