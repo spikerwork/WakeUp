@@ -15,7 +15,7 @@
 #AutoIt3Wrapper_Compile_both=n
 #AutoIt3Wrapper_Res_Comment="Wake Install"
 #AutoIt3Wrapper_Res_Description="WakeUp Script Time Checker (WSTC)"
-#AutoIt3Wrapper_Res_Fileversion=0.3.0.5
+#AutoIt3Wrapper_Res_Fileversion=0.3.0.7
 #AutoIt3Wrapper_Res_FileVersion_AutoIncrement=y
 #AutoIt3Wrapper_Res_Field=ProductName|WakeUp Script Time Checker
 #AutoIt3Wrapper_Res_Field=ProductVersion|0.2.0.0
@@ -23,6 +23,7 @@
 #AutoIt3Wrapper_Res_Language=2057
 #AutoIt3Wrapper_Res_LegalCopyright=Sp1ker (spiker@pmpc.ru)
 #AutoIt3Wrapper_res_requestedExecutionLevel=requireAdministrator
+#AutoIt3Wrapper_Res_requestedExecutionLevel=highestAvailable
 
 #Endregion
 
@@ -164,7 +165,7 @@ While 1
 		Else
 
 		   MsgBox(0, "Sad News!", "Some files can`t be installed.")
-		   history ("Some files missed. Number - " & $t+1 & ". File sequence: WakeInstall, WakeUninstall.exe, WakePrepare.exe, WakeServer.exe, WakeClient.exe, WakeStart.exe, WakeDaemon.exe, help.txt")
+		   history ("File missed. Number - " & $t+1 & ". Sequence of file install : WakeInstall, WakeUninstall.exe, WakePrepare.exe, WakeServer.exe, WakeClient.exe, WakeStart.exe, WakeDaemon.exe, help.txt")
 
 		ExitLoop(2)
 		EndIf
@@ -180,10 +181,11 @@ While 1
 	FileCreateShortcut($ScriptFolder & "\" & $WakeStart, @ProgramsCommonDir & "\" & $ScriptName & "\WakeStart.lnk", $ScriptFolder)
 	FileCreateShortcut($ScriptFolder & "\" & $WakeUninstall, @ProgramsCommonDir & "\" & $ScriptName & "\WakeUninstall.lnk", $ScriptFolder)
 
- 	MsgBox(0,"Good news!","Install completed")
-
-	GUISetState(@SW_HIDE, $mainGui)
+ 	GUISetState(@SW_HIDE, $mainGui)
 	$destr=GUIDelete($mainGui)
+
+	MsgBox(0,"Good news!","Install completed")
+
 	ExitLoop
 
 	;;;;; End install ;;;;;

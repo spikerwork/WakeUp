@@ -13,7 +13,7 @@
 history ("Program started")
 history ("Work directory Ч " & @ScriptDir)
 ;;;; Admin checkin ;;;;
-; #RequireAdmin - Didn`t test yet
+#RequireAdmin
 If IsAdmin()==0 Then
    MsgBox(0, "", "ƒл€ запуска программы необходимы права администратора")
    history ("Admin check failed")

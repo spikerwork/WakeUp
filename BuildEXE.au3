@@ -22,7 +22,7 @@
 #AutoIt3Wrapper_Res_Language=2057
 #AutoIt3Wrapper_Res_LegalCopyright=Sp1ker (spiker@pmpc.ru)
 #AutoIt3Wrapper_res_requestedExecutionLevel=requireAdministrator
-
+#AutoIt3Wrapper_Res_requestedExecutionLevel=highestAvailable
 
 #Endregion
 
