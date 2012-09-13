@@ -13,7 +13,7 @@
 history ("Program started")
 history ("Work directory Ч " & @ScriptDir)
 ;;;; Admin checkin ;;;;
-; #RequireAdmin - Didn`t test yet
+#RequireAdmin
 If IsAdmin()==0 Then
    MsgBox(0, "", "ƒл€ запуска программы необходимы права администратора")
    history ("Admin check failed")
@@ -38,22 +38,32 @@ EndIf
 ;;;
 
 ;;;; Detect Client/Server install ;;;;
-
 If FileExists($inifile)==1 Then
 
    $ScriptInstalled=1
    history ("INI file found Ч " & $inifile)
-   If FileExists($ScriptFolder & "\" & $WakeClient) Then $ScriptInstalledType="Client"
-   If FileExists($ScriptFolder & "\" & $WakeServer) Then $ScriptInstalledType="Server"
-   history ("Detected type - " & $ScriptInstalledType)
 
 Else
 
    $ScriptInstalled=0
    history ("INI file not found, use default vars")
-   $ScriptInstalledType="Script"
 
 EndIf
+
+
+Local $F_arra
+While $F_arra <= Ubound($FilesArray)-1
+
+	If FileExists($ScriptFolder & "\" & $FilesArray[$F_arra])==1 Then
+		history ("Exe file found Ч " & $FilesArray[$F_arra])
+		$ScriptInstalled=1
+		$filesinfolder+=1
+		EndIf
+	$F_arra+=1
+
+WEnd
+
+
 
 
 
