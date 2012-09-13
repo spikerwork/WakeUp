@@ -6,7 +6,7 @@
  Script Function:
 
    The part of WakeUp Script Time Checker (WSTC)
-   Main installer. Includes all nessasary files
+   Start Script for Server and Client.
 
 #ce --------------------------------------------------------------------
 #Region AutoIt3Wrapper directives section
@@ -14,7 +14,7 @@
 #AutoIt3Wrapper_Compile_both=n
 #AutoIt3Wrapper_Res_Comment="Wake Install"
 #AutoIt3Wrapper_Res_Description="WakeUp Script Time Checker (WSTC)"
-#AutoIt3Wrapper_Res_Fileversion=0.2.0.11
+#AutoIt3Wrapper_Res_Fileversion=0.2.0.10
 #AutoIt3Wrapper_Res_FileVersion_AutoIncrement=y
 #AutoIt3Wrapper_Res_Field=ProductName|WakeUp Script Time Checker
 #AutoIt3Wrapper_Res_Field=ProductVersion|0.1.0.0
@@ -27,6 +27,10 @@
 
 #include "Libs\libs.au3"
 #include "Libs\head.au3"
+
+
+
+#cs
 
 
 ;;; Local Vars ;;;
@@ -785,6 +789,8 @@ While 1
 
 
 WEnd
+#ce
 
+MsgBox(0,"","Start Program")
 #include "Libs\foot.au3"
 

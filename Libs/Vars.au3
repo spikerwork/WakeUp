@@ -63,6 +63,7 @@ Global  $WakeServer="WakeServer.exe"
 Global  $WakeClient="WakeClient.exe"
 Global  $WakePrepare="WakePrepare.exe"
 Global  $WakeDaemon="WakeDaemon.exe"
+Global  $WakeStart="WakeStart.exe"
 Global  $WakeBT="WakeBT.exe"
 
 
