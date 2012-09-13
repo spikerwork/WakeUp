@@ -6,16 +6,15 @@
  Script Function:
 
    The part of WakeUp Script Time Checker (WSTC)
-   Server script. Waiting for connections and interact with clients
+   Uninstall Script. Deletes all.
 
 #ce --------------------------------------------------------------------
-
 #Region AutoIt3Wrapper directives section
 
 #AutoIt3Wrapper_Compile_both=n
-#AutoIt3Wrapper_Res_Comment="Wake Server"
+#AutoIt3Wrapper_Res_Comment="Wake Install"
 #AutoIt3Wrapper_Res_Description="WakeUp Script Time Checker (WSTC)"
-#AutoIt3Wrapper_Res_Fileversion=0.2.0.9
+#AutoIt3Wrapper_Res_Fileversion=0.2.0.5
 #AutoIt3Wrapper_Res_FileVersion_AutoIncrement=y
 #AutoIt3Wrapper_Res_Field=ProductName|WakeUp Script Time Checker
 #AutoIt3Wrapper_Res_Field=ProductVersion|0.1.0.0
@@ -29,11 +28,18 @@
 #include "Libs\libs.au3"
 #include "Libs\head.au3"
 
-; PowerPlan vars
+If FileExists($ScriptFolder & "\" & $WakeClient)==1 Then FileDelete($ScriptFolder & "\" & $WakeClient)
+If FileExists($ScriptFolder & "\" & $WakePrepare)==1 Then FileDelete($ScriptFolder & "\" & $WakePrepare)
+If FileExists($ScriptFolder & "\" & $WakeServer)==1 Then FileDelete($ScriptFolder & "\" & $WakeServer)
+If FileExists($ScriptFolder & "\" & $WakeDaemon)==1 Then FileDelete($ScriptFolder & "\" & $WakeDaemon)
+If FileExists($ScriptFolder & "\" & $WakeInstall)==1 Then FileDelete($ScriptFolder & "\" & $WakeInstall)
+If FileExists($inifile)==1 Then FileDelete($inifile)
+If FileExists($resultini)==1 Then FileDelete($resultini)
+DirRemove(@ProgramsCommonDir & "\" & $ScriptName, 1)
+
 If FileExists($tempfile)==1 Then FileDelete($tempfile) ; Check if file exists
 
-; Check active powerplan
-
+	; Check active powerplan
 
 	  ShellExecuteWait('cmd.exe', '/c powercfg GETACTIVESCHEME | find /I ":" > ' & $tempfile)
 
@@ -51,34 +57,21 @@ If FileExists($tempfile)==1 Then FileDelete($tempfile) ; Check if file exists
 
 	  history ("Found that new powerplan enabled  — " & $GUID)
 
+	  ShellExecuteWait('cmd.exe', '/c powercfg /SETACTIVE ' & $OldGUID)
+
+	  history ("Enabling previous powerplan — " & $OldGUID)
+
 	  ElseIf $GUID==$OldGUID Then
 
-	  history ("Found that old powerplan enabled  — " & $GUID)
-
-	  ShellExecuteWait('cmd.exe', '/c powercfg /SETACTIVE ' & $NewGUID)
-
-	  history ("Enabling powerplan — " & $NewGUID)
+	  history ("Found that previous powerplan enabled  — " & $GUID)
 
 	  EndIf
 
-; Main functions of server
 
-$socket = StartTCPServer($ServerIP,$TCPport)
 
-; console enable
-If $serverconsole==1 Then
-Opt("GUICoordMode", 1)
-$gui=GUICreate("Server (IP: " & $ServerIP & ")", 400, 300)
-$console = GUICtrlCreateEdit("", 10, 10, 380, 280)
-GUISetState()
-EndIf
 
-RecieveData ($socket)
-
-; console enable
-If $serverconsole==1 Then
-GUIDelete($gui)
-EndIf
-
+MsgBox(0,"Unistall succesful","WakeScript has removed", 5)
+;@ProgramsCommonDir
+_SelfDelete()
 
 #include "Libs\foot.au3"

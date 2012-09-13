@@ -35,7 +35,7 @@
 ;		return an array with index(es) of match(es)
 ;
 ;	_Array2DMirror()
-;		to mirror an 2D-array, rows will be columns and contrary 
+;		to mirror an 2D-array, rows will be columns and contrary
 ;
 ;	_SubArray2DGetEntry()
 ;		return the value from an entry of an 1D/2D-array, which is also an entry in an 1D/2D-array
@@ -64,7 +64,7 @@
 ;
 ;	Requirements	By using numeric entry, be sure that type is "number" for correct sort
 ;					Works with any occurences in 2nd Dimension
-;					
+;
 ;	Author			BugFix (bugfix@autoit.de)
 ;----------------------------------------------------------------------------------------------------------------------
 Func _ArraySort_2ary(ByRef $ARRAY, $DIM_1ST=0, $DESCENDING=0, $REVERSE=False)
@@ -80,7 +80,7 @@ Func _ArraySort_2ary(ByRef $ARRAY, $DIM_1ST=0, $DESCENDING=0, $REVERSE=False)
 	EndIf
 	If $DIM_1ST <> 0 Then $DIM_1ST = $UBound2nd-1
 	Local $arTmp[1][$UBound2nd]
-	_ArraySort($ARRAY,$DESCENDING,0,0,$UBound2nd,$DIM_1ST)
+	_ArraySort($ARRAY,$DESCENDING,0,$UBound2nd,$DIM_1ST)
 	If $REVERSE Then
 		Switch $DESCENDING
 			Case 0
@@ -105,12 +105,12 @@ Func _ArraySort_2ary(ByRef $ARRAY, $DIM_1ST=0, $DESCENDING=0, $REVERSE=False)
 					EndIf
 				EndIf
 			ElseIf $sortYES = 1 Then
-				If ( $i = UBound($ARRAY)-1 ) Or ( $ARRAY[$i][$u] <> $ARRAY[$i+1][$u] ) Then 
+				If ( $i = UBound($ARRAY)-1 ) Or ( $ARRAY[$i][$u] <> $ARRAY[$i+1][$u] ) Then
 					$sortYES = 0
 					$LAST = $i +1
 					ReDim $arTmp[$LAST-$FIRST][$UBound2nd]
 					$tmpFIRST = $FIRST
-					For $k = 0 To UBound($arTmp)-1 
+					For $k = 0 To UBound($arTmp)-1
 						For $l = 0 To $UBound2nd-1
 							$arTmp[$k][$l] = $ARRAY[$tmpFIRST][$l]
 						Next
@@ -120,28 +120,28 @@ Func _ArraySort_2ary(ByRef $ARRAY, $DIM_1ST=0, $DESCENDING=0, $REVERSE=False)
 					Switch $DIM_1ST
 						Case 0
 							If $u = $UBound2nd-1 Then
-								_ArraySort($arTmp,$DESCENDING,0,0,$UBound2nd,$UBound2nd-1)
+								_ArraySort($arTmp,$DESCENDING,0,$UBound2nd,$UBound2nd-1)
 							Else
-								_ArraySort($arTmp,$DESCENDING,0,0,$UBound2nd,$u+1)
+								_ArraySort($arTmp,$DESCENDING,0,$UBound2nd,$u+1)
 							EndIf
 							For $k = 0 To UBound($arTmp)-1
 								For $l = 1 To $UBound2nd-1
 									$ARRAY[$tmpFIRST][$l] = $arTmp[$k][$l]
 								Next
 								$tmpFIRST += 1
-							Next					
+							Next
 						Case $UBound2nd-1
 							If $u = $UBound2nd-1 Then
-								_ArraySort($arTmp,$DESCENDING,0,0,$UBound2nd,0)
+								_ArraySort($arTmp,$DESCENDING,0,$UBound2nd,0)
 							Else
-								_ArraySort($arTmp,$DESCENDING,0,0,$UBound2nd,$UBound2nd-1-$u-1)
+								_ArraySort($arTmp,$DESCENDING,0,$UBound2nd,$UBound2nd-1-$u-1)
 							EndIf
 							For $k = 0 To UBound($arTmp)-1
 								For $l = 0 To $UBound2nd-2
 									$ARRAY[$tmpFIRST][$l] = $arTmp[$k][$l]
 								Next
 								$tmpFIRST += 1
-							Next				
+							Next
 					EndSwitch
 				EndIf
 			EndIf
@@ -149,11 +149,11 @@ Func _ArraySort_2ary(ByRef $ARRAY, $DIM_1ST=0, $DESCENDING=0, $REVERSE=False)
 		$sortYES = 0
 	Next
 	Return -1
-EndFunc ;==>_ArraySort_2ary	
+EndFunc ;==>_ArraySort_2ary
 
 ;----------------------------------------------------------------------------------------------------------------------
 ; Function		_Array2DSortByLen(ByRef $ARRAY [, $iDESCENDING=0])
-;				
+;
 ; Description	- Sorts an 1D/2D Array by Length.
 ;				- BaseIndex is 0; sorts the whole array.
 ;
@@ -183,7 +183,7 @@ Func _Array2DSortByLen(ByRef $ARRAY, $iDESCENDING=0)
 			$arTmp[$i][1] = $ARRAY[$i]
 			$ARRAY[$i] = ''
 		Next
-		_ArraySort($arTmp,$iDESCENDING,0,0,2,0)
+		_ArraySort($arTmp,$iDESCENDING,0,2,0)
 		For $i = 0 To UBound($arTmp)-1
 			$ARRAY[$i] = $arTmp[$i][1]
 		Next
@@ -236,7 +236,7 @@ Func _Array2DDblDel(ByRef $ARRAY, $CASESENS=0)
 			For $k = 0 To UBound($arTmp)-1
 				Switch $CASESENS
 					Case 0
-						If $arTmp[$k] = $ARRAY[$i] Then 
+						If $arTmp[$k] = $ARRAY[$i] Then
 							$dbl = 1
 							$count += 1
 						EndIf
@@ -245,7 +245,7 @@ Func _Array2DDblDel(ByRef $ARRAY, $CASESENS=0)
 							$dbl = 1
 							$count += 1
 						EndIf
-				EndSwitch	
+				EndSwitch
 			Next
 			If $dbl = 0 Then
 				If $arTmp[0] = "" Then
@@ -279,17 +279,17 @@ Func _Array2DDblDel(ByRef $ARRAY, $CASESENS=0)
 							$dbl = 1
 							$count += 1
 						EndIf
-					Case 1		
+					Case 1
 						If  $valTmp == $val Then
 							$dbl = 1
 							$count += 1
 						EndIf
-				EndSwitch				
+				EndSwitch
 			Next
 			If $dbl = 0 Then
 				If $x = 1 Then ReDim $arTmp[UBound($arTmp)+1][$Ubound2nd]
 				For $l = 0 To $Ubound2nd-1
-					If $arTmp[0][0] = '' Or $x = 0 Then	
+					If $arTmp[0][0] = '' Or $x = 0 Then
 						$arTmp[0][$l] = $ARRAY[0][$l]
 						If $l = $Ubound2nd-1 Then $x = 1
 					Else
@@ -335,7 +335,7 @@ Func _Array2DInsert(ByRef $avArray, $iElement, $sValue='')
 	Local $UBound2nd = UBound($avArray,2)
 	If @error = 2 Then
 		Local $arTMP[UBound($avArray)+1]
-		If $iElement > UBound($avArray) Then 
+		If $iElement > UBound($avArray) Then
 			SetError(3)
 			Return 0
 		EndIf
@@ -361,11 +361,11 @@ Func _Array2DInsert(ByRef $avArray, $iElement, $sValue='')
 			Next
 		EndIf
 		$arValue = StringSplit($sValue, '|')
-		If $arValue[0] <> $UBound2nd Then 
+		If $arValue[0] <> $UBound2nd Then
 			SetError(2)
 			Return 0
 		EndIf
-		If $iElement > UBound($avArray) Then 
+		If $iElement > UBound($avArray) Then
 			SetError(3)
 			Return 0
 		EndIf
@@ -458,7 +458,7 @@ Func _Array2DSplit(ByRef $AR_SOURCE, ByRef $AR_TARGET, $iFROM=-1, $COUNT=-1)
 		For $i = $iFROM+$COUNT To UBound($AR_SOURCE)-1
 			For $l = 0 To $UBound2nd-1
 				$arTMP[$k][$l] = $AR_SOURCE[$i][$l]
-			Next	
+			Next
 			$k +=1
 		Next
 		$AR_SOURCE = $arTMP
@@ -645,7 +645,7 @@ Func _Array2DDelete(ByRef $ARRAY, $iDEL)
 		Local $arTmp[UBound($ARRAY)-1]
 		$k = 0
 		For $i = 0 To UBound($ARRAY)-1
-			If $i <> $iDEL Then 
+			If $i <> $iDEL Then
 				$arTmp[$k] = $ARRAY[$i]
 				$k += 1
 			EndIf
@@ -670,7 +670,7 @@ EndFunc ;==>_Array2DDelete
 ;
 ;	Function		_Array2DSearch(ByRef $avArray, $vWhat2Find [, $iDim=-1 [, $iStart=0 [, $iEnd=0 [, $iCaseSense=0 [, $fPartialSearch=False [, $1stFound=False]]]]]])
 ;
-;	Description		Finds all Entry's like $vWhat2Find in an 1D/2D Array 
+;	Description		Finds all Entry's like $vWhat2Find in an 1D/2D Array
 ;					Works with all occurences in 2nd Dimension
 ;					Search in all occurences or only in a given column
 ;					To set numeric values for default, you can use -1
@@ -889,7 +889,7 @@ EndFunc ;==>_Array2DSearch
 ;					Row will be column and contrary.
 ;					Works with any occurences in 2nd Dimension
 ;
-;	Parameter		$ARRAY		2D-Array 
+;	Parameter		$ARRAY		2D-Array
 ;
 ;	Return			Succes		-1			rows and columns are mirrored
 ;					Failure		0 and set @error
@@ -963,7 +963,7 @@ Func _SubArray2DGetEntry(ByRef $ARRAY, $SubRow, $ParentRow, $SubCol=-1, $ParentC
 		Return 0
 	EndIf
 	Switch $ParentCol
-		Case -1 
+		Case -1
 			Local $arSub = $ARRAY[$ParentRow]
 		Case Else
 			Local $arSub = $ARRAY[$ParentRow][$ParentCol]
@@ -971,7 +971,7 @@ Func _SubArray2DGetEntry(ByRef $ARRAY, $SubRow, $ParentRow, $SubCol=-1, $ParentC
 	If ($SubRow < 0) Or ($SubRow > UBound($arSub)-1) Then
 		SetError(5)
 		Return 0
-	EndIf	
+	EndIf
 	Local $Ub2ndSub = UBound($arSub, 2)
 	If @error Then
 		If $SubCol <> -1 Then

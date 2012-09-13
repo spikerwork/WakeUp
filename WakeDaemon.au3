@@ -4,11 +4,27 @@
  Author:         Sp1ker
 
  Script Function:
-	
+
    The part of WakeUp Script Time Checker (WSTC)
    Launches Activity Daemon, that can get the idle time of testing PC
 
 #ce --------------------------------------------------------------------
+
+#Region AutoIt3Wrapper directives section
+
+#AutoIt3Wrapper_Compile_both=n
+#AutoIt3Wrapper_Res_Comment="Wake Daemon"
+#AutoIt3Wrapper_Res_Description="WakeUp Script Time Checker (WSTC)"
+#AutoIt3Wrapper_Res_Fileversion=0.2.0.9
+#AutoIt3Wrapper_Res_FileVersion_AutoIncrement=y
+#AutoIt3Wrapper_Res_Field=ProductName|WakeUp Script Time Checker
+#AutoIt3Wrapper_Res_Field=ProductVersion|0.1.0.0
+#AutoIt3Wrapper_Run_AU3Check=n
+#AutoIt3Wrapper_Res_Language=2057
+#AutoIt3Wrapper_Res_LegalCopyright=Sp1ker (spiker@pmpc.ru)
+#AutoIt3Wrapper_res_requestedExecutionLevel=requireAdministrator
+
+#Endregion
 
 #include "Libs\libs.au3"
 #include "Libs\head.au3"
@@ -29,15 +45,15 @@ PauseTime($ClientPause)
 
 $socket = StartTCPServer($Client_IP,$TCPport+1)
 RecieveData ($socket)
-	  
+
 Run($ScriptFolder & "\" & $WakeClient, $ScriptFolder)
 
- 
+
 Else
 history ("Smth wrong with command line to this script. No args!")
 Exit
 EndIf
 
-		 
+
 #include "Libs\foot.au3"
 

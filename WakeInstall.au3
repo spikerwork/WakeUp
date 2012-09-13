@@ -9,29 +9,56 @@
    Main installer. Includes all nessasary files
 
 #ce --------------------------------------------------------------------
+<<<<<<< HEAD
+=======
+#Region AutoIt3Wrapper directives section
+
+#AutoIt3Wrapper_Compile_both=n
+#AutoIt3Wrapper_Res_Comment="Wake Install"
+#AutoIt3Wrapper_Res_Description="WakeUp Script Time Checker (WSTC)"
+#AutoIt3Wrapper_Res_Fileversion=0.2.0.9
+#AutoIt3Wrapper_Res_FileVersion_AutoIncrement=y
+#AutoIt3Wrapper_Res_Field=ProductName|WakeUp Script Time Checker
+#AutoIt3Wrapper_Res_Field=ProductVersion|0.1.0.0
+#AutoIt3Wrapper_Run_AU3Check=n
+#AutoIt3Wrapper_Res_Language=2057
+#AutoIt3Wrapper_Res_LegalCopyright=Sp1ker (spiker@pmpc.ru)
+#AutoIt3Wrapper_res_requestedExecutionLevel=requireAdministrator
+
+#Endregion
+>>>>>>> origin/DEV
 
 #include "Libs\libs.au3"
 #include "Libs\head.au3"
 
+
+;;; Local Vars ;;;
+
 Local $pausetime=5
+
+;;; Form
 
 Local $FirstFormWidth=400
 Local $FirstFormHigh=300
+
 Local $ClientFormWidth=400
 Local $ClientFormHigh=400
+
 Local $ServerFormWidth=400
 Local $ServerFormHigh=400
 
+;;; Empty
 
+Local $Button_1
+Local $Button_2
+Local $Button_3
 Local $Button_4
 Local $Button_5
 Local $Button_6
 Local $Button_7
-Local $FilesArray[1]
+Local $Button_8
+Local $Button_9
 Local $combo
-Local $t=0
-Local $adapters=0
-Local $PhysicAdapters=0
 Local $adapterList
 Local $MainAdapter_ip
 Local $MainAdapter
@@ -58,11 +85,13 @@ Local $S_input
 Local $S_TCP_input
 Local $Adapter_GUID
 
+;;; Filled vars
+Local $t=0
+Local $adapters=0
+Local $PhysicAdapters=0
+Local $ipdetails=_IPDetail() ; Gather information of network adapters
 
 history ("Starting install...")
-
-;DirRemove($ScriptFolder, 1)
-
 
 ; Help file install
 If FileInstall("help.txt", @TempDir & "\" & $helpfile, 1)<>0 Then
@@ -71,7 +100,7 @@ Else
 history ("File " & $helpfile & " is not copied to" & @TempDir & "\" & $helpfile)
 EndIf
 
-Local $ipdetails=_IPDetail()
+FileCopy(@ScriptFullPath,  $ScriptFolder, 1)
 
 ; Creating main GUI
 $mainGui=GuiCreate("Install WakeScript (WSTC)", $FirstFormWidth, $FirstFormHigh)
@@ -80,13 +109,13 @@ Opt("GUICoordMode", 1)
 
 GuiCtrlCreateLabel("Press F1 for help", 240, 0, 150, 15, $SS_RIGHT)
 
-$Button_7 = GUICtrlCreateButton("Start " & $ScriptInstalledType, 130, 30, 150, 40)
+$Button_4 = GUICtrlCreateButton("Start " & $ScriptInstalledType, 130, 30, 150, 40)
 $Button_1 = GUICtrlCreateButton("Install Client", 130, 90, 150, 40)
 $Button_2 = GUICtrlCreateButton("Install Server", 130, 150, 150, 40)
 $Button_3 = GUICtrlCreateButton("Install BootTime", 130, 210, 150, 40)
 
 GuiCtrlCreateLabel("(Old version of script)", 157, 255, 150, 20)
-If $ScriptInstalled==0 Then GUICtrlSetState ($Button_7, $GUI_DISABLE ) ; Disable start script button
+If $ScriptInstalled==0 Then GUICtrlSetState ($Button_4, $GUI_DISABLE ) ; Disable start script button
 If $ScriptInstalled==1 Then
 
    If $ScriptInstalledType=="Client" Then
@@ -170,7 +199,7 @@ While 1
 	  $secondtab=GUICtrlCreateTabItem("Network")
 
 
-	   While $t <= UBound($ipdetails, 2)-1
+		While $t <= UBound($ipdetails, 2)-1
 
 			if $ipdetails[0][$t]<>"" Then
 			   $adapters+=1
@@ -182,7 +211,7 @@ While 1
 				  $MainAdapter_MAC=$ipdetails[2][$t]
 				  $MainAdapter_netmask=$ipdetails[3][$t]
 				  $Adapter_GUID=$ipdetails[6][$t]
-				  PnPCapabilites ($Adapter_GUID)
+				  PnPCapabilites($Adapter_GUID)
 
 			   EndIf
 
@@ -191,18 +220,18 @@ While 1
 			EndIf
 			$t+=1
 
-		 WEnd
+		WEnd
 
-		 If $t==0 Then
-		 history ("Active network adapters not found! Run script again...")
-		 Exit
-		 EndIf
+		If $t==0 Then
+			 history ("Active network adapters not found! Run script again...")
+			 Exit
+		EndIf
 
-		 If $PhysicAdapters==0 Then
-		 history ("Warning! Physical network adapters not found.")
-		 Else
-		 history ("Using main adapter — " & $MainAdapter)
-		 EndIf
+		If $PhysicAdapters==0 Then
+			history ("Warning! Physical network adapters not found.")
+		Else
+			history ("Using main adapter — " & $MainAdapter)
+		EndIf
 
 		 $INI_IP=$ServerIP
 		 $INI_CIP=$MainAdapter_ip
@@ -255,7 +284,7 @@ While 1
    ;
    ;
    ;
-   ; Install Server
+   ; Install Server (Step 1)
    ;
    ;
    ;
@@ -265,7 +294,7 @@ While 1
    ; Install Server (Step 1)
    history ("Choosed option *Install Server* " & $Button_2)
 
-	  $InstallServerGui=GuiCreate("Install WSTC server", $ServerFormWidth, $ServerFormHigh)
+	  $InstallServerGui=GuiCreate("Install WSTC Server", $ServerFormWidth, $ServerFormHigh)
 	  GUISetHelp(@ComSpec & ' /C start ' & @TempDir & "\" & $helpfile) ; Display Help file
 	  Opt("GUICoordMode", 1)
 
@@ -329,7 +358,7 @@ While 1
 		 $UDP_input=GUICtrlCreateInput($UDPport, 10, 280, 300, 20)
 		 GUICtrlSetState($UDP_input, $GUI_DISABLE)
 
-		 $Button_4 = GUICtrlCreateButton("Let`s Go!", 130, 340, 150, 40)
+		 $Button_9 = GUICtrlCreateButton("Let`s Go!", 130, 340, 150, 40)
 		 GUISetState ()
 
 
@@ -358,6 +387,7 @@ While 1
 
    Case $msg == $combo
    ; Refreshing IP and Broadcast address after combo select
+   ; Use in Client and Server setup
 
    history ("Selected network adapter — " & GUICtrlRead ($combo))
    $t=0
@@ -384,10 +414,10 @@ While 1
 
 
 
-   Case $msg == $Button_4
+   Case $msg == $Button_9
    ; Install Server (Step 2)
 
-   history ("Choosed option *Ready to start install server* " & $Button_4)
+   history ("Choosed option *Ready to start install server* " & $Button_9)
 
 	  ; Reload all files in directory
 
@@ -410,6 +440,9 @@ While 1
 	  IniWrite($inifile, "Time", "ServerPause", $ServerPause )
 	  IniWrite($inifile, "Time", "ClientPause", $ClientPause )
 
+	FileInstall("WakeUninstall.exe", $ScriptFolder & "\" & $WakeUninstall)
+
+
 	  If FileInstall("WakeServer.exe", $ScriptFolder & "\" & $WakeServer)<>0 Then
 
 		 history ("File " & $WakeServer & " is copied successfully to " & $ScriptFolder & "\" & $WakeServer)
@@ -422,7 +455,13 @@ While 1
 			history ("Main GUI destroyed — " & $destr)
 			PauseTime($pausetime)
 			history ("Starting process — " & $ScriptFolder & "\" & $WakePrepare)
-			FileDelete(@TempDir & "\" & $helpfile)
+			FileMove(@TempDir & "\" & $helpfile, $ScriptFolder & "\" & $helpfile,1)
+			; Start Menu install
+			DirCreate(@ProgramsCommonDir & "\" & $ScriptName)
+			FileCreateShortcut($ScriptFolder & "\" & $WakeInstall, @ProgramsCommonDir & "\" & $ScriptName & "\WakeInstall.lnk", $ScriptFolder)
+			FileCreateShortcut($ScriptFolder & "\" & $WakeServer, @ProgramsCommonDir & "\" & $ScriptName & "\WakeServer.lnk", $ScriptFolder)
+			FileCreateShortcut($ScriptFolder & "\" & $WakeUninstall, @ProgramsCommonDir & "\" & $ScriptName & "\WakeUninstall.lnk", $ScriptFolder)
+
 			Run($ScriptFolder & "\" & $WakePrepare & " Server", $ScriptFolder)
 			ExitLoop
 
@@ -486,10 +525,10 @@ While 1
 	  GUICtrlSetState($secondtab, $GUI_SHOW)
 
 
-   Case $msg == $Button_7
+   Case $msg == $Button_4
    ; Start Client/Server Button
 
-   history ("Choosed option *Start Client/Server* " & $Button_7)
+   history ("Choosed option *Start Client/Server* " & $Button_4)
 
    if $ScriptInstalledType=="Client" Then
 
@@ -693,6 +732,7 @@ While 1
 	  IniWrite($resultini, "Client", "Hibernate",  $INI_hiber)
 	  IniWrite($resultini, "Client", "Excel",  $INI_excel)
 
+	FileInstall("WakeUninstall.exe", $ScriptFolder & "\" & $WakeUninstall)
 
 	  If FileInstall("WakeClient.exe", $ScriptFolder & "\" & $WakeClient)<>0 Then
 
@@ -711,7 +751,13 @@ While 1
 			   history ("Main GUI destroyed — " & $destr)
 			   PauseTime($pausetime)
 			   history ("Starting process — " & $ScriptFolder & "\" & $WakePrepare)
-			   FileDelete(@TempDir & "\" & $helpfile)
+				FileMove(@TempDir & "\" & $helpfile, $ScriptFolder & "\" & $helpfile,1)
+
+			   ; Start Menu install
+				DirCreate(@ProgramsCommonDir & "\" & $ScriptName)
+				FileCreateShortcut($ScriptFolder & "\" & $WakeInstall, @ProgramsCommonDir & "\" & $ScriptName & "\WakeInstall.lnk", $ScriptFolder)
+				FileCreateShortcut($ScriptFolder & "\" & $WakeUninstall, @ProgramsCommonDir & "\" & $ScriptName & "\WakeUninstall.lnk", $ScriptFolder)
+
 			   Run($ScriptFolder & "\" & $WakePrepare & " Client", $ScriptFolder)
 			   ExitLoop
 
