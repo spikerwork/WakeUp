@@ -12,6 +12,7 @@
 
 history ("Program started")
 history ("Work directory — " & @ScriptDir)
+
 ;;;; Admin checkin ;;;;
 #RequireAdmin
 If IsAdmin()==0 Then
