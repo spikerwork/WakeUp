@@ -17,7 +17,16 @@
    ; General Functions
    ;
 
-   ;  Set Pause for $time (in seconds)
+
+; #FUNCTION# ====================================================================================================================
+; Name ..........: PauseTime
+; Description ...: Set Pause for $time (in seconds)
+; Syntax ........: PauseTime($time)
+; Parameters ....: $time
+; Return values .: None
+; Author ........: Not me
+; Example .......: No
+; ===============================================================================================================================
    Func PauseTime($time)
    history ("Pause func triggered. Pause time - " & $time)
 	ProgressOn("Progress", "Pause for " & $time & " seconds", "0 seconds")
