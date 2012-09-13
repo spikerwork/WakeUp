@@ -30,6 +30,11 @@
 #include "Libs\libs.au3"
 #include "Libs\head.au3"
 
+
+
+ActivityDaemon()
+
+
 ;Local $ipdetails=_IPDetail()
 
 ;$broadcast=GetBroadcast ($ipdetails[1][0], $ipdetails[3][0])
@@ -42,6 +47,7 @@
 ;MsgBox(0,@StartMenuCommonDir,@ProgramsCommonDir)
 
 
+#cs
 
 ; http://technet.microsoft.com/en-us/library/dd835564%28WS.10%29.aspx
 
@@ -111,6 +117,6 @@ Func _IsAdministrator($sUser = @UserName, $sCompName = ".")
 EndFunc   ;==>_IsAdministrator
 
 
-
+#ce
 
 #include "Libs\foot.au3"
