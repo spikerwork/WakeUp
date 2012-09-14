@@ -14,7 +14,7 @@
 #AutoIt3Wrapper_Compile_both=n
 #AutoIt3Wrapper_Res_Comment="Wake Install"
 #AutoIt3Wrapper_Res_Description="WakeUp Script Time Checker (WSTC)"
-#AutoIt3Wrapper_Res_Fileversion=0.3.0.9
+#AutoIt3Wrapper_Res_Fileversion=0.3.0.13
 #AutoIt3Wrapper_Res_FileVersion_AutoIncrement=y
 #AutoIt3Wrapper_Res_Field=ProductName|WakeUp Script Time Checker
 #AutoIt3Wrapper_Res_Field=ProductVersion|0.2.0.0
@@ -29,16 +29,28 @@
 #include "Libs\libs.au3"
 #include "Libs\head.au3"
 
-If FileExists($ScriptFolder & "\" & $WakeClient)==1 Then FileDelete($ScriptFolder & "\" & $WakeClient)
-If FileExists($ScriptFolder & "\" & $WakePrepare)==1 Then FileDelete($ScriptFolder & "\" & $WakePrepare)
-If FileExists($ScriptFolder & "\" & $WakeServer)==1 Then FileDelete($ScriptFolder & "\" & $WakeServer)
-If FileExists($ScriptFolder & "\" & $WakeDaemon)==1 Then FileDelete($ScriptFolder & "\" & $WakeDaemon)
-If FileExists($ScriptFolder & "\" & $WakeInstall)==1 Then FileDelete($ScriptFolder & "\" & $WakeInstall)
-If FileExists($ScriptFolder & "\" & $WakeStart)==1 Then FileDelete($ScriptFolder & "\" & $WakeStart)
+	$t=0
+
+		While $t <= Ubound($FilesArray)-1
+
+			If FileExists($ScriptFolder & "\" & $FilesArray[$t])==1 Then
+				$res=FileDelete($ScriptFolder & "\" & $FilesArray[$t])
+				history ("File " & $FilesArray[$t] & " deleted=" & $res)
+			Else
+				history ("File " & $FilesArray[$t] & " not found")
+			EndIf
+
+			$t+=1
+
+		WEnd
+
+
 If FileExists($inifile)==1 Then FileDelete($inifile)
 If FileExists($resultini)==1 Then FileDelete($resultini)
 If FileExists($ScriptFolder & "\" & $helpfile)==1 Then FileDelete($ScriptFolder & "\" & $helpfile)
-
+If FileExists(@StartupCommonDir & "\WakeClient.lnk")==1 Then FileDelete(@StartupCommonDir & "\WakeClient.lnk")
+If FileExists(@StartupCommonDir & "\WakeDaemon.lnk")==1 Then FileDelete(@StartupCommonDir & "\WakeDaemon.lnk")
+If FileExists(@StartupCommonDir & "\WakeServer.lnk")==1 Then FileDelete(@StartupCommonDir & "\WakeServer.lnk")
 
 DirRemove(@ProgramsCommonDir & "\" & $ScriptName, 1)
 
