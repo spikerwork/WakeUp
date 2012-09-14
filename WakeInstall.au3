@@ -15,7 +15,7 @@
 #AutoIt3Wrapper_Compile_both=n
 #AutoIt3Wrapper_Res_Comment="Wake Install"
 #AutoIt3Wrapper_Res_Description="WakeUp Script Time Checker (WSTC)"
-#AutoIt3Wrapper_Res_Fileversion=0.3.0.9
+#AutoIt3Wrapper_Res_Fileversion=0.3.0.10
 #AutoIt3Wrapper_Res_FileVersion_AutoIncrement=y
 #AutoIt3Wrapper_Res_Field=ProductName|WakeUp Script Time Checker
 #AutoIt3Wrapper_Res_Field=ProductVersion|0.2.0.0
@@ -141,6 +141,10 @@ While 1
 		If FileExists($inifile)==1 Then FileDelete($inifile)
 		If FileExists($resultini)==1 Then FileDelete($resultini)
 		DirRemove(@ProgramsCommonDir & "\" & $ScriptName, 1)
+		If FileExists(@StartupCommonDir & "\WakeClient.lnk")==1 Then FileDelete(@StartupCommonDir & "\WakeClient.lnk")
+		If FileExists(@StartupCommonDir & "\WakeDaemon.lnk")==1 Then FileDelete(@StartupCommonDir & "\WakeDaemon.lnk")
+		If FileExists(@StartupCommonDir & "\WakeServer.lnk")==1 Then FileDelete(@StartupCommonDir & "\WakeServer.lnk")
+
 
     EndIf
 
