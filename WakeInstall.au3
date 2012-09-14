@@ -15,7 +15,7 @@
 #AutoIt3Wrapper_Compile_both=n
 #AutoIt3Wrapper_Res_Comment="Wake Install"
 #AutoIt3Wrapper_Res_Description="WakeUp Script Time Checker (WSTC)"
-#AutoIt3Wrapper_Res_Fileversion=0.3.0.10
+#AutoIt3Wrapper_Res_Fileversion=0.3.0.12
 #AutoIt3Wrapper_Res_FileVersion_AutoIncrement=y
 #AutoIt3Wrapper_Res_Field=ProductName|WakeUp Script Time Checker
 #AutoIt3Wrapper_Res_Field=ProductVersion|0.2.0.0
@@ -176,6 +176,8 @@ While 1
 
 	WEnd
 
+	GUISetState(@SW_HIDE, $mainGui)
+
 	PauseTime($pausetime)
 
 	; Start Menu install
@@ -185,7 +187,7 @@ While 1
 	FileCreateShortcut($ScriptFolder & "\" & $WakeStart, @ProgramsCommonDir & "\" & $ScriptName & "\WakeStart.lnk", $ScriptFolder)
 	FileCreateShortcut($ScriptFolder & "\" & $WakeUninstall, @ProgramsCommonDir & "\" & $ScriptName & "\WakeUninstall.lnk", $ScriptFolder)
 
- 	GUISetState(@SW_HIDE, $mainGui)
+
 	$destr=GUIDelete($mainGui)
 
 	MsgBox(0,"Good news!","Install completed")
