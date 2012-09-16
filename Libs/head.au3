@@ -5,13 +5,22 @@
 
  Script Function:
 
-   The part of WakeUp Script Time Checker (WSTC)
-  It contains the beginning of each script
+	The part of WakeUp Script Time Checker (WSTC)
+	It contains the beginning of each script
 
 #ce --------------------------------------------------------------------
 
 history ("Program started")
 history ("Work directory — " & @ScriptDir)
+
+;;;; WakeDaemon Timestamp
+If @ScriptName==$WakeDaemon or @ScriptName=="_Send.au3" Then
+
+If FileExists($timeini) Then FileDelete($timeini)
+IniWrite($timeini, "Start", "Time", currenttime())
+history ("TimeStamp Start — " & currenttime())
+
+EndIf
 
 ;;;; Admin checkin ;;;;
 #RequireAdmin
@@ -51,7 +60,6 @@ Else
 
 EndIf
 
-
 Local $F_arra
 While $F_arra <= Ubound($FilesArray)-1
 
@@ -63,11 +71,6 @@ While $F_arra <= Ubound($FilesArray)-1
 	$F_arra+=1
 
 WEnd
-
-
-
-
-
 
 ;;;
 ;;; Tray settings

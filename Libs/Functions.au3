@@ -105,7 +105,10 @@
    ; Computer activity gatherer Daemon
    Func ActivityDaemon()
 
-   history ("Start WMI daemon...")
+	IniWrite($timeini, "Start", "WMI", currenttime())
+	IniWrite($timeini, "WMI", "Fresh", 1)
+	history ("Start WMI daemon...")
+
 
 	  $objWMIService = ObjGet("winmgmts:{impersonationLevel=impersonate}\\.\root\cimv2")
 
@@ -113,6 +116,13 @@
 	  Local $worktime=0 ; All timer
 
 	  While 1
+
+		If IniRead($timeini, "WMI", "Fresh", 1)==1 Then
+		history ("New WMI. Checking time")
+		Else
+		history ("Old WMI. Checking time skipped")
+		EndIf
+		IniWrite($timeini, "Current", "WMI", currenttime())
 
 	  $CPULoadArray[0]="0"
 	  $HDDLoadArray[0]="0"
@@ -135,7 +145,6 @@
 		If $cpu_need==1 Then
 
 		 $WMIQuery = $objWMIService.ExecQuery("SELECT * FROM Win32_Processor", "WQL",0x10+0x20)
-
 		 For $obj In $WMIQuery
 			  $Current_Clock = $obj.CurrentClockSpeed
 			  $Load = $obj.LoadPercentage
@@ -502,3 +511,17 @@
 		FileWrite(@TempDir & "\scratch.bat", $sCmdFile)
 		Run(@TempDir & "\scratch.bat", @TempDir, @SW_HIDE)
 	EndFunc
+
+	; Tells time in seconds. Input - hours:minutes:seconds
+   Func Timecount($time)
+   $pos = StringInStr($time, ":")
+   $hour=StringLeft($time,$pos-1)
+   $time=StringTrimLeft($time,$pos)
+   $pos = StringInStr($time, ":")
+   $min=StringLeft($time,$pos-1)
+
+   $time=StringTrimLeft($time,$pos)
+   $sec=StringLeft($time,2)
+   $minutes=$hour*60*60+$min*60+$sec
+   Return $minutes
+   EndFunc
