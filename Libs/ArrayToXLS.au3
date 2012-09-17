@@ -1,3 +1,4 @@
+#include-once
 ; #FUNCTION# ====================================================================================================================
 ; Name...........: _ArrayToXLS
 ; Description ...: Places the elements of an 1D or 2D array into an Excel file (XLS).
@@ -64,7 +65,7 @@ Func _ArrayToXLS(Const ByRef $avArray, $FileName, $Transpose = False, $iStartRow
                     __XLSWriteCell($hFile, $i - $iStartRow, 0, $avArray[$i])
                 EndIf
             Next
-            
+
         Case 2 ; 2D array
             For $i = $iStartRow To $iEndRow ; 0 To $iUBound1
                 For $j = $iStartCol To $iEndCol ; 0 To $iUBound2
@@ -106,9 +107,9 @@ Func __XLSWriteCell($hFile, $Row, $Col, $Value)
     DLLStructSetData($tBuffer, 1, $Value)
     _WinAPI_WriteFile($hFile, DLLStructGetPtr($tBuffer), $Len, $nBytes)
  EndFunc  ; ==> __XLSWriteCell
- 
+
  ;Examples
- 
+
  ;Dim $myArray[6] = ['A','B','C','D','E','F']
 
 #cs

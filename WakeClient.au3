@@ -15,7 +15,7 @@
 #AutoIt3Wrapper_Compile_both=n
 #AutoIt3Wrapper_Res_Comment="Wake Client"
 #AutoIt3Wrapper_Res_Description="WakeUp Script Time Checker (WSTC)"
-#AutoIt3Wrapper_Res_Fileversion=0.3.0.15
+#AutoIt3Wrapper_Res_Fileversion=0.3.0.23
 #AutoIt3Wrapper_Res_FileVersion_AutoIncrement=y
 #AutoIt3Wrapper_Res_Field=ProductName|WakeUp Script Time Checker
 #AutoIt3Wrapper_Res_Field=ProductVersion|0.2.0.0
@@ -79,6 +79,8 @@ If $firstrun==1 Then
 	  SendData($ServerIP, "ToServer|TestRuns" & "|" & $runs_all, $TCPport)
 	  PauseTime($ClientPause)
 	  SendData($ServerIP, "ToServer|OptionsOSH" & "|" & $test_options, $TCPport) ; Halt, Reboot, Hibernate 111 or 000
+	  PauseTime($ClientPause)
+	  SendData($ServerIP, "ToServer|TimeSync" & "|" & GetUnixTimeStamp(), $TCPport) ; Time Sync client to server
 	  PauseTime($ClientPause)
 	  SendData($ServerIP, "ToServer|StoreValuesFinish", $TCPport)
 	  PauseTime($ClientPause)
@@ -255,7 +257,6 @@ ElseIf $lastrun==1 Then
 
 			; Set old power plan
 			ShellExecuteWait('cmd.exe', '/c powercfg /SETACTIVE ' & $OldGUID)
-
 
 			; Last script messages
 			$excel_need=IniRead($resultini, "Client", "Excel", 0)

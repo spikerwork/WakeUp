@@ -30,9 +30,12 @@
 #include "Libs\libs.au3"
 #include "Libs\head.au3"
 
+$lol=GetUnixTimeStamp()
+MsgBox(0,"",$lol)
 
-
-ActivityDaemon()
+$lol=UnixTimeStampToTime($lol)
+MsgBox(0,"", $lol[0] & " " & $lol[1] & " " & $lol[2] & " " & $lol[3] & " " & $lol[4] & " " & $lol[5])
+;ActivityDaemon()
 
 
 ;Local $ipdetails=_IPDetail()
