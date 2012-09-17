@@ -59,7 +59,11 @@ Global $filesinfolder=0
 
 ; Time settings
 
+Global $TimeStampShift=80 ; Shift for WMI function
 
+Global $TimeStampStartScript
+Global $TimeStampStartWMI
+Global $TimeStampResumeWMI
 
 Global $TimerStart
 

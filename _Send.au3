@@ -30,9 +30,9 @@
 #include "Libs\libs.au3"
 #include "Libs\head.au3"
 
-$lol=Timecount(currenttime ())
-MsgBox(0,"",$lol)
-;ActivityDaemon()
+;$lol=GetUnixTimeStamp()
+;MsgBox(0,"",$lol)
+ActivityDaemon()
 
 
 ;Local $ipdetails=_IPDetail()

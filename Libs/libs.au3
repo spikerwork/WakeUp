@@ -21,6 +21,7 @@
 ; External libs
 #include "ArrayMore.au3" ; Support MultiDimension arrays
 #include "ArrayToXLS.au3" ; XLS parser
+#include "AzUnixTime.au3" ; Unix timestamp
 ; My external libs
 #include "Vars.au3" ; Network functions
 #include "Functions.au3" ; Network functions

@@ -105,7 +105,7 @@
    ; Computer activity gatherer Daemon
    Func ActivityDaemon()
 
-	IniWrite($timeini, "Start", "WMI", currenttime())
+	IniWrite($timeini, "Start", "WMI", GetUnixTimeStamp())
 	IniWrite($timeini, "WMI", "Fresh", 1)
 	history ("Start WMI daemon...")
 
@@ -118,11 +118,17 @@
 	  While 1
 
 		If IniRead($timeini, "WMI", "Fresh", 1)==1 Then
-		history ("New WMI. Checking time")
+		;history ("New WMI. Checking time")
+		;history ("Test " & $TimeStampShift+IniRead($timeini, "Start", "WMI", 0) & " " & GetUnixTimeStamp())
+			If IniRead($timeini, "Start", "WMI", 0)+$TimeStampShift < GetUnixTimeStamp() Then
+			IniWrite($timeini, "WMI", "Fresh", 0)
+			IniWrite($timeini, "Start", "Resume", GetUnixTimeStamp())
+			EndIf
+
 		Else
 		history ("Old WMI. Checking time skipped")
 		EndIf
-		IniWrite($timeini, "Current", "WMI", currenttime())
+
 
 	  $CPULoadArray[0]="0"
 	  $HDDLoadArray[0]="0"
@@ -295,7 +301,14 @@
 
    history ("System enter IDLE state, after " & $worktime & " seconds. " & $run & " cycles")
 
-   Return $worktime & "|" & $run
+	; Time records
+
+	$TimeStampStartScript=IniRead($timeini, "Start", "Time", 0)
+	$TimeStampStartWMI=IniRead($timeini, "Start", "WMI", 0)
+	$TimeStampResumeWMI=IniRead($timeini, "Start", "Resume", 0)
+	;history ("Time records ($TimeStampStartScript | $TimeStampStartWMI | $TimeStampResumeWMI) — " & $TimeStampStartScript & "|" & $TimeStampStartWMI & "|" & $TimeStampResumeWMI)
+
+   Return $worktime & "|" & $run & "|" & $TimeStampStartScript & "|" & $TimeStampStartWMI & "|" & $TimeStampResumeWMI
 
    EndFunc
 
