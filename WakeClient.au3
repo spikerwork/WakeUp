@@ -15,7 +15,7 @@
 #AutoIt3Wrapper_Compile_both=n
 #AutoIt3Wrapper_Res_Comment="Wake Client"
 #AutoIt3Wrapper_Res_Description="WakeUp Script Time Checker (WSTC)"
-#AutoIt3Wrapper_Res_Fileversion=0.3.0.18
+#AutoIt3Wrapper_Res_Fileversion=0.3.0.21
 #AutoIt3Wrapper_Res_FileVersion_AutoIncrement=y
 #AutoIt3Wrapper_Res_Field=ProductName|WakeUp Script Time Checker
 #AutoIt3Wrapper_Res_Field=ProductVersion|0.2.0.0
@@ -79,6 +79,8 @@ If $firstrun==1 Then
 	  SendData($ServerIP, "ToServer|TestRuns" & "|" & $runs_all, $TCPport)
 	  PauseTime($ClientPause)
 	  SendData($ServerIP, "ToServer|OptionsOSH" & "|" & $test_options, $TCPport) ; Halt, Reboot, Hibernate 111 or 000
+	  PauseTime($ClientPause)
+	  SendData($ServerIP, "ToServer|TimeSync" & "|" & GetUnixTimeStamp(), $TCPport) ; Time Sync client to server
 	  PauseTime($ClientPause)
 	  SendData($ServerIP, "ToServer|StoreValuesFinish", $TCPport)
 	  PauseTime($ClientPause)

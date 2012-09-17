@@ -64,6 +64,8 @@ Global $TimeStampShift=80 ; Shift for WMI function
 Global $TimeStampStartScript
 Global $TimeStampStartWMI
 Global $TimeStampResumeWMI
+Global $TimeStamp
+
 
 Global $TimerStart
 

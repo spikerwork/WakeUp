@@ -17,6 +17,7 @@
 #include <File.au3>
 #include <WinAPI.au3>
 #include <Constants.au3>
+#include <Date.au3>
 
 ; External libs
 #include "ArrayMore.au3" ; Support MultiDimension arrays
