@@ -1,3 +1,4 @@
+#include-once
 #cs --------------------------------------------------------------------
 
  AutoIt Version: 3.3.8.1
@@ -14,34 +15,37 @@
    ; ===================================================================
 
 ; Folder for script
-$ScriptName = "StartWakeUp" ; Name
-$ScriptFolder=@HomeDrive & "\" & $ScriptName ; Destination
+Global $ScriptName = "StartWakeUp" ; Name
+Global $ScriptFolder=@HomeDrive & "\" & $ScriptName ; Script directory
 
 ; Ini files
-$inifile = "settings.ini" ; Temp for client. Will be deleted after script finished
+Global $inifile = "settings.ini" ; Main settings of scipt
 $inifile = $ScriptFolder & "\" & $inifile
 
-$resultini = $ScriptFolder & "\Result.ini" ; Contains result information
+Global $resultini = $ScriptFolder & "\Result.ini" ; Contains result information
 $resultsfile = $ScriptFolder & "\Results.xls" ; XLS file with results, if possible to parse it
 
+Global $timeini = "timeini.ini" ; Contains timestamps of WakeDaemon
+$timeini = $ScriptFolder & "\" & $timeini
+
 ; Help File
-$helpfile="help.txt" ; Help for Install GUI
+Global $helpfile="help.txt" ; Help for Install GUI
 
 ; Log files
-$logfile="Log_" & @ScriptName & ".txt"
+Global $logfile="Log_" & @ScriptName & ".txt"
 $logfile = $ScriptFolder & "\" & $logfile
 
 ; Power plans
-$Power_Notebook="Notebook.pow"
-$Power_Desktop="Desktop.pow"
+Global $Power_Notebook="Notebook.pow"
+Global $Power_Desktop="Desktop.pow"
 
 ;Icon | used only for build.exe script
-$icon="alert.ico"
+Global $icon="alert.ico"
 
 ; System info
-$osarch = @OSArch ; OS architecture
-$osversion = @OSVersion ; Version of OS
-$oslang=@MUILang ; Check system Language 0419=Rus 0409=En
+Global $osarch = @OSArch ; OS architecture
+Global $osversion = @OSVersion ; Version of OS
+Global $oslang=@MUILang ; Check system Language 0419=Rus 0409=En
 
 ; Some global empty varibles
 Global $CPULoadArray[1] ; For daemon function
@@ -53,6 +57,16 @@ Global $SearchKey = "HKLM\SYSTEM\ControlSet001\Control\Class\{4D36E972-E325-11CE
 ; Detect script more info in head.au3
 Global $ScriptInstalled
 Global $filesinfolder=0
+
+; Time settings
+
+Global $TimeStampShift=80 ; Shift for WMI function
+
+Global $TimeStampStartScript
+Global $TimeStampStartWMI
+Global $TimeStampResumeWMI
+Global $TimeStamp
+
 
 Global $TimerStart
 
