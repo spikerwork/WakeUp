@@ -1,3 +1,4 @@
+#include-once
 #cs --------------------------------------------------------------------
 
  AutoIt Version: 3.3.8.1
@@ -118,7 +119,11 @@
 
 				  $TimerD = TimerDiff($TimerStart)
 				  $TimerD = Round($TimerD/1000,2) ; Returns time in seconds | Wrong time....
+				  If $Packetarray[8]<>0 Then
 				  $TimeStamp=$Packetarray[8]-$TimeStamp
+				  Else
+				  $TimeStamp=$Packetarray[7]-$TimeStamp
+				  EndIf
 
 				  history ($packettype & " test finish in " & $TimerD & " sec. DaemonTime:" & $Packetarray[4] & ". DaemonCycles:" & $Packetarray[5])
 
@@ -132,7 +137,7 @@
 				  IniWrite($resultini, "Run#" & $Packetarray[3], $packettype & "TimeStamp", $TimeStamp)
 
 				  PauseTime($ServerPause)
-				  SendData($clientIP, "ToClient|Time|" & $packettype & "|" & $TimerD & "|" & $Packetarray[4], $TCPport+1)
+				  SendData($clientIP, "ToClient|Time|" & $packettype & "|" & $TimerD & "|" & $Packetarray[4] & "|" & $TimeStamp, $TCPport+1)
 				  PauseTime($ServerPause+5)
 				  SendData($clientIP, "Exit", $TCPport+1)
 				  $TimerStart=0
@@ -181,11 +186,15 @@
 			   ; WakeClient write the time data from server
 			   Case "Time"
 
-				  history ("Time - " & $Packetarray[4])
+				  history ("Server timer - " & $Packetarray[4])
 				  IniWrite($resultini, $current_run, $Packetarray[3], $Packetarray[4]-5) ; Exclude 5 seconds idle time
 				  Local $short_time=$Packetarray[4]-$Packetarray[5]
-				  history ("Short time - " & $short_time)
-				  IniWrite($resultini, $current_run, $Packetarray[3] & "_short", $short_time) ; Exlude all daemon time
+				  history ("Without WMI - " & $short_time)
+				  IniWrite($resultini, $current_run, $Packetarray[3] & "_WithoutWMI", $short_time) ; Exclude all WMI daemon time
+				  history ("TimeStamp - " & $Packetarray[6])
+				  IniWrite($resultini, $current_run, $Packetarray[3] & "_TimeStamp", $Packetarray[6]) ; TimeStamp Timer
+
+
 
 			   EndSwitch
 

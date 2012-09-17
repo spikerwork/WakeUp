@@ -1,3 +1,4 @@
+#include-once
 #cs --------------------------------------------------------------------
 
  AutoIt Version: 3.3.8.1
@@ -13,7 +14,7 @@
 history ("Program started")
 history ("Work directory — " & @ScriptDir)
 
-;;;; WakeDaemon Timestamp
+;;;; WakeDaemon Timestamp ;;;;
 If @ScriptName==$WakeDaemon or @ScriptName=="_Send.au3" Then
 
 If FileExists($timeini) Then FileDelete($timeini)

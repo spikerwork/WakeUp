@@ -2,15 +2,13 @@
 
 ;===============================================================================
 ;
-; AutoIt Version: 3.3.5.6
+; AutoIt Version: 3.3.8.1 (3.3.5.6)
 ; Language:       English
 ; Description:    Provide functions for Unix timestamps.
 ; Requirement(s): Minimum Autoit 3.2.3.0
 ; Credits : 	  Rob Saunders was the first to write such udf but his udf requires a dll
 ;
 ;===============================================================================
-
-
 
 ;===============================================================================
 ;
@@ -161,12 +159,3 @@ Else
 EndIf
 	EndIf
 EndFunc   ;==>MaxDayInMonth
-
-
-
-
-
-; Here i Did a test
-;$time = UnixTimeStampToTime(GetUnixTimeStamp(2010, 9, 1, 11, 10, 30))
-;ClipPut(GetUnixTimeStamp(2012, 9, 5, 11, 10, 30))
-;MsgBox(0,0,GetUnixTimeStamp() )

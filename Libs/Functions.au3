@@ -1,3 +1,4 @@
+#include-once
 #cs --------------------------------------------------------------------
 
  AutoIt Version: 3.3.8.1
@@ -12,10 +13,6 @@
    ; ===================================================================
    ; 							Functions
    ; ===================================================================
-
-   ;
-   ; General Functions
-   ;
 
 
 ; #FUNCTION# ====================================================================================================================
@@ -118,8 +115,7 @@
 	  While 1
 
 		If IniRead($timeini, "WMI", "Fresh", 1)==1 Then
-		;history ("New WMI. Checking time")
-		;history ("Test " & $TimeStampShift+IniRead($timeini, "Start", "WMI", 0) & " " & GetUnixTimeStamp())
+
 			If IniRead($timeini, "Start", "WMI", 0)+$TimeStampShift < GetUnixTimeStamp() Then
 			IniWrite($timeini, "WMI", "Fresh", 0)
 			IniWrite($timeini, "Start", "Resume", GetUnixTimeStamp())
