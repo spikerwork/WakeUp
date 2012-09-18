@@ -125,7 +125,7 @@
 				  $TimeStamp=$Packetarray[7]-$TimeStamp
 				  EndIf
 
-				  history ($packettype & " test finish in " & $TimerD & " sec. DaemonTime:" & $Packetarray[4] & ". DaemonCycles:" & $Packetarray[5])
+				  history ($packettype & " test finish in " & $TimeStamp & " sec. DaemonTime:" & $Packetarray[4] & ". DaemonCycles:" & $Packetarray[5])
 
 				  IniWrite($resultini, "Run#" & $Packetarray[3], $packettype & "Timer", $TimerD)
 				  IniWrite($resultini, "Run#" & $Packetarray[3], $packettype & "StopReciveAt", currenttime ())

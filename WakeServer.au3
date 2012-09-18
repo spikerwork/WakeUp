@@ -15,7 +15,7 @@
 #AutoIt3Wrapper_Compile_both=n
 #AutoIt3Wrapper_Res_Comment="Wake Server"
 #AutoIt3Wrapper_Res_Description="WakeUp Script Time Checker (WSTC)"
-#AutoIt3Wrapper_Res_Fileversion=0.3.0.21
+#AutoIt3Wrapper_Res_Fileversion=0.3.0.23
 #AutoIt3Wrapper_Res_FileVersion_AutoIncrement=y
 #AutoIt3Wrapper_Res_Field=ProductName|WakeUp Script Time Checker
 #AutoIt3Wrapper_Res_Field=ProductVersion|0.2.0.0
