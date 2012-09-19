@@ -18,11 +18,13 @@
 
 	  Switch $NetworkData
 
-	  ; Client sending to server
+	; Main Client/Server transaction
+
+	; Client sending to server
 	  Case "Test"
 
 			PauseTime($ServerPause)
-			history ("Found new client! Wrote IP to ini file.")
+			history ("Found new client! IP logged to ini file.")
 			IniWrite($resultini, "Network", "Client_IP", $clientIP)
 			SendData($clientIP, "Passed", $TCPport+1)
 
@@ -31,7 +33,7 @@
 			SendData($clientIP, "Exit", $TCPport+1)
 			PauseTime($ServerPause)
 
-	  ; Server sending to client
+	; Server sending to client
 	  Case "Passed"
 
 			SendData($clientIP, "Ready", $TCPport)
@@ -52,7 +54,7 @@
 	  Case Else
 
 
-		 $Packetarray=StringSplit($NetworkData, "|") ; Extract data to array
+		 $Packetarray=StringSplit($NetworkData, "|") ; Extract recieved data to array
 
 		 If $Packetarray[0]==1 Then
 
@@ -60,10 +62,11 @@
 
 		 Else
 
-			Local $packettype=$Packetarray[2]
+			Local $packettype=$Packetarray[2] ; Type of packet
 
 			If $Packetarray[1]=="ToServer" Then
-			   ; Client sending to server
+
+			; Client sending information to server
 
 			history ("Client is sending data, so...")
 
@@ -93,12 +96,13 @@
 						history ("TimeSync. Server UnixStamp " & GetUnixTimeStamp())
 						IniWrite($resultini, "Time", "Server", GetUnixTimeStamp())
 						$timesync=UnixTimeStampToTime($Packetarray[3])
-						_SetTime($timesync[3], $timesync[4], $timesync[5])
+						_SetTime($timesync[3], $timesync[4], $timesync[5]) ; Time synchronization between server and client. Set time server as a client
+						history ("TimeSync. Old time " & @HOUR & " " & @MIN & " " & @SEC)
 						history ("TimeSync. New time " & $timesync[3] & " " & $timesync[4] & " " & $timesync[5])
 
 			   Case "OptionsHRH"
 
-				  ; Need to add parser!!!
+				  ; Need to add parser!!! (This option is not needed anymore)
 				  history ("Number of test" & $Packetarray[3])
 				  IniWrite($resultini, "Network", "OptionsOSH", $Packetarray[3])
 
@@ -119,11 +123,13 @@
 
 				  $TimerD = TimerDiff($TimerStart)
 				  $TimerD = Round($TimerD/1000,2) ; Returns time in seconds | Wrong time....
-				  If $Packetarray[8]<>0 Then
-				  $TimeStamp=$Packetarray[8]-$TimeStamp
-				  Else
-				  $TimeStamp=$Packetarray[7]-$TimeStamp
-				  EndIf
+
+					; Check WMI on/off
+					  If $Packetarray[8]<>0 Then
+					  $TimeStamp=$Packetarray[8]-$TimeStamp
+					  Else
+					  $TimeStamp=$Packetarray[7]-$TimeStamp
+					  EndIf
 
 				  history ($packettype & " test finish in " & $TimeStamp & " sec. DaemonTime:" & $Packetarray[4] & ". DaemonCycles:" & $Packetarray[5])
 
