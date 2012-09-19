@@ -14,7 +14,7 @@
 #AutoIt3Wrapper_Compile_both=n
 #AutoIt3Wrapper_Res_Comment="Wake Start"
 #AutoIt3Wrapper_Res_Description="WakeUp Script Time Checker (WSTC)"
-#AutoIt3Wrapper_Res_Fileversion=0.3.0.23
+#AutoIt3Wrapper_Res_Fileversion=0.3.0.27
 #AutoIt3Wrapper_Res_FileVersion_AutoIncrement=y
 #AutoIt3Wrapper_Res_Field=ProductName|WakeUp Script Time Checker
 #AutoIt3Wrapper_Res_Field=ProductVersion|0.2.0.0
@@ -33,7 +33,7 @@
 
 Local $pausetime=5
 
-;;; Form
+;;; Forms dimensions
 
 Local $FirstFormWidth=300
 Local $FirstFormHigh=200
@@ -44,7 +44,7 @@ Local $ClientFormHigh=400
 Local $ServerFormWidth=400
 Local $ServerFormHigh=400
 
-;;; Empty
+;;; Empty vars
 
 Local $Button_1
 Local $Button_2
@@ -79,21 +79,19 @@ Local $S_input
 Local $S_TCP_input
 Local $Adapter_GUID
 
-;;; Filled vars
+;;; Vars filled with values
 Local $t=0
 Local $adapters=0
 Local $PhysicAdapters=0
 Local $ipdetails=_IPDetail() ; Gather information of network adapters
 
-; Files check
+; Files check (Vars from head.au3)
 If $filesinfolder<>$F_arra-1 Then
 	MsgBox(0, "Warning.", "Some files not found. Reinstall Script")
 	history ("Some files not found. Reinstall Script. Found only - " & $filesinfolder)
 	If FileExists($ScriptFolder & "\" & $WakeInstall) Then Run($ScriptFolder & "\" & $WakeInstall, $ScriptFolder)
-	;_SelfDelete()
 	Exit
 EndIf
-
 
 
 ; Creating main GUI

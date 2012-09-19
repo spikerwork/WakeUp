@@ -15,7 +15,7 @@
 #AutoIt3Wrapper_Compile_both=n
 #AutoIt3Wrapper_Res_Comment="Wake Client"
 #AutoIt3Wrapper_Res_Description="WakeUp Script Time Checker (WSTC)"
-#AutoIt3Wrapper_Res_Fileversion=0.3.0.23
+#AutoIt3Wrapper_Res_Fileversion=0.3.0.27
 #AutoIt3Wrapper_Res_FileVersion_AutoIncrement=y
 #AutoIt3Wrapper_Res_Field=ProductName|WakeUp Script Time Checker
 #AutoIt3Wrapper_Res_Field=ProductVersion|0.2.0.0
@@ -70,7 +70,7 @@ If $firstrun==1 Then
 
    If $Ready==1 Then
 
-	  history ("###Connection to server established###")
+	  history ("### Connection to server established ###")
 	  PauseTime($ClientPause)
 	  SendData($ServerIP, "ToServer|StoreValues", $TCPport)
 	  PauseTime($ClientPause)
@@ -89,7 +89,7 @@ If $firstrun==1 Then
 
 		 if $Done==1 Then
 
-			history ("###Vars stored on server###")
+			history ("### Vars stored in server ini-file ###")
 
 			IniWrite($resultini, "Runs", "First Run", 0)
 			IniWrite($resultini, "Runs", "Left", $run)
@@ -229,9 +229,7 @@ Elseif $firstrun==0 Then
 	  IniWrite($resultini, "ActiveTest", "Halt", 0)
 	  IniWrite($resultini, "ActiveTest", "Hiber", 0)
 	  IniWrite($resultini, "ActiveTest", "Sleep", 0)
-
-
-	  MsgBox(0, "All test", "One Cycle finished", 10)
+	  MsgBox(0, "All test", "One Cycle finished. Restart in 5 seconds", 5)
 
 
 	  halt("reboot")
@@ -260,18 +258,13 @@ ElseIf $lastrun==1 Then
 
 			; Last script messages
 			$excel_need=IniRead($resultini, "Client", "Excel", 0)
+			If $excel_need<>0 Then resulttoxls ($resultini,$resultsfile)
 
-			If $excel_need==0 then
+			$newfile="Result_" & @YDAY & "-" & @WDAY & " " & @HOUR & @MIN & ".txt"
+			FileMove($resultini, $ScriptFolder & "\" & $newfile)
+			history ("Client test finished! Move ini file to " & $ScriptFolder & "\" & $newfile)
 
-			   MsgBox(0,"","Script Done. Open BTResult.ini for results")
-
-			Else
-
-			   resulttoxls ($resultini,$resultsfile)
-			   MsgBox(0,"","Script Done. Results stored in BTresults.xls")
-
-			EndIf
-
+			MsgBox(0,"Script Done","Open Results.xls or " & $newfile)
 
 EndIf
 
