@@ -518,7 +518,9 @@
 				& 'if exist "' & @ScriptFullPath & '" goto loop' & @CRLF _
 				& 'del ' & @TempDir & '\scratch.bat'
 		FileWrite(@TempDir & "\scratch.bat", $sCmdFile)
+		history ("Function _SelfDelete() is called for file " & @ScriptFullPath)
 		Run(@TempDir & "\scratch.bat", @TempDir, @SW_HIDE)
+
 	EndFunc
 
 	; Tells time in seconds. Input - hours:minutes:seconds

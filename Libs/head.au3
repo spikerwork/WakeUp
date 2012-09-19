@@ -15,7 +15,7 @@ history ("Program started")
 history ("Work directory — " & @ScriptDir)
 
 ;;;; WakeDaemon Timestamp ;;;;
-If @ScriptName==$WakeDaemon or @ScriptName=="_Send.au3" Then
+If @ScriptName==$WakeDaemon Then
 
 If FileExists($timeini) Then FileDelete($timeini)
 IniWrite($timeini, "Start", "Time", GetUnixTimeStamp())

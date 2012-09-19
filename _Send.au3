@@ -30,11 +30,20 @@
 #include "Libs\libs.au3"
 #include "Libs\head.au3"
 
-$lol=GetUnixTimeStamp()
-MsgBox(0,"",$lol)
+Local $FilesInstallArray[1]
 
-$lol=UnixTimeStampToTime($lol)
-MsgBox(0,"", $lol[0] & " " & $lol[1] & " " & $lol[2] & " " & $lol[3] & " " & $lol[4] & " " & $lol[5])
+
+
+
+
+
+
+
+;$lol=GetUnixTimeStamp()
+;MsgBox(0,"",$lol)
+
+;$lol=UnixTimeStampToTime($lol)
+;MsgBox(0,"", $lol[0] & " " & $lol[1] & " " & $lol[2] & " " & $lol[3] & " " & $lol[4] & " " & $lol[5])
 ;ActivityDaemon()
 
 
