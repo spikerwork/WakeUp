@@ -48,6 +48,7 @@
 			history ("Client test finished! Move ini file to " & $ScriptFolder & "\" & $newfile)
 			ShellExecuteWait('cmd.exe', '/c powercfg /SETACTIVE ' & $OldGUID)
 			FileDelete(@StartupCommonDir & "\WakeServer.lnk")
+			IniWrite($inifile, "Time", "WakeUpPause", 180)
 			Exit
 
 	  ; Else data
@@ -100,12 +101,12 @@
 						history ("TimeSync. Old time " & @HOUR & " " & @MIN & " " & @SEC)
 						history ("TimeSync. New time " & $timesync[3] & " " & $timesync[4] & " " & $timesync[5])
 
-			   Case "OptionsHRH"
+			   Case "WakeUpPause"
 
-				  ; Need to add parser!!! (This option is not needed anymore)
-				  history ("Number of test" & $Packetarray[3])
-				  IniWrite($resultini, "Network", "OptionsOSH", $Packetarray[3])
-
+				  ; Set server pause for current client
+				  history ("Set server pause for current client - " & $Packetarray[3])
+				  IniWrite($inifile, "Time", "WakeUpPause", $Packetarray[3])
+				  $WakeUpPause = $Packetarray[3]
 
 			   ; Finishing recieve settings of PC
 

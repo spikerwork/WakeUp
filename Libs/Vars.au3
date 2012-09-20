@@ -76,7 +76,7 @@ Global  $WakeStart="WakeStart.exe"
 Global  $WakePrepare="WakePrepare.exe"
 Global  $WakeDaemon="WakeDaemon.exe"
 Global  $WakeBT="WakeBT.exe"
-Global $tempfile=@HomeDrive & "\temp.txt" ; Temp file
+Global  $tempfile=@HomeDrive & "\temp.txt" ; Temp file
 
 Global 	$FilesArray[8]=[$WakeInstall,$WakeUninstall,$WakeBT, $WakeClient, $WakeDaemon, $WakePrepare, $WakeStart,$WakeServer]
 
@@ -107,6 +107,5 @@ Global 	$FilesArray[8]=[$WakeInstall,$WakeUninstall,$WakeBT, $WakeClient, $WakeD
    Global $cpu_need = IniRead($resultini, "Client", "Cpu_activity",  1)
    Global $cpu_percent_need = IniRead($resultini, "Client", "CPU_load",  5)
    Global $hdd_need = IniRead($resultini, "Client", "Hdd_activity",  1)
-
-Global $hdd_percent_need = 0
+   Global $hdd_percent_need = 0 ; Always off. Before used for old system.
 
