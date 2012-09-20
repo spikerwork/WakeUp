@@ -6,7 +6,7 @@
  Script Function:
 
    The part of WakeUp Script Time Checker (WSTC)
-   Prepare script.
+   Prepare script for WakeServer and WakeClient.
 
 #ce --------------------------------------------------------------------
 

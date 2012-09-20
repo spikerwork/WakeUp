@@ -15,7 +15,7 @@
 #AutoIt3Wrapper_Compile_both=n
 #AutoIt3Wrapper_Res_Comment="Wake Install"
 #AutoIt3Wrapper_Res_Description="WakeUp Script Time Checker (WSTC)"
-#AutoIt3Wrapper_Res_Fileversion=0.3.0.24
+#AutoIt3Wrapper_Res_Fileversion=0.3.0.25
 #AutoIt3Wrapper_Res_FileVersion_AutoIncrement=y
 #AutoIt3Wrapper_Res_Field=ProductName|WakeUp Script Time Checker
 #AutoIt3Wrapper_Res_Field=ProductVersion|0.2.0.0
@@ -129,7 +129,6 @@ While 1
 		history ("Clearing folder " & $ScriptFolder)
 
 		$t=0
-
 
 		ProgressOn("Delete old exe files", "Deleting files", "0 percent")
 

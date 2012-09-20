@@ -39,7 +39,7 @@ $logfile = $ScriptFolder & "\" & $logfile
 Global $Power_Notebook="Notebook.pow"
 Global $Power_Desktop="Desktop.pow"
 
-;Icon | used only for build.exe script
+; Icon | used only for build.exe script
 Global $icon="alert.ico"
 
 ; System info
@@ -52,9 +52,9 @@ Global $CPULoadArray[1] ; For daemon function
 Global $HDDLoadArray[1] ; For daemon function
 Global $Ready=0 ; Use in client/server greetings
 Global $Done=0 ; Use in client/server first run
-Global $SearchKey = "HKLM\SYSTEM\ControlSet001\Control\Class\{4D36E972-E325-11CE-BFC1-08002BE10318}" ; For network adapters Windows 7
+Global $SearchKey = "HKLM\SYSTEM\ControlSet001\Control\Class\{4D36E972-E325-11CE-BFC1-08002BE10318}" ; For network adapters Windows Vista/7. Windows 8 maybe?
 
-; Detect script more info in head.au3
+; Detect install script, more info in head.au3
 Global $ScriptInstalled
 Global $filesinfolder=0
 
@@ -67,9 +67,6 @@ Global $TimeStampStartWMI
 Global $TimeStampResumeWMI
 Global $TimeStamp
 
-
-Global $TimerStart
-
 ; Names of scripts
 Global  $WakeInstall="WakeInstall.exe"
 Global  $WakeUninstall="WakeUninstall.exe"
@@ -79,11 +76,12 @@ Global  $WakeStart="WakeStart.exe"
 Global  $WakePrepare="WakePrepare.exe"
 Global  $WakeDaemon="WakeDaemon.exe"
 Global  $WakeBT="WakeBT.exe"
+Global $tempfile=@HomeDrive & "\temp.txt" ; Temp file
 
 Global 	$FilesArray[8]=[$WakeInstall,$WakeUninstall,$WakeBT, $WakeClient, $WakeDaemon, $WakePrepare, $WakeStart,$WakeServer]
 
 
-Global $tempfile=@HomeDrive & "\powercfg.txt" ; Temp file
+
 
 
 ;;;

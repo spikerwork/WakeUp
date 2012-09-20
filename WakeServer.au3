@@ -30,11 +30,8 @@
 #include "Libs\libs.au3"
 #include "Libs\head.au3"
 
-; PowerPlan vars
-If FileExists($tempfile)==1 Then FileDelete($tempfile) ; Check if file exists
-
 ; Check active powerplan
-
+If FileExists($tempfile)==1 Then FileDelete($tempfile) ; Check if file exists
 
 	  ShellExecuteWait('cmd.exe', '/c powercfg GETACTIVESCHEME | find /I ":" > ' & $tempfile)
 

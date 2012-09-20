@@ -88,7 +88,7 @@ Local $ipdetails=_IPDetail() ; Gather information of network adapters
 ; Files check (Vars from head.au3)
 If $filesinfolder<>$F_arra-1 Then
 	MsgBox(0, "Warning.", "Some files not found. Reinstall Script")
-	history ("Some files not found. Reinstall Script. Found only - " & $filesinfolder)
+	history ("Some files not found. Reinstall Script. Found only " & $filesinfolder & " of " & $F_arra-1)
 	If FileExists($ScriptFolder & "\" & $WakeInstall) Then Run($ScriptFolder & "\" & $WakeInstall, $ScriptFolder)
 	Exit
 EndIf
