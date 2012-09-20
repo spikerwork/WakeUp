@@ -15,10 +15,10 @@
 #AutoIt3Wrapper_Compile_both=n
 #AutoIt3Wrapper_Res_Comment="Wake Install"
 #AutoIt3Wrapper_Res_Description="WakeUp Script Time Checker (WSTC)"
-#AutoIt3Wrapper_Res_Fileversion=0.3.0.23
+#AutoIt3Wrapper_Res_Fileversion=0.3.3.29
 #AutoIt3Wrapper_Res_FileVersion_AutoIncrement=y
 #AutoIt3Wrapper_Res_Field=ProductName|WakeUp Script Time Checker
-#AutoIt3Wrapper_Res_Field=ProductVersion|0.2.0.0
+#AutoIt3Wrapper_Res_Field=ProductVersion|0.3.3.0
 #AutoIt3Wrapper_Run_AU3Check=n
 #AutoIt3Wrapper_Res_Language=2057
 #AutoIt3Wrapper_Res_LegalCopyright=Sp1ker (spiker@pmpc.ru)
@@ -130,7 +130,6 @@ While 1
 
 		$t=0
 
-
 		ProgressOn("Delete old exe files", "Deleting files", "0 percent")
 
 		While $t <= Ubound($FilesArray)-1
@@ -206,7 +205,7 @@ While 1
 	ProgressOn("Copy Progress", "Copying files", "0 percent")
 
 	$FilesInstallArray[0]=FileCopy(@ScriptFullPath,  $ScriptFolder, 1)
-	$r=1
+	$r=0
 	ProgressSet($r*10, $r*10 & " percent", @ScriptName)
 	Sleep(500)
 	$r=_ArrayAdd($FilesInstallArray, FileInstall("WakeUninstall.exe", $ScriptFolder & "\" & $WakeUninstall))

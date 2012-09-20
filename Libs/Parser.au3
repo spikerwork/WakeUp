@@ -7,7 +7,7 @@
  Script Function:
 
    The part of WakeUp Script Time Checker (WSTC)
-   Parse and analyze network data from RecieveData() function. "Stop transfering" function implemented in RecieveData()
+   Parse and analyze network data from RecieveData() function. "Stop" function implemented in RecieveData()
 
 #ce --------------------------------------------------------------------
 
@@ -48,6 +48,7 @@
 			history ("Client test finished! Move ini file to " & $ScriptFolder & "\" & $newfile)
 			ShellExecuteWait('cmd.exe', '/c powercfg /SETACTIVE ' & $OldGUID)
 			FileDelete(@StartupCommonDir & "\WakeServer.lnk")
+			IniWrite($inifile, "Time", "WakeUpPause", 180)
 			Exit
 
 	  ; Else data
@@ -100,12 +101,12 @@
 						history ("TimeSync. Old time " & @HOUR & " " & @MIN & " " & @SEC)
 						history ("TimeSync. New time " & $timesync[3] & " " & $timesync[4] & " " & $timesync[5])
 
-			   Case "OptionsHRH"
+			   Case "WakeUpPause"
 
-				  ; Need to add parser!!! (This option is not needed anymore)
-				  history ("Number of test" & $Packetarray[3])
-				  IniWrite($resultini, "Network", "OptionsOSH", $Packetarray[3])
-
+				  ; Set server pause for current client
+				  history ("Set server pause for current client - " & $Packetarray[3])
+				  IniWrite($inifile, "Time", "WakeUpPause", $Packetarray[3])
+				  $WakeUpPause = $Packetarray[3]
 
 			   ; Finishing recieve settings of PC
 
@@ -121,9 +122,6 @@
 			   ; WakeDaemon send a signal to stop timer
 			   Case "Sleep", "Hiber", "Halt"
 
-				  $TimerD = TimerDiff($TimerStart)
-				  $TimerD = Round($TimerD/1000,2) ; Returns time in seconds | Wrong time....
-
 					; Check WMI on/off
 					  If $Packetarray[8]<>0 Then
 					  $TimeStamp=$Packetarray[8]-$TimeStamp
@@ -133,7 +131,6 @@
 
 				  history ($packettype & " test finish in " & $TimeStamp & " sec. DaemonTime:" & $Packetarray[4] & ". DaemonCycles:" & $Packetarray[5])
 
-				  IniWrite($resultini, "Run#" & $Packetarray[3], $packettype & "Timer", $TimerD)
 				  IniWrite($resultini, "Run#" & $Packetarray[3], $packettype & "StopReciveAt", currenttime ())
 				  IniWrite($resultini, "Run#" & $Packetarray[3], $packettype & "DaemonTime", $Packetarray[4])
 				  IniWrite($resultini, "Run#" & $Packetarray[3], $packettype & "DaemonCycles", $Packetarray[5])
@@ -143,18 +140,17 @@
 				  IniWrite($resultini, "Run#" & $Packetarray[3], $packettype & "TimeStamp", $TimeStamp)
 
 				  PauseTime($ServerPause)
-				  SendData($clientIP, "ToClient|Time|" & $packettype & "|" & $TimerD & "|" & $Packetarray[4] & "|" & $TimeStamp, $TCPport+1)
+				  SendData($clientIP, "ToClient|Time|" & $packettype & "|" & $Packetarray[4] & "|" & $TimeStamp, $TCPport+1)
 				  PauseTime($ServerPause+5)
 				  SendData($clientIP, "Exit", $TCPport+1)
-				  $TimerStart=0
-				  $TimerD=0
+
 				  $TimeStamp=0
 
 
 			   ; WakeClient send a signal to begin test
 			   Case "SleepTest", "HiberTest", "HaltTest" ;
 
-				  Local $testtype=StringTrimright($packettype, 4)
+				  Local $testtype=StringTrimright($packettype, 4) ; Parser to determine test type
 
 				  history ("Run#" & $Packetarray[3] & " going to " & $testtype)
 
@@ -164,10 +160,8 @@
 
 				  PauseTime($WakeUpPause)
 
-				  history ("Broadcast from ini - " & $server_broadcast)
-
 				  SendMagicPacket($Client_MAC, $server_broadcast)
-				  $TimerStart=TimerInit()
+
 				  $TimeStamp=GetUnixTimeStamp()
 				  IniWrite($resultini, "Run#" & $Packetarray[3], "WakeFrom" & $testtype & "SendAt", currenttime ())
 
@@ -187,19 +181,18 @@
 			   Case "Done"
 
 				  $Done = 1
-				  history ("Done - " & $Done)
+				  history ("Finish greetings client-server - " & $Done)
 
 			   ; WakeClient write the time data from server
 			   Case "Time"
 
-				  history ("Server timer - " & $Packetarray[4])
-				  IniWrite($resultini, $current_run, $Packetarray[3], $Packetarray[4]-5) ; Exclude 5 seconds idle time
-				  Local $short_time=$Packetarray[4]-$Packetarray[5]
-				  history ("Without WMI - " & $short_time)
-				  IniWrite($resultini, $current_run, $Packetarray[3] & "_WithoutWMI", $short_time) ; Exclude all WMI daemon time
-				  history ("TimeStamp - " & $Packetarray[6])
-				  IniWrite($resultini, $current_run, $Packetarray[3] & "_TimeStamp", $Packetarray[6]) ; TimeStamp Timer
-
+				  Local $TotalTime=$Packetarray[4]+$Packetarray[5]
+				  history ("DaemonTime - " & $Packetarray[4])
+				  IniWrite($resultini, $current_run, $Packetarray[3] & "_DaemonTime", $Packetarray[4]) ; WMI daemon time
+				  history ("TimeStamp - " & $Packetarray[5])
+				  IniWrite($resultini, $current_run, $Packetarray[3] & "_TimeStamp", $Packetarray[5]) ; TimeStamp
+				  history ("Total time - " & $TotalTime)
+				  IniWrite($resultini, $current_run, $Packetarray[3] & "_TotalTime", $TotalTime) ; Total time
 
 
 			   EndSwitch
