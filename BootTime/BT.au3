@@ -4,7 +4,29 @@
 
  Script Function:
 	Windows Boot time checker
+	Main installer. Includes all nessasary files
  ----------------------------------------------------------------------------
+ #ce
+
+#Region AutoIt3Wrapper directives section
+
+#AutoIt3Wrapper_Compile_both=n
+#AutoIt3Wrapper_Res_Comment="Boot time checker"
+#AutoIt3Wrapper_Res_Description="Windows Boot time checker BootTime)"
+#AutoIt3Wrapper_Res_Fileversion=0.1.1.2
+#AutoIt3Wrapper_Res_FileVersion_AutoIncrement=y
+#AutoIt3Wrapper_Res_Field=ProductName|Windows Boot time checker
+#AutoIt3Wrapper_Res_Field=ProductVersion|0.1.3.0
+#AutoIt3Wrapper_Run_AU3Check=n
+#AutoIt3Wrapper_Res_Language=1049
+#AutoIt3Wrapper_Res_LegalCopyright=Sp1ker (spiker@pmpc.ru)
+#AutoIt3Wrapper_res_requestedExecutionLevel=requireAdministrator
+#AutoIt3Wrapper_Res_requestedExecutionLevel=highestAvailable
+
+#Endregion
+
+
+
 
 ;Startup`s Directories
 ;-@StartupCommonDir
@@ -78,26 +100,26 @@ GUISetState ()
 
 While 1
    $msg = GUIGetMsg()
-	
+
    Select
-   
+
    Case $msg = $GUI_EVENT_CLOSE
    ; Clean temp files
    If DirGetSize($ScriptFolder) <> -1 Then DirRemove($ScriptFolder, 1)
    If FileExists($mainini) Then FileDelete($mainini)
    FileDelete(@TempDir & "\" & $helpfile)
-   
+
    ExitLoop
-   
+
    Case $msg = $Button_Stop
    If DirGetSize($ScriptFolder) <> -1 Then DirRemove($ScriptFolder, 1)
    FileDelete(@TempDir & "\" & $helpfile)
    If FileExists($mainini) Then FileDelete($mainini)
-   
+
    ExitLoop
-   
+
    Case $msg =	$TestRepeat
-	
+
 		; Check runs
 		If 	GUICtrlRead($TestRepeat)<2 Then
 			MsgBox(1, "Предупреждение", "Количество прогонов теста должно быть больше одного")
@@ -107,47 +129,47 @@ While 1
 			$updown = GUICtrlCreateUpdown($TestRepeat)
 			GUICtrlSetLimit ($updown, 20 ,2 )
 		EndIf
-			 
+
 	Case $msg = $Button_Start
-		
+
 	  $TestRepeat=GUICtrlRead($TestRepeat) ; Number of run
-	  
+
 	  If BitAnd(GUICtrlRead($cpu_activity),$GUI_CHECKED) = $GUI_CHECKED THEN;
 	  $cpu=1
 	  $Idle_time=GUICtrlRead($Idle_time)
 	  ElseIf BitAnd(GUICtrlRead($cpu_activity),$GUI_UNCHECKED) = $GUI_UNCHECKED THEN;
 	  $cpu=0
 	  EndIf
-   
+
 	  If BitAnd(GUICtrlRead($hdd_activity),$GUI_CHECKED) = $GUI_CHECKED THEN;
 	  $hdd=1
       ElseIf BitAnd(GUICtrlRead($hdd_activity),$GUI_UNCHECKED) = $GUI_UNCHECKED THEN;
       $hdd=0
 	  EndIf
-   
+
 	  If BitAnd(GUICtrlRead($excel_enabled),$GUI_CHECKED) = $GUI_CHECKED THEN;
 	  $excel=1
 	  ElseIf BitAnd(GUICtrlRead($excel_enabled),$GUI_UNCHECKED) = $GUI_UNCHECKED THEN;
 	  $excel=0
 	  ElseIf BitAnd(GUICtrlRead($excel_enabled),$GUI_DISABLE) = $GUI_DISABLE THEN;
 	  $excel=0
-	  
+
 	  EndIf
-   
-   
-	  
+
+
+
 	  ; Clean old version if it present
 	  If DirGetSize($ScriptFolder) = -1 Then
 		 $dirgood=DirCreate($ScriptFolder)
-	  Else 
+	  Else
 		 If DirRemove($ScriptFolder, 1)=1 Then $dirgood=DirCreate($ScriptFolder)
 	  EndIf
-	  
+
 	  If $dirgood==1 Then
-	  
+
 	  ; Clean old ini
 	  If FileExists($mainini) Then FileDelete($mainini)
-	  
+
 	  ; Write new ini
 	  IniWrite($mainini, $section_runs, "Left", $TestRepeat)
 	  IniWrite($mainini, $section_runs, "All", $TestRepeat)
@@ -158,46 +180,46 @@ While 1
 	  IniWrite($mainini, $section_daemon, "HDD", $hdd)
 	  IniWrite($mainini, $section_daemon, "HDD_percent", 0)
 
-	  
+
 	  IniWrite($mainini, $section_daemon, "Excel", $excel)
-	  
+
 	; Copy files
 	  If FileExists($mainini) Then $FilesArray[0]=1
 	  If $osarch == "X86" Then _ArrayAdd($FilesArray, FileInstall("BTResult.exe", $ScriptFolder & "\" & $result_parser))
-	  If $osarch == "X64" Then _ArrayAdd($FilesArray, FileInstall("BTResult64.exe", $ScriptFolder & "\" & $result_parser)) 
-	  
+	  If $osarch == "X64" Then _ArrayAdd($FilesArray, FileInstall("BTResult64.exe", $ScriptFolder & "\" & $result_parser))
+
 	  _ArrayAdd($FilesArray, FileInstall("BTRun.exe", $ScriptFolder & "\" & $run_x86))
 	  _ArrayAdd($FilesArray, FileInstall("BTDaemon.exe", $ScriptFolder & "\" & $daemon_BT))
 	  _ArrayAdd($FilesArray, FileInstall("help.txt", $ScriptFolder & "\" & $helpfile))
-	  
+
 	  PauseTime(5)
 
 		; Checking copied files
 		 While $t <= Ubound($FilesArray)-1
-			
-			If $FilesArray[$t]==1 Then 
+
+			If $FilesArray[$t]==1 Then
 			   $t=$t+1
-			Else 
+			Else
 			   MsgBox(0, "Sad News", "Не все файлы переписались")
-			   
+
 			   Exit
-			   
+
 			EndIf
 		 WEnd
-	  
-    	  	  
+
+
 		 FileCreateShortcut ($ScriptFolder & "\" & $result_parser, @StartupCommonDir & "\BT_result_parser.lnk")
 		 ;RegWrite($RegistryArray[0], "BT_result_parser","REG_SZ", '"' & $parser & '"')
 		 MsgBox(0, "Good news!", "Все прошло успешно. Перезагрузка через 5 секунд", 5)
-		
+
 		 halt()
 		 ExitLoop
 	Else
-	 
+
 		MsgBox (0, "Sad news", "Не могу создать директорию")
 	  Exit
 	  EndIf
-	  
-	
+
+
 	EndSelect
 Wend

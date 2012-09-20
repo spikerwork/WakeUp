@@ -14,10 +14,10 @@
 #AutoIt3Wrapper_Compile_both=n
 #AutoIt3Wrapper_Res_Comment="Wake Start"
 #AutoIt3Wrapper_Res_Description="WakeUp Script Time Checker (WSTC)"
-#AutoIt3Wrapper_Res_Fileversion=0.3.0.27
+#AutoIt3Wrapper_Res_Fileversion=0.3.3.31
 #AutoIt3Wrapper_Res_FileVersion_AutoIncrement=y
 #AutoIt3Wrapper_Res_Field=ProductName|WakeUp Script Time Checker
-#AutoIt3Wrapper_Res_Field=ProductVersion|0.2.0.0
+#AutoIt3Wrapper_Res_Field=ProductVersion|0.3.3.0
 #AutoIt3Wrapper_Run_AU3Check=n
 #AutoIt3Wrapper_Res_Language=2057
 #AutoIt3Wrapper_Res_LegalCopyright=Sp1ker (spiker@pmpc.ru)
@@ -88,7 +88,7 @@ Local $ipdetails=_IPDetail() ; Gather information of network adapters
 ; Files check (Vars from head.au3)
 If $filesinfolder<>$F_arra-1 Then
 	MsgBox(0, "Warning.", "Some files not found. Reinstall Script")
-	history ("Some files not found. Reinstall Script. Found only - " & $filesinfolder)
+	history ("Some files not found. Reinstall Script. Found only " & $filesinfolder & " of " & $F_arra-1)
 	If FileExists($ScriptFolder & "\" & $WakeInstall) Then Run($ScriptFolder & "\" & $WakeInstall, $ScriptFolder)
 	Exit
 EndIf
@@ -137,24 +137,26 @@ While 1
 
 	  GuiCtrlCreateLabel("Test preset ", 40, 50, 150, 20)
 	  GUICtrlSetFont (-1, 8.5, 800, 0, "Tahoma")
-	  $timer_sleep=GUICtrlCreateCheckbox("Sleep ", 40, 80, 120, 20)
-	  $timer_hiber=GUICtrlCreateCheckbox("Hibernation ", 40, 100, 120, 20)
-	  $timer_halt=GUICtrlCreateCheckbox("Halt (enabled in BIOS?)", 40, 120, 160, 20)
-	  GuiCtrlCreateLabel("Analyze PC load algorithm ", 40, 160, 150, 20)
+	  $timer_sleep=GUICtrlCreateCheckbox("Sleep ", 40, 70, 120, 20)
+	  $timer_hiber=GUICtrlCreateCheckbox("Hibernation ", 40, 90, 120, 20)
+	  $timer_halt=GUICtrlCreateCheckbox("Halt (enabled in BIOS?)", 40, 110, 160, 20)
+	  GuiCtrlCreateLabel("Workload analysis logic (use WMI info)", 40, 140, 230, 20)
 	  GUICtrlSetFont (-1, 8.5, 800, 0, "Tahoma")
-	  $hdd_activity=GUICtrlCreateCheckbox("Analyze HDD ", 40, 180, 120, 20)
-	  $cpu_activity=GUICtrlCreateCheckbox("Analyze CPU ", 40, 200, 120, 20)
-	  GuiCtrlCreateLabel("Max CPU Load, %  ", 160, 204, 120, 20, $SS_RIGHT)
-	  $cpu_time = GUICtrlCreateInput (5, 320, 200, 40, 20, $SS_RIGHT)
+	  $hdd_activity=GUICtrlCreateCheckbox("Analysise HDD ", 40, 160, 120, 20)
+	  $cpu_activity=GUICtrlCreateCheckbox("Analysis CPU ", 40, 180, 120, 20)
+	  GuiCtrlCreateLabel("Max CPU Load, %  ", 160, 184, 120, 20, $SS_RIGHT)
+	  $cpu_time = GUICtrlCreateInput (5, 320, 180, 40, 20, $SS_RIGHT)
 	  GUICtrlCreateUpdown($cpu_time)
 	  GUICtrlSetLimit ($cpu_time, 2 , 1)
-	  GuiCtrlCreateLabel("Количество прогонов теста:", 40, 234, 250, 20)
-	  $TestRepeat = GUICtrlCreateInput (5, 320, 230, 40, 20, $SS_RIGHT)
+	  GuiCtrlCreateLabel("Number of test runs:", 40, 214, 250, 20)
+	  $TestRepeat = GUICtrlCreateInput (5, 320, 210, 40, 20, $SS_RIGHT)
 	  GUICtrlCreateUpdown($TestRepeat)
 	  GUICtrlSetLimit ($TestRepeat, 2 , 1)
-	  GuiCtrlCreateLabel("Results ", 40, 260, 150, 20)
+	  GuiCtrlCreateLabel("Server wait time between tests", 40, 244, 250, 20)
+	  $WakeUpPause = GUICtrlCreateInput ($WakeUpPause, 320, 240, 40, 20, $SS_RIGHT)
+	  GuiCtrlCreateLabel("Results ", 40, 270, 150, 20)
 	  GUICtrlSetFont (-1, 8.5, 800, 0, "Tahoma")
-	  $excel_enabled=GUICtrlCreateCheckbox("Export to Excel ", 40, 280, 170, 20)
+	  $excel_enabled=GUICtrlCreateCheckbox("Export to Excel ", 40, 290, 170, 20)
 
 	  GUICtrlSetState ($cpu_activity, $GUI_CHECKED )
 
@@ -454,6 +456,7 @@ While 1
    history ("Choosed option *Ready to finish client setup* " & $Button_5)
 
 	  $INI_TestRepeat=GUICtrlRead($TestRepeat)
+	  $WakeUpPause=GUICtrlRead($WakeUpPause)
 
 	  If BitAnd(GUICtrlRead($cpu_activity),$GUI_CHECKED) = $GUI_CHECKED THEN;
 	  $INI_cpu_activity=1

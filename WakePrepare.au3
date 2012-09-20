@@ -6,7 +6,7 @@
  Script Function:
 
    The part of WakeUp Script Time Checker (WSTC)
-   Prepare script.
+   Prepare script for WakeServer and WakeClient.
 
 #ce --------------------------------------------------------------------
 
@@ -15,10 +15,10 @@
 #AutoIt3Wrapper_Compile_both=n
 #AutoIt3Wrapper_Res_Comment="Wake Prepare"
 #AutoIt3Wrapper_Res_Description="WakeUp Script Time Checker (WSTC)"
-#AutoIt3Wrapper_Res_Fileversion=0.3.0.25
+#AutoIt3Wrapper_Res_Fileversion=0.3.3.28
 #AutoIt3Wrapper_Res_FileVersion_AutoIncrement=y
 #AutoIt3Wrapper_Res_Field=ProductName|WakeUp Script Time Checker
-#AutoIt3Wrapper_Res_Field=ProductVersion|0.2.0.0
+#AutoIt3Wrapper_Res_Field=ProductVersion|0.3.3.0
 #AutoIt3Wrapper_Run_AU3Check=n
 #AutoIt3Wrapper_Res_Language=2057
 #AutoIt3Wrapper_Res_LegalCopyright=Sp1ker (spiker@pmpc.ru)
