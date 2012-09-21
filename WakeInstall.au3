@@ -16,10 +16,10 @@
 #AutoIt3Wrapper_Icon=Alert.ico
 #AutoIt3Wrapper_Res_Field=PreRelease|1
 #AutoIt3Wrapper_Res_Description="WakeUp Script Time Checker (WSTC)"
-#AutoIt3Wrapper_Res_Fileversion=0.3.4.56
+#AutoIt3Wrapper_Res_Fileversion=0.3.4.59
 #AutoIt3Wrapper_Res_FileVersion_AutoIncrement=y
 #AutoIt3Wrapper_Res_Field=ProductName|WakeUp Script Time Checker
-#AutoIt3Wrapper_Res_Field=ProductVersion|0.3.3.0
+#AutoIt3Wrapper_Res_Field=ProductVersion|0.3.x.0
 #AutoIt3Wrapper_Res_Field=OriginalFilename|WakeInstall.au3
 #AutoIt3Wrapper_Run_AU3Check=n
 #AutoIt3Wrapper_Res_Language=2057
@@ -233,7 +233,7 @@ While 1
 
 	; Install all files
 
-	ProgressOn("Copy Progress", "Copying files", "0 percent")
+	ProgressOn("Install", "Copying files", "0 percent")
 
 	$FilesInstallArray[0]=FileCopy(@ScriptFullPath,  $ScriptFolder, 1)
 	$t=0

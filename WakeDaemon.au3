@@ -16,10 +16,10 @@
 #AutoIt3Wrapper_Icon=Alert.ico
 #AutoIt3Wrapper_Res_Comment="Wake Daemon"
 #AutoIt3Wrapper_Res_Description="WakeUp Script Time Checker (WSTC)"
-#AutoIt3Wrapper_Res_Fileversion=0.3.4.42
+#AutoIt3Wrapper_Res_Fileversion=0.3.4.46
 #AutoIt3Wrapper_Res_FileVersion_AutoIncrement=y
 #AutoIt3Wrapper_Res_Field=ProductName|WakeUp Script Time Checker
-#AutoIt3Wrapper_Res_Field=ProductVersion|0.3.3.0
+#AutoIt3Wrapper_Res_Field=ProductVersion|0.3.x.0
 #AutoIt3Wrapper_Res_Field=OriginalFilename|WakeDaemon.au3
 #AutoIt3Wrapper_Run_AU3Check=n
 #AutoIt3Wrapper_Res_Language=2057
@@ -30,6 +30,13 @@
 
 #include "Libs\libs.au3"
 #include "Libs\head.au3"
+
+;;;; Timestamp ;;;;
+
+If FileExists($timeini) Then FileDelete($timeini)
+IniWrite($timeini, "Start", "Time", $ScriptStartTime)
+history ("UnixTimeStamp " & $ScriptStartTime & ". Start — " & currenttime())
+
 
 If $CmdLine[0] > 0 Then
 
@@ -51,7 +58,6 @@ Run($ScriptFolder & "\" & $WakeClient, $ScriptFolder)
 
 Else
 history ("Smth wrong with command line to this script. No args!")
-Exit
 EndIf
 
 If FileExists($timeini) Then FileDelete($timeini)

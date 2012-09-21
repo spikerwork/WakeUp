@@ -10,18 +10,10 @@
 	It contains the beginning of each script
 
 #ce --------------------------------------------------------------------
+$ScriptStartTime=GetUnixTimeStamp() ; Each script start time
 
-history ("Program started")
+history ("Program started. UnixTimeStamp " & $ScriptStartTime)
 history ("Work directory — " & @ScriptDir)
-
-;;;; WakeDaemon Timestamp ;;;;
-If @ScriptName==$WakeDaemon Then
-
-If FileExists($timeini) Then FileDelete($timeini)
-IniWrite($timeini, "Start", "Time", GetUnixTimeStamp())
-history ("UnixTimeStamp " & GetUnixTimeStamp() & ". Start — " & currenttime())
-
-EndIf
 
 ;;;; Admin checkin ;;;;
 #RequireAdmin
@@ -61,7 +53,7 @@ Else
 
 EndIf
 
-Local $F_arra
+
 While $F_arra <= Ubound($FilesArray)-1
 
 	If FileExists($ScriptFolder & "\" & $FilesArray[$F_arra])==1 Then

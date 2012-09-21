@@ -7,12 +7,13 @@
  Script Function:
 
    The part of WakeUp Script Time Checker (WSTC)
-   It contains the ending of each script
+   It contains the end of each script
 
 #ce --------------------------------------------------------------------
 
-
+$ScriptEndTime=GetUnixTimeStamp()
+$ScriptEndTime=$ScriptEndTime-$ScriptStartTime
 history ("Errors " & @error)
-history ("Program halted")
+history ("Program halted. Worktime - " & $ScriptEndTime & " seconds")
 history ("------------------------------------------------------------------------")
 ;;; End of script
