@@ -12,17 +12,18 @@
 #Region AutoIt3Wrapper directives section
 
 #AutoIt3Wrapper_Compile_both=n
+#AutoIt3Wrapper_Icon=Alert.ico
 #AutoIt3Wrapper_Res_Comment="Wake Uninstall"
 #AutoIt3Wrapper_Res_Description="WakeUp Script Time Checker (WSTC)"
-#AutoIt3Wrapper_Res_Fileversion=0.3.3.30
+#AutoIt3Wrapper_Res_Fileversion=0.3.4.43
 #AutoIt3Wrapper_Res_FileVersion_AutoIncrement=y
 #AutoIt3Wrapper_Res_Field=ProductName|WakeUp Script Time Checker
 #AutoIt3Wrapper_Res_Field=ProductVersion|0.3.3.0
+#AutoIt3Wrapper_Res_Field=OriginalFilename|WakeUninstall.au3
 #AutoIt3Wrapper_Run_AU3Check=n
 #AutoIt3Wrapper_Res_Language=2057
 #AutoIt3Wrapper_Res_LegalCopyright=Sp1ker (spiker@pmpc.ru)
-#AutoIt3Wrapper_res_requestedExecutionLevel=requireAdministrator
-#AutoIt3Wrapper_Res_requestedExecutionLevel=highestAvailable
+#AutoIt3Wrapper_Res_requestedExecutionLevel=requireAdministrator
 
 #Endregion
 
@@ -92,9 +93,14 @@
 		ProgressSet($t*10, $t*10 & " percent", "WakeServer.lnk")
 		Sleep(500)
 
-		If FileExists($tempfile)==1 Then FileDelete($tempfile) ; Check if file exists
+		If FileExists($tempfile)==1 Then FileDelete($tempfile)
 		$t+=1
 		ProgressSet($t*10, $t*10 & " percent", $tempfile)
+		Sleep(500)
+
+		If FileExists($timeini)==1 Then FileDelete($timeini)
+		$t+=1
+		ProgressSet($t*10, $t*10 & " percent", $timeini)
 		Sleep(500)
 
 		ProgressSet(100, "Done", "Complete")

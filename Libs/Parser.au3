@@ -43,9 +43,8 @@
 	  ; Client finished all tests
 	  Case "ClientOff"
 
-			$newfile="Result_" & @YDAY & "-" & @WDAY & " " & @HOUR & @MIN & ".txt"
-			FileMove($resultini, $ScriptFolder & "\" & $newfile)
-			history ("Client test finished! Move ini file to " & $ScriptFolder & "\" & $newfile)
+			FileMove($resultini, $newresultfile)
+			history ("Client test finished! Move ini file to " & $newresultfile)
 			ShellExecuteWait('cmd.exe', '/c powercfg /SETACTIVE ' & $OldGUID)
 			FileDelete(@StartupCommonDir & "\WakeServer.lnk")
 			IniWrite($inifile, "Time", "WakeUpPause", 180)
@@ -163,6 +162,7 @@
 				  SendMagicPacket($Client_MAC, $server_broadcast)
 
 				  $TimeStamp=GetUnixTimeStamp()
+				  history ("TimeStamp - " & $TimeStamp)
 				  IniWrite($resultini, "Run#" & $Packetarray[3], "WakeFrom" & $testtype & "SendAt", currenttime ())
 
 
