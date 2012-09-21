@@ -13,9 +13,10 @@
 #Region AutoIt3Wrapper directives section
 
 #AutoIt3Wrapper_Compile_both=n
+#AutoIt3Wrapper_Icon=Alert.ico
 #AutoIt3Wrapper_Res_Comment="Wake Daemon"
 #AutoIt3Wrapper_Res_Description="WakeUp Script Time Checker (WSTC)"
-#AutoIt3Wrapper_Res_Fileversion=0.3.3.39
+#AutoIt3Wrapper_Res_Fileversion=0.3.4.42
 #AutoIt3Wrapper_Res_FileVersion_AutoIncrement=y
 #AutoIt3Wrapper_Res_Field=ProductName|WakeUp Script Time Checker
 #AutoIt3Wrapper_Res_Field=ProductVersion|0.3.3.0

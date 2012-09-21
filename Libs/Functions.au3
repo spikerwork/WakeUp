@@ -40,7 +40,19 @@
 
    EndFunc
 
-   ; Shutdown functions with Force (+4) option
+; #FUNCTION# ====================================================================================================================
+; Name ..........: halt
+; Description ...: Shutdown function
+; Syntax ........: halt($halt_option)
+; Parameters ....: reboot, sleep, hibernate, halt - A handle value.
+; Return values .: None
+; Author ........: Sp1ker
+; Modified ......:
+; Remarks .......: +4 Force didn`t working on many PC
+; Related .......:
+; Link ..........:
+; Example .......: No
+; ===============================================================================================================================
    Func halt($halt_option)
       history ("The system is halting. Reason - " & $halt_option)
 	  Switch $halt_option
@@ -60,6 +72,19 @@
    EndFunc
 
    ; Get time function
+; #FUNCTION# ====================================================================================================================
+; Name ..........: currenttime
+; Description ...: Return current time of PC
+; Syntax ........: currenttime ()
+; Parameters ....: None
+; Return values .: Hour:Min:Sec:Msec
+; Author ........: Sp1ker
+; Modified ......:
+; Remarks .......:
+; Related .......:
+; Link ..........:
+; Example .......: No
+; ===============================================================================================================================
    Func currenttime ()
 	  $currentdate=@HOUR & ":" & @MIN & ":" & @SEC & ":" & @MSEC
 	  Return $currentdate

@@ -13,9 +13,10 @@
 #Region AutoIt3Wrapper directives section
 
 #AutoIt3Wrapper_Compile_both=n
+#AutoIt3Wrapper_Icon=Alert.ico
 #AutoIt3Wrapper_Res_Comment="Wake Client"
 #AutoIt3Wrapper_Res_Description="WakeUp Script Time Checker (WSTC)"
-#AutoIt3Wrapper_Res_Fileversion=0.3.3.40
+#AutoIt3Wrapper_Res_Fileversion=0.3.4.43
 #AutoIt3Wrapper_Res_FileVersion_AutoIncrement=y
 #AutoIt3Wrapper_Res_Field=ProductName|WakeUp Script Time Checker
 #AutoIt3Wrapper_Res_Field=ProductVersion|0.3.3.0
@@ -262,7 +263,7 @@ ElseIf $lastrun==1 Then
 
 
 			FileMove($resultini, $newresultfile)
-			history ("Client test finished! Move ini file to " & $ScriptFolder & "\" & $newresultfile)
+			history ("Client test finished! Move ini file to " & $newresultfile)
 
 			MsgBox(0,"Script Done","Open Results.xls or " & $newresultfile)
 

@@ -16,7 +16,7 @@
 #AutoIt3Wrapper_Icon=Alert.ico
 #AutoIt3Wrapper_Res_Field=PreRelease|1
 #AutoIt3Wrapper_Res_Description="WakeUp Script Time Checker (WSTC)"
-#AutoIt3Wrapper_Res_Fileversion=0.3.3.48
+#AutoIt3Wrapper_Res_Fileversion=0.3.4.56
 #AutoIt3Wrapper_Res_FileVersion_AutoIncrement=y
 #AutoIt3Wrapper_Res_Field=ProductName|WakeUp Script Time Checker
 #AutoIt3Wrapper_Res_Field=ProductVersion|0.3.3.0
@@ -54,7 +54,6 @@ Local $adapters=0
 Local $t=0
 Local $FilesInstallArray[1]
 Local $res
-Local $r
 
 ;;; Network Check
 
@@ -159,61 +158,70 @@ While 1
 		Sleep(500)
 		ProgressOff()
 
-		$r=1
+		$t=1
 
 		ProgressOn("Delete other old files", "Deleting files", "0 percent")
 		history ("Delete other old files")
 
 		If FileExists($inifile)==1 Then FileDelete($inifile)
-		$r+=1
-		ProgressSet($r*10, $r*10 & " percent", $inifile)
+		$t+=1
+		ProgressSet($t*10, $t*10 & " percent", $inifile)
 		Sleep(500)
 
 		If FileExists($resultini)==1 Then FileDelete($resultini)
-		$r+=1
-		ProgressSet($r*10, $r*10 & " percent", $resultini)
+		$t+=1
+		ProgressSet($t*10, $t*10 & " percent", $resultini)
 		Sleep(500)
 
 		If FileExists($timeini)==1 Then FileDelete($timeini)
-		$r+=1
-		ProgressSet($r*10, $r*10 & " percent", $timeini)
+		$t+=1
+		ProgressSet($t*10, $t*10 & " percent", $timeini)
 		Sleep(500)
 
 		If FileExists($tempfile)==1 Then FileDelete($tempfile)
-		$r+=1
-		ProgressSet($r*10, $r*10 & " percent", $tempfile)
+		$t+=1
+		ProgressSet($t*10, $t*10 & " percent", $tempfile)
 		Sleep(500)
 
 		history ("Delete old files from " & @ProgramsCommonDir)
 
 		DirRemove(@ProgramsCommonDir & "\" & $ScriptName, 1)
-		$r+=1
-		ProgressSet($r*10, $r*10 & " percent", "Folder " & $ScriptName)
+		$t+=1
+		ProgressSet($t*10, $t*10 & " percent", "Folder " & $ScriptName)
 		Sleep(500)
 
 		If FileExists(@StartupCommonDir & "\WakeClient.lnk")==1 Then FileDelete(@StartupCommonDir & "\WakeClient.lnk")
-		$r+=1
-		ProgressSet($r*10, $r*10 & " percent", "WakeClient.lnk")
+		$t+=1
+		ProgressSet($t*10, $t*10 & " percent", "WakeClient.lnk")
 		Sleep(500)
 
 		If FileExists(@StartupCommonDir & "\WakeDaemon.lnk")==1 Then FileDelete(@StartupCommonDir & "\WakeDaemon.lnk")
-		$r+=1
-		ProgressSet($r*10, $r*10 & " percent", "WakeDaemon.lnk")
+		$t+=1
+		ProgressSet($t*10, $t*10 & " percent", "WakeDaemon.lnk")
 		Sleep(500)
 
 		If FileExists(@StartupCommonDir & "\WakeServer.lnk")==1 Then FileDelete(@StartupCommonDir & "\WakeServer.lnk")
-		$r+=1
-		ProgressSet($r*10, $r*10 & " percent", "WakeServer.lnk")
+		$t+=1
+		ProgressSet($t*10, $t*10 & " percent", "WakeServer.lnk")
 		Sleep(500)
 
 		history ("Clear all old log files")
+
+		$t+=1
+		ProgressSet($t*10, $t*10 & " percent", "Log files")
+		Sleep(500)
 
 		FileCopy($logfile, $newresultfile)
 		Sleep(500)
 		FileDelete($ScriptFolder & "\*.txt")
 		FileCopy($newresultfile, $logfile)
+		$t+=1
+		ProgressSet($t*10, $t*10 & " percent", "Temp files")
+		Sleep(500)
+
 		Sleep(500)
 		FileDelete($newresultfile)
+
 
 		ProgressSet(100, "Done", "Complete")
 		Sleep(500)
@@ -228,29 +236,29 @@ While 1
 	ProgressOn("Copy Progress", "Copying files", "0 percent")
 
 	$FilesInstallArray[0]=FileCopy(@ScriptFullPath,  $ScriptFolder, 1)
-	$r=0
-	ProgressSet($r*10, $r*10 & " percent", @ScriptName)
+	$t=0
+	ProgressSet($t*10, $t*10 & " percent", @ScriptName)
 	Sleep(500)
-	$r=_ArrayAdd($FilesInstallArray, FileInstall("WakeUninstall.exe", $ScriptFolder & "\" & $WakeUninstall))
-	ProgressSet($r*10, $r*10 & " percent", $WakeUninstall)
+	$t=_ArrayAdd($FilesInstallArray, FileInstall("WakeUninstall.exe", $ScriptFolder & "\" & $WakeUninstall))
+	ProgressSet($t*10, $t*10 & " percent", $WakeUninstall)
 	Sleep(500)
-	$r=_ArrayAdd($FilesInstallArray, FileInstall("WakePrepare.exe", $ScriptFolder & "\" & $WakePrepare))
-	ProgressSet($r*10, $r*10 & " percent", $WakePrepare)
+	$t=_ArrayAdd($FilesInstallArray, FileInstall("WakePrepare.exe", $ScriptFolder & "\" & $WakePrepare))
+	ProgressSet($t*10, $t*10 & " percent", $WakePrepare)
 	Sleep(500)
-	$r=_ArrayAdd($FilesInstallArray, FileInstall("WakeServer.exe", $ScriptFolder & "\" & $WakeServer))
-	ProgressSet($r*10, $r*10 & " percent", $WakeServer)
+	$t=_ArrayAdd($FilesInstallArray, FileInstall("WakeServer.exe", $ScriptFolder & "\" & $WakeServer))
+	ProgressSet($t*10, $t*10 & " percent", $WakeServer)
 	Sleep(500)
-	$r=_ArrayAdd($FilesInstallArray, FileInstall("WakeClient.exe", $ScriptFolder & "\" & $WakeClient))
-	ProgressSet($r*10, $r*10 & " percent", $WakeClient)
+	$t=_ArrayAdd($FilesInstallArray, FileInstall("WakeClient.exe", $ScriptFolder & "\" & $WakeClient))
+	ProgressSet($t*10, $t*10 & " percent", $WakeClient)
 	Sleep(500)
-	$r=_ArrayAdd($FilesInstallArray, FileInstall("WakeStart.exe", $ScriptFolder & "\" & $WakeStart))
-	ProgressSet($r*10, $r*10 & " percent", $WakeStart)
+	$t=_ArrayAdd($FilesInstallArray, FileInstall("WakeStart.exe", $ScriptFolder & "\" & $WakeStart))
+	ProgressSet($t*10, $t*10 & " percent", $WakeStart)
 	Sleep(500)
-	$r=_ArrayAdd($FilesInstallArray, FileInstall("WakeDaemon.exe", $ScriptFolder & "\" & $WakeDaemon))
-	ProgressSet($r*10, $r*10 & " percent", $WakeDaemon)
+	$t=_ArrayAdd($FilesInstallArray, FileInstall("WakeDaemon.exe", $ScriptFolder & "\" & $WakeDaemon))
+	ProgressSet($t*10, $t*10 & " percent", $WakeDaemon)
 	Sleep(500)
-	$r=_ArrayAdd($FilesInstallArray, FileMove(@TempDir & "\" & $helpfile, $ScriptFolder & "\" & $helpfile,1))
-	ProgressSet($r*10, $r*10 & " percent", $helpfile)
+	$t=_ArrayAdd($FilesInstallArray, FileMove(@TempDir & "\" & $helpfile, $ScriptFolder & "\" & $helpfile,1))
+	ProgressSet($t*10, $t*10 & " percent", $helpfile)
 	Sleep(500)
 
 	ProgressSet(100, "Done", "Complete")
@@ -284,7 +292,8 @@ While 1
 	FileCreateShortcut($ScriptFolder & "\" & $WakeUninstall, @ProgramsCommonDir & "\" & $ScriptName & "\WakeUninstall.lnk", $ScriptFolder)
 
 
-	MsgBox(0,"Good news!","Install completed")
+	MsgBox(0,"Good news!", "Installation of WakeScript completed. Setup`ll starts WakeStart in 5 seconds", 5)
+	Run($WakeStart, $ScriptFolder)
 
 	ExitLoop
 
@@ -333,6 +342,8 @@ While 1
 
 
 WEnd
+
+
 
 #include "Libs\foot.au3"
 
