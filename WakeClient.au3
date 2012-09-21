@@ -15,15 +15,15 @@
 #AutoIt3Wrapper_Compile_both=n
 #AutoIt3Wrapper_Res_Comment="Wake Client"
 #AutoIt3Wrapper_Res_Description="WakeUp Script Time Checker (WSTC)"
-#AutoIt3Wrapper_Res_Fileversion=0.3.3.30
+#AutoIt3Wrapper_Res_Fileversion=0.3.3.40
 #AutoIt3Wrapper_Res_FileVersion_AutoIncrement=y
 #AutoIt3Wrapper_Res_Field=ProductName|WakeUp Script Time Checker
 #AutoIt3Wrapper_Res_Field=ProductVersion|0.3.3.0
+#AutoIt3Wrapper_Res_Field=OriginalFilename|WakeClient.au3
 #AutoIt3Wrapper_Run_AU3Check=n
 #AutoIt3Wrapper_Res_Language=2057
 #AutoIt3Wrapper_Res_LegalCopyright=Sp1ker (spiker@pmpc.ru)
-#AutoIt3Wrapper_res_requestedExecutionLevel=requireAdministrator
-#AutoIt3Wrapper_Res_requestedExecutionLevel=highestAvailable
+#AutoIt3Wrapper_Res_requestedExecutionLevel=requireAdministrator
 
 #Endregion
 
@@ -61,7 +61,7 @@ $ActiveTest_hiber=IniRead($resultini, "ActiveTest", "Hiber", 0)
 
 If $firstrun==1 Then
 
-   ToolTip("Prepare for fun " & $ScriptName, 2000, 0 , "First run", 1,4)
+   ToolTip("Prepare for run " & $ScriptName, 2000, 0 , "First run", 1,4)
    PauseTime($ClientPause)
    SendData($ServerIP, "Test", $TCPport)
    PauseTime($ClientPause-1)
@@ -260,11 +260,11 @@ ElseIf $lastrun==1 Then
 			$excel_need=IniRead($resultini, "Client", "Excel", 0)
 			If $excel_need<>0 Then resulttoxls ($resultini,$resultsfile)
 
-			$newfile="Result_" & @YDAY & "-" & @WDAY & " " & @HOUR & @MIN & ".txt"
-			FileMove($resultini, $ScriptFolder & "\" & $newfile)
-			history ("Client test finished! Move ini file to " & $ScriptFolder & "\" & $newfile)
 
-			MsgBox(0,"Script Done","Open Results.xls or " & $newfile)
+			FileMove($resultini, $newresultfile)
+			history ("Client test finished! Move ini file to " & $ScriptFolder & "\" & $newresultfile)
+
+			MsgBox(0,"Script Done","Open Results.xls or " & $newresultfile)
 
 EndIf
 

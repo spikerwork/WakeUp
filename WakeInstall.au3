@@ -13,22 +13,23 @@
 #Region AutoIt3Wrapper directives section
 
 #AutoIt3Wrapper_Compile_both=n
-#AutoIt3Wrapper_Res_Comment="Wake Install"
+#AutoIt3Wrapper_Icon=Alert.ico
+#AutoIt3Wrapper_Res_Field=PreRelease|1
 #AutoIt3Wrapper_Res_Description="WakeUp Script Time Checker (WSTC)"
-#AutoIt3Wrapper_Res_Fileversion=0.3.3.29
+#AutoIt3Wrapper_Res_Fileversion=0.3.3.48
 #AutoIt3Wrapper_Res_FileVersion_AutoIncrement=y
 #AutoIt3Wrapper_Res_Field=ProductName|WakeUp Script Time Checker
 #AutoIt3Wrapper_Res_Field=ProductVersion|0.3.3.0
+#AutoIt3Wrapper_Res_Field=OriginalFilename|WakeInstall.au3
 #AutoIt3Wrapper_Run_AU3Check=n
 #AutoIt3Wrapper_Res_Language=2057
 #AutoIt3Wrapper_Res_LegalCopyright=Sp1ker (spiker@pmpc.ru)
-#AutoIt3Wrapper_res_requestedExecutionLevel=requireAdministrator
-#AutoIt3Wrapper_Res_requestedExecutionLevel=highestAvailable
+#AutoIt3Wrapper_Res_requestedExecutionLevel=requireAdministrator
 
 #Endregion
 
-
 #include "Libs\libs.au3"
+FileDelete($logfile)
 #include "Libs\head.au3"
 
 history ("Starting install...")
@@ -161,6 +162,7 @@ While 1
 		$r=1
 
 		ProgressOn("Delete other old files", "Deleting files", "0 percent")
+		history ("Delete other old files")
 
 		If FileExists($inifile)==1 Then FileDelete($inifile)
 		$r+=1
@@ -171,6 +173,18 @@ While 1
 		$r+=1
 		ProgressSet($r*10, $r*10 & " percent", $resultini)
 		Sleep(500)
+
+		If FileExists($timeini)==1 Then FileDelete($timeini)
+		$r+=1
+		ProgressSet($r*10, $r*10 & " percent", $timeini)
+		Sleep(500)
+
+		If FileExists($tempfile)==1 Then FileDelete($tempfile)
+		$r+=1
+		ProgressSet($r*10, $r*10 & " percent", $tempfile)
+		Sleep(500)
+
+		history ("Delete old files from " & @ProgramsCommonDir)
 
 		DirRemove(@ProgramsCommonDir & "\" & $ScriptName, 1)
 		$r+=1
@@ -191,6 +205,15 @@ While 1
 		$r+=1
 		ProgressSet($r*10, $r*10 & " percent", "WakeServer.lnk")
 		Sleep(500)
+
+		history ("Clear all old log files")
+
+		FileCopy($logfile, $newresultfile)
+		Sleep(500)
+		FileDelete($ScriptFolder & "\*.txt")
+		FileCopy($newresultfile, $logfile)
+		Sleep(500)
+		FileDelete($newresultfile)
 
 		ProgressSet(100, "Done", "Complete")
 		Sleep(500)
@@ -239,6 +262,7 @@ While 1
 	While $t <= Ubound($FilesInstallArray)-1
 
 		If $FilesInstallArray[$t]==1 Then
+		   history ("Copied file " & $FilesArray[$t])
 		   $t=$t+1
 		Else
 

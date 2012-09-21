@@ -28,6 +28,9 @@ $resultsfile = $ScriptFolder & "\Results.xls" ; XLS file with results, if possib
 Global $timeini = "timeini.ini" ; Contains timestamps of WakeDaemon
 $timeini = $ScriptFolder & "\" & $timeini
 
+Global $newresultfile="Result_" & @ComputerName & "-" & @UserName & " " & @MDAY & "." & @MON & "." & @YEAR & "_" & @MSEC & ".ini"
+$newresultfile = $ScriptFolder & "\" & $newresultfile
+
 ; Help File
 Global $helpfile="help.txt" ; Help for Install GUI
 
@@ -78,7 +81,7 @@ Global  $WakeDaemon="WakeDaemon.exe"
 Global  $WakeBT="WakeBT.exe"
 Global  $tempfile=@HomeDrive & "\temp.txt" ; Temp file
 
-Global 	$FilesArray[8]=[$WakeInstall,$WakeUninstall,$WakeBT, $WakeClient, $WakeDaemon, $WakePrepare, $WakeStart,$WakeServer]
+Global 	$FilesArray[8]=[$WakeInstall, $WakeUninstall, $WakeClient, $WakeDaemon, $WakePrepare, $WakeStart, $WakeServer, $WakeBT]
 
 
 

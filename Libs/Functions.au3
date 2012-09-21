@@ -140,6 +140,8 @@
 
 		If $cpu_need==0 and $hdd_need==0 Then
 		history ("Skiping WMI daemon. ")
+		IniWrite($timeini, "WMI", "Fresh", 0)
+		IniWrite($timeini, "Start", "Resume", GetUnixTimeStamp())
 		ExitLoop
 		EndIf
 
