@@ -16,7 +16,7 @@ history ("Program started. UnixTimeStamp " & $ScriptStartTime)
 history ("Work directory Ч " & @ScriptDir)
 
 ;;;; Admin checkin ;;;;
-#RequireAdmin
+;#RequireAdmin Enable this option causes loop-problem!
 If IsAdmin()==0 Then
    MsgBox(0, "", "ƒл€ запуска программы необходимы права администратора")
    history ("Admin check failed")
