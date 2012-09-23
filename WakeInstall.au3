@@ -16,7 +16,7 @@
 #AutoIt3Wrapper_Icon=Alert.ico
 #AutoIt3Wrapper_Res_Field=PreRelease|1
 #AutoIt3Wrapper_Res_Description="WakeUp Script Time Checker (WSTC)"
-#AutoIt3Wrapper_Res_Fileversion=0.3.4.67
+#AutoIt3Wrapper_Res_Fileversion=0.3.4.68
 #AutoIt3Wrapper_Res_FileVersion_AutoIncrement=y
 #AutoIt3Wrapper_Res_Field=ProductName|WakeUp Script Time Checker
 #AutoIt3Wrapper_Res_Field=ProductVersion|0.3.x.0
@@ -149,6 +149,8 @@ While 1
 	If BitAnd(GUICtrlRead($F_debug),$GUI_UNCHECKED) = $GUI_UNCHECKED Then $linedebug=0
 	If BitAnd(GUICtrlRead($F_log),$GUI_UNCHECKED) = $GUI_UNCHECKED Then $log=0
 	If BitAnd(GUICtrlRead($F_log),$GUI_CHECKED) = $GUI_CHECKED Then $log=1
+
+
 	If BitAnd(GUICtrlRead($F_inst),$GUI_CHECKED) = $GUI_CHECKED Then
 
 		history ("Clearing folder " & $ScriptFolder)
@@ -241,11 +243,15 @@ While 1
 		Sleep(500)
 		FileDelete($ScriptFolder & "\*.txt")
 		If $log==1 Then FileCopy($newresultfile, $logfile)
-		$t+=1
 		ProgressSet($t*10, $t*10 & " percent", "Temp files")
-		Sleep(500)
 
-		Sleep(500)
+		; Remove programs from firewall
+		history ("Remove firewall rules")
+		ProgressSet($t*10, $t*10 & " percent", "Remove firewall rules")
+		AddToFirewall($WakeClient, $ScriptFolder & "\" & $WakeClient,0)
+		AddToFirewall($WakeServer, $ScriptFolder & "\" & $WakeServer,0)
+		AddToFirewall($WakeDaemon, $ScriptFolder & "\" & $WakeDaemon,0)
+
 		FileDelete($newresultfile)
 
 
@@ -311,6 +317,7 @@ While 1
 		EndIf
 
 	WEnd
+
 
 	PauseTime($pausetime)
 

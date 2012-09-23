@@ -15,7 +15,7 @@
 #AutoIt3Wrapper_Icon=Alert.ico
 #AutoIt3Wrapper_Res_Comment="Wake Uninstall"
 #AutoIt3Wrapper_Res_Description="WakeUp Script Time Checker (WSTC)"
-#AutoIt3Wrapper_Res_Fileversion=0.3.4.48
+#AutoIt3Wrapper_Res_Fileversion=0.3.4.51
 #AutoIt3Wrapper_Res_FileVersion_AutoIncrement=y
 #AutoIt3Wrapper_Res_Field=ProductName|WakeUp Script Time Checker
 #AutoIt3Wrapper_Res_Field=ProductVersion|0.3.x.0
@@ -143,11 +143,13 @@
 
 	  EndIf
 
-
-
+	; Remove programs from firewall
+	AddToFirewall($WakeClient, $ScriptFolder & "\" & $WakeClient,0)
+	AddToFirewall($WakeServer, $ScriptFolder & "\" & $WakeServer,0)
+	AddToFirewall($WakeDaemon, $ScriptFolder & "\" & $WakeDaemon,0)
 
 MsgBox(0,"Unistall succesful","WakeScript has removed", 5)
 
-_SelfDelete()
+_SelfDelete() ; Delete this exe file
 
 #include "Libs\foot.au3"
