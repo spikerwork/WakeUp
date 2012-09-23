@@ -16,7 +16,7 @@
 #AutoIt3Wrapper_Icon=Alert.ico
 #AutoIt3Wrapper_Res_Field=PreRelease|1
 #AutoIt3Wrapper_Res_Description="WakeUp Script Time Checker (WSTC)"
-#AutoIt3Wrapper_Res_Fileversion=0.3.4.60
+#AutoIt3Wrapper_Res_Fileversion=0.3.4.67
 #AutoIt3Wrapper_Res_FileVersion_AutoIncrement=y
 #AutoIt3Wrapper_Res_Field=ProductName|WakeUp Script Time Checker
 #AutoIt3Wrapper_Res_Field=ProductVersion|0.3.x.0
@@ -50,6 +50,8 @@ Local $Button_2
 Local $Button_3
 Local $Button_4
 Local $F_inst
+Local $F_log
+Local $F_debug
 Local $adapters=0
 Local $t=0
 Local $FilesInstallArray[1]
@@ -87,27 +89,46 @@ Opt("GUICoordMode", 1)
 GuiCtrlCreateLabel("Press F1 for help", 145, 0, 150, 15, $SS_RIGHT)
 
 $Button_1 = GUICtrlCreateButton("Install WakeScript", 80, 30, 150, 40)
-$F_inst=GUICtrlCreateCheckbox("Clean install ", 100, 80, 120, 20)
+$F_inst=GUICtrlCreateCheckbox("Clean install ", 60, 80, 80, 20)
+$F_log=GUICtrlCreateCheckbox("Log ", 140, 80, 50, 20)
+$F_debug=GUICtrlCreateCheckbox("Debug ", 190, 80, 120, 20)
 $Button_2 = GUICtrlCreateButton("Install BootTime", 80, 110, 150, 40)
 GuiCtrlCreateLabel("(Old version of script)", 93, 155, 150, 20)
 
 ; Check installed version of script
+GUICtrlSetState ($F_log, $GUI_CHECKED )
+GUICtrlSetState ($F_debug, $GUI_UNCHECKED )
 
-If $ScriptInstalled==0 Then GUICtrlSetState ($F_inst, $GUI_DISABLE )
-If $ScriptInstalled==1 Then
+If $ScriptInstalled==0 Then
+GUICtrlSetState ($F_inst, $GUI_DISABLE )
+ElseIf $ScriptInstalled==1 Then
 GUICtrlSetState ($F_inst, $GUI_ENABLE )
 GUICtrlSetState ($F_inst, $GUI_CHECKED )
 EndIf
 GUISwitch($mainGui)
 GUISetState ()
 
-; Main cycle
+; Main GUI cycle
 
 While 1
 
 	$msg = GUIGetMsg()
 
 	Select
+
+	; Check log option
+
+	Case $msg == $F_log
+
+	If BitAnd(GUICtrlRead($F_log),$GUI_UNCHECKED) = $GUI_UNCHECKED Then
+	GUICtrlSetState ($F_debug, $GUI_UNCHECKED )
+	GUICtrlSetState ($F_debug, $GUI_DISABLE )
+	$linedebug=0
+	$log=0
+	ElseIf BitAnd(GUICtrlRead($F_log),$GUI_CHECKED) = $GUI_CHECKED Then
+	GUICtrlSetState ($F_debug, $GUI_ENABLE )
+	$log=1
+	EndIf
 
 	;
 	;
@@ -124,6 +145,10 @@ While 1
 
 	; Clear old files if they present
 
+	If BitAnd(GUICtrlRead($F_debug),$GUI_CHECKED) = $GUI_CHECKED Then $linedebug=1
+	If BitAnd(GUICtrlRead($F_debug),$GUI_UNCHECKED) = $GUI_UNCHECKED Then $linedebug=0
+	If BitAnd(GUICtrlRead($F_log),$GUI_UNCHECKED) = $GUI_UNCHECKED Then $log=0
+	If BitAnd(GUICtrlRead($F_log),$GUI_CHECKED) = $GUI_CHECKED Then $log=1
 	If BitAnd(GUICtrlRead($F_inst),$GUI_CHECKED) = $GUI_CHECKED Then
 
 		history ("Clearing folder " & $ScriptFolder)
@@ -161,6 +186,7 @@ While 1
 		$t=1
 
 		ProgressOn("Delete other old files", "Deleting files", "0 percent")
+
 		history ("Delete other old files")
 
 		If FileExists($inifile)==1 Then FileDelete($inifile)
@@ -211,10 +237,10 @@ While 1
 		ProgressSet($t*10, $t*10 & " percent", "Log files")
 		Sleep(500)
 
-		FileCopy($logfile, $newresultfile)
+		If $log==1 Then FileCopy($logfile, $newresultfile)
 		Sleep(500)
 		FileDelete($ScriptFolder & "\*.txt")
-		FileCopy($newresultfile, $logfile)
+		If $log==1 Then FileCopy($newresultfile, $logfile)
 		$t+=1
 		ProgressSet($t*10, $t*10 & " percent", "Temp files")
 		Sleep(500)
@@ -231,7 +257,11 @@ While 1
 
 	$destr=GUIDelete($mainGui)
 
+	history ("Install main files")
+
 	; Install all files
+	IniWrite($inifile, "All", "Log", $log)
+	IniWrite($inifile, "All", "LineDebug", $linedebug)
 
 	ProgressOn("Install", "Copying files", "0 percent")
 
@@ -274,7 +304,7 @@ While 1
 		   $t=$t+1
 		Else
 
-		   MsgBox(0, "Sad News!", "Some files can`t be installed.")
+		   MsgBox(0, "Sad News!", "Some files can`t be installed. See log for details")
 		   history ("File missed. Number - " & $t+1 & ". Sequence of file install : WakeInstall, WakeUninstall.exe, WakePrepare.exe, WakeServer.exe, WakeClient.exe, WakeStart.exe, WakeDaemon.exe, help.txt")
 
 		ExitLoop(2)
@@ -283,6 +313,8 @@ While 1
 	WEnd
 
 	PauseTime($pausetime)
+
+	history ("Create program files directory")
 
 	; Start Menu install
 	DirCreate(@ProgramsCommonDir & "\" & $ScriptName)
@@ -293,6 +325,7 @@ While 1
 
 
 	MsgBox(0,"Good news!", "Installation of WakeScript completed. Setup`ll starts WakeStart in 5 seconds", 5)
+
 	Run($WakeStart, $ScriptFolder)
 
 	ExitLoop
