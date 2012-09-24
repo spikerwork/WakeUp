@@ -103,7 +103,7 @@ Global $ScriptEndTime ; Script end time (foot.au3)
 
    ; Main settings ($inifile)
    Global $TCPport = IniRead($inifile, "Network", "TCPport", 65432 ) ; TCP port for server. Client has TCPport+1
-   Global $UDPport = IniRead($inifile, "Network", "UDPport", 7 ) ; UDP port for MagicPacket
+   Global $UDPport = IniRead($inifile, "Network", "UDPport", 7 ) ; UDP port for MagicPacket.
    Global $ServerIP = IniRead($inifile, "Network", "IP", "10.0.0.254" ) ; Default Server IP address
    Global $Client_IP = IniRead($inifile, "Network", "Client_IP", "192.168.1.3" ) ; Default Client IP address
    Global $MAC = IniRead($inifile, "Network", "MAC", "00:24:1D:12:CC:3B" ) ; Default Server IP address

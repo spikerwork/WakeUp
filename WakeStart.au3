@@ -1,7 +1,9 @@
 #cs --------------------------------------------------------------------
 
  AutoIt Version: 3.3.8.1
- Author:         Sp1ker
+ Author: Sp1ker (spiker@pmpc.ru)
+ Program: WakeUp Script Time Checker (WSTC)
+ Site: https://github.com/spikerwork/WakeUp
 
  Script Function:
 
@@ -15,7 +17,7 @@
 #AutoIt3Wrapper_Icon=Alert.ico
 #AutoIt3Wrapper_Res_Comment="Wake Start"
 #AutoIt3Wrapper_Res_Description="WakeUp Script Time Checker (WSTC)"
-#AutoIt3Wrapper_Res_Fileversion=0.3.4.55
+#AutoIt3Wrapper_Res_Fileversion=0.3.5.56
 #AutoIt3Wrapper_Res_FileVersion_AutoIncrement=y
 #AutoIt3Wrapper_Res_Field=ProductName|WakeUp Script Time Checker
 #AutoIt3Wrapper_Res_Field=ProductVersion|0.3.x.0

@@ -12,7 +12,7 @@
 #ce --------------------------------------------------------------------
 $ScriptStartTime=GetUnixTimeStamp() ; Each script start time
 
-history ("Program started. UnixTimeStamp " & $ScriptStartTime)
+history ("Program started (" & @ScriptName & "). UnixTimeStamp " & $ScriptStartTime)
 history ("Work directory — " & @ScriptDir)
 
 ;;;; Admin checkin ;;;;

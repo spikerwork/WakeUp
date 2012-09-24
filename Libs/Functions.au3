@@ -103,7 +103,7 @@
 		  Exit
 	   EndIf
 	  If $linedebug==1 Then ToolTip("Time - " & $time & @CRLF & $post & @CRLF, 2000, 0, @ScriptName, 2,4)
-	  FileWrite($file, $time & " Script (" & @ScriptName & ") — - — " & $post & @CRLF)
+	  FileWrite($file, "(" & $time & ") --- " & $post & @CRLF)
 	  FileClose($file)
 
 	  EndIf

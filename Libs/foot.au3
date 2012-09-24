@@ -14,6 +14,6 @@
 $ScriptEndTime=GetUnixTimeStamp()
 $ScriptEndTime=$ScriptEndTime-$ScriptStartTime
 history ("Errors " & @error)
-history ("Program halted. Worktime - " & $ScriptEndTime & " seconds")
+history ("Program halted. Worktime - " & $ScriptEndTime & " seconds. UnixTimeStamp - " & $ScriptEndTime)
 history ("------------------------------------------------------------------------")
 ;;; End of script
