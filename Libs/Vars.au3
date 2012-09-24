@@ -2,7 +2,9 @@
 #cs --------------------------------------------------------------------
 
  AutoIt Version: 3.3.8.1
- Author:         Sp1ker
+ Author: Sp1ker (spiker@pmpc.ru)
+ Program: WakeUp Script Time Checker (WSTC)
+ Site: https://github.com/spikerwork/WakeUp
 
  Script Function:
 	The main library for WakeUp Script Time Checker (WSTC)
