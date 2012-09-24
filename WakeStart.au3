@@ -1,7 +1,9 @@
 #cs --------------------------------------------------------------------
 
  AutoIt Version: 3.3.8.1
- Author:         Sp1ker
+ Author: Sp1ker (spiker@pmpc.ru)
+ Program: WakeUp Script Time Checker (WSTC)
+ Site: https://github.com/spikerwork/WakeUp
 
  Script Function:
 
@@ -15,10 +17,10 @@
 #AutoIt3Wrapper_Icon=Alert.ico
 #AutoIt3Wrapper_Res_Comment="Wake Start"
 #AutoIt3Wrapper_Res_Description="WakeUp Script Time Checker (WSTC)"
-#AutoIt3Wrapper_Res_Fileversion=0.3.4.43
+#AutoIt3Wrapper_Res_Fileversion=0.3.5.57
 #AutoIt3Wrapper_Res_FileVersion_AutoIncrement=y
 #AutoIt3Wrapper_Res_Field=ProductName|WakeUp Script Time Checker
-#AutoIt3Wrapper_Res_Field=ProductVersion|0.3.3.0
+#AutoIt3Wrapper_Res_Field=ProductVersion|0.3.x.0
 #AutoIt3Wrapper_Res_Field=OriginalFilename|WakeStart.au3
 #AutoIt3Wrapper_Run_AU3Check=n
 #AutoIt3Wrapper_Res_Language=2057
@@ -79,12 +81,13 @@ Local $UDP_input
 Local $S_input
 Local $S_TCP_input
 Local $Adapter_GUID
+Local $TestRepeat
+Local $cpu_time
 
 ;;; Vars filled with values
 Local $t=0
 Local $adapters=0
 Local $PhysicAdapters=0
-Local $ipdetails=_IPDetail() ; Gather information of network adapters
 
 ; Files check (Vars from head.au3)
 If $filesinfolder<>$F_arra-1 Then
@@ -93,6 +96,9 @@ If $filesinfolder<>$F_arra-1 Then
 	If FileExists($ScriptFolder & "\" & $WakeInstall) Then Run($ScriptFolder & "\" & $WakeInstall, $ScriptFolder)
 	Exit
 EndIf
+
+; Gather information of network adapters
+Local $ipdetails=_IPDetail()
 
 
 ; Creating main GUI
@@ -255,8 +261,32 @@ While 1
 
 	  GUICtrlSetState($maintab, $GUI_SHOW) ; will be display the current tab
 
+	; Server Pause check
+	Case $msg == $WakeUpPause
+	If GUICtrlRead($WakeUpPause) < 100 Then
+	MsgBox(0,"Warning!", "Pause can`t be less than 100 seconds!")
+	GUICtrlSetData($WakeUpPause, 180)
+	EndIf
 
-   Case $msg == $S_input
+	; TestRuns check
+	Case $msg == $TestRepeat
+	If GUICtrlRead($TestRepeat) < 1 Then
+	MsgBox(0,"Warning!", "Testrun can`t be less 1!")
+	GUICtrlSetData($TestRepeat, 5)
+	EndIf
+
+	; Cpu Load check
+	Case $msg == $cpu_time
+	If GUICtrlRead($cpu_time) < 0 Then
+	MsgBox(0,"Warning!", "Cpu Load can`t be less 0%")
+	GUICtrlSetData($cpu_time, 5)
+	ElseIf GUICtrlRead($cpu_time) > 70 Then
+	MsgBox(0,"Warning!", "Cpu Load can`t be more 70%")
+	GUICtrlSetData($cpu_time, 5)
+	EndIf
+
+
+	Case $msg == $S_input
    ; Changing Server IP
 
 	  IF GUICtrlRead ($S_input)<>"" Then

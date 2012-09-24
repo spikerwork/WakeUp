@@ -2,7 +2,9 @@
 #cs --------------------------------------------------------------------
 
  AutoIt Version: 3.3.8.1
- Author:         Sp1ker
+ Author: Sp1ker (spiker@pmpc.ru)
+ Program: WakeUp Script Time Checker (WSTC)
+ Site: https://github.com/spikerwork/WakeUp
 
  Script Function:
 	The main library for WakeUp Script Time Checker (WSTC)
@@ -103,7 +105,7 @@
 		  Exit
 	   EndIf
 	  If $linedebug==1 Then ToolTip("Time - " & $time & @CRLF & $post & @CRLF, 2000, 0, @ScriptName, 2,4)
-	  FileWrite($file, $time & " Script (" & @ScriptName & ") — - — " & $post & @CRLF)
+	  FileWrite($file, "(" & $time & ") --- " & $post & @CRLF)
 	  FileClose($file)
 
 	  EndIf
@@ -528,9 +530,26 @@
 
 
     ; Add to Firewall Exception. Need admin rights
-   Func AddToFirewall ($appName, $applicationFullPath)
+; #FUNCTION# ====================================================================================================================
+; Name ..........: AddToFirewall
+; Description ...:
+; Syntax ........: AddToFirewall ($appName, $applicationFullPath[, $appSet = 1])
+; Parameters ....: $appName             - Name of program.
+;                  $applicationFullPath - Full path to program (dir+exe).
+;                  $appSet              - [optional]. Default is 1 - on. 0 Delete program from firewall
+; Return values .: None
+; Author ........: Sp1ker
+; Example .......: AddToFirewall($WakeServer, $ScriptFolder & "\" & $WakeServer,0); $WakeServer="WakeServer.exe", $ScriptFolder=@HomeDrive & "\WakeScript"
+; ===============================================================================================================================
+	Func AddToFirewall ($appName, $applicationFullPath, $appSet=1)
+
+	If $appSet==1 Then
 	  RunWait ('netsh advfirewall firewall add rule name="' & $appName &'" dir=in action=allow program="' & $applicationFullPath & '" enable=yes profile=any')
-  EndFunc
+	ElseIf $appSet==0 Then
+	  RunWait ('netsh advfirewall firewall del rule name="' & $appName &'" dir=in program="' & $applicationFullPath )
+	EndIf
+
+	EndFunc
 
 	; IMPORTANT MAKE A COPY OF SCRIPT BEFORE DELETION
 	; Deletes the running script

@@ -2,7 +2,9 @@
 #cs --------------------------------------------------------------------
 
  AutoIt Version: 3.3.8.1
- Author:         Sp1ker
+ Author: Sp1ker (spiker@pmpc.ru)
+ Program: WakeUp Script Time Checker (WSTC)
+ Site: https://github.com/spikerwork/WakeUp
 
  Script Function:
 
@@ -10,21 +12,13 @@
 	It contains the beginning of each script
 
 #ce --------------------------------------------------------------------
+$ScriptStartTime=GetUnixTimeStamp() ; Each script start time
 
-history ("Program started")
+history ("Program started (" & @ScriptName & "). UnixTimeStamp " & $ScriptStartTime)
 history ("Work directory Ч " & @ScriptDir)
 
-;;;; WakeDaemon Timestamp ;;;;
-If @ScriptName==$WakeDaemon Then
-
-If FileExists($timeini) Then FileDelete($timeini)
-IniWrite($timeini, "Start", "Time", GetUnixTimeStamp())
-history ("UnixTimeStamp " & GetUnixTimeStamp() & ". Start Ч " & currenttime())
-
-EndIf
-
 ;;;; Admin checkin ;;;;
-#RequireAdmin
+;#RequireAdmin Enable this option causes loop-problem!
 If IsAdmin()==0 Then
    MsgBox(0, "", "ƒл€ запуска программы необходимы права администратора")
    history ("Admin check failed")
@@ -61,7 +55,7 @@ Else
 
 EndIf
 
-Local $F_arra
+
 While $F_arra <= Ubound($FilesArray)-1
 
 	If FileExists($ScriptFolder & "\" & $FilesArray[$F_arra])==1 Then

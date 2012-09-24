@@ -1,7 +1,9 @@
 #cs --------------------------------------------------------------------
 
  AutoIt Version: 3.3.8.1
- Author:         Sp1ker
+ Author: Sp1ker (spiker@pmpc.ru)
+ Program: WakeUp Script Time Checker (WSTC)
+ Site: https://github.com/spikerwork/WakeUp
 
  Script Function:
 
@@ -16,10 +18,10 @@
 #AutoIt3Wrapper_Icon=Alert.ico
 #AutoIt3Wrapper_Res_Field=PreRelease|1
 #AutoIt3Wrapper_Res_Description="WakeUp Script Time Checker (WSTC)"
-#AutoIt3Wrapper_Res_Fileversion=0.3.4.56
+#AutoIt3Wrapper_Res_Fileversion=0.3.5.79
 #AutoIt3Wrapper_Res_FileVersion_AutoIncrement=y
 #AutoIt3Wrapper_Res_Field=ProductName|WakeUp Script Time Checker
-#AutoIt3Wrapper_Res_Field=ProductVersion|0.3.3.0
+#AutoIt3Wrapper_Res_Field=ProductVersion|0.3.x.0
 #AutoIt3Wrapper_Res_Field=OriginalFilename|WakeInstall.au3
 #AutoIt3Wrapper_Run_AU3Check=n
 #AutoIt3Wrapper_Res_Language=2057
@@ -29,6 +31,7 @@
 #Endregion
 
 #include "Libs\libs.au3"
+$linedebug=0
 FileDelete($logfile)
 #include "Libs\head.au3"
 
@@ -50,6 +53,8 @@ Local $Button_2
 Local $Button_3
 Local $Button_4
 Local $F_inst
+Local $F_log
+Local $F_debug
 Local $adapters=0
 Local $t=0
 Local $FilesInstallArray[1]
@@ -87,27 +92,46 @@ Opt("GUICoordMode", 1)
 GuiCtrlCreateLabel("Press F1 for help", 145, 0, 150, 15, $SS_RIGHT)
 
 $Button_1 = GUICtrlCreateButton("Install WakeScript", 80, 30, 150, 40)
-$F_inst=GUICtrlCreateCheckbox("Clean install ", 100, 80, 120, 20)
+$F_inst=GUICtrlCreateCheckbox("Clean install ", 40, 80, 100, 20)
+$F_log=GUICtrlCreateCheckbox("Log ", 140, 80, 50, 20)
+$F_debug=GUICtrlCreateCheckbox("Debug ", 190, 80, 120, 20)
 $Button_2 = GUICtrlCreateButton("Install BootTime", 80, 110, 150, 40)
 GuiCtrlCreateLabel("(Old version of script)", 93, 155, 150, 20)
 
 ; Check installed version of script
+GUICtrlSetState ($F_log, $GUI_CHECKED )
+GUICtrlSetState ($F_debug, $GUI_UNCHECKED )
 
-If $ScriptInstalled==0 Then GUICtrlSetState ($F_inst, $GUI_DISABLE )
-If $ScriptInstalled==1 Then
+If $ScriptInstalled==0 Then
+GUICtrlSetState ($F_inst, $GUI_DISABLE )
+ElseIf $ScriptInstalled==1 Then
 GUICtrlSetState ($F_inst, $GUI_ENABLE )
 GUICtrlSetState ($F_inst, $GUI_CHECKED )
 EndIf
 GUISwitch($mainGui)
 GUISetState ()
 
-; Main cycle
+; Main GUI cycle
 
 While 1
 
 	$msg = GUIGetMsg()
 
 	Select
+
+	; Check log option
+
+	Case $msg == $F_log
+
+	If BitAnd(GUICtrlRead($F_log),$GUI_UNCHECKED) = $GUI_UNCHECKED Then
+	GUICtrlSetState ($F_debug, $GUI_UNCHECKED )
+	GUICtrlSetState ($F_debug, $GUI_DISABLE )
+	$linedebug=0
+	$log=0
+	ElseIf BitAnd(GUICtrlRead($F_log),$GUI_CHECKED) = $GUI_CHECKED Then
+	GUICtrlSetState ($F_debug, $GUI_ENABLE )
+	$log=1
+	EndIf
 
 	;
 	;
@@ -123,6 +147,12 @@ While 1
 	GUISetState(@SW_HIDE, $mainGui)
 
 	; Clear old files if they present
+
+	If BitAnd(GUICtrlRead($F_debug),$GUI_CHECKED) = $GUI_CHECKED Then $linedebug=1
+	If BitAnd(GUICtrlRead($F_debug),$GUI_UNCHECKED) = $GUI_UNCHECKED Then $linedebug=0
+	If BitAnd(GUICtrlRead($F_log),$GUI_UNCHECKED) = $GUI_UNCHECKED Then $log=0
+	If BitAnd(GUICtrlRead($F_log),$GUI_CHECKED) = $GUI_CHECKED Then $log=1
+
 
 	If BitAnd(GUICtrlRead($F_inst),$GUI_CHECKED) = $GUI_CHECKED Then
 
@@ -161,6 +191,7 @@ While 1
 		$t=1
 
 		ProgressOn("Delete other old files", "Deleting files", "0 percent")
+
 		history ("Delete other old files")
 
 		If FileExists($inifile)==1 Then FileDelete($inifile)
@@ -211,17 +242,57 @@ While 1
 		ProgressSet($t*10, $t*10 & " percent", "Log files")
 		Sleep(500)
 
-		FileCopy($logfile, $newresultfile)
+		If $log==1 Then FileCopy($logfile, $newresultfile)
 		Sleep(500)
 		FileDelete($ScriptFolder & "\*.txt")
-		FileCopy($newresultfile, $logfile)
-		$t+=1
+		If $log==1 Then FileCopy($newresultfile, $logfile)
 		ProgressSet($t*10, $t*10 & " percent", "Temp files")
-		Sleep(500)
 
-		Sleep(500)
+		; Remove programs from firewall
+		history ("Remove firewall rules")
+		ProgressSet($t*10, $t*10 & " percent", "Remove firewall rules")
+		AddToFirewall($WakeClient, $ScriptFolder & "\" & $WakeClient,0)
+		AddToFirewall($WakeServer, $ScriptFolder & "\" & $WakeServer,0)
+		AddToFirewall($WakeDaemon, $ScriptFolder & "\" & $WakeDaemon,0)
+
 		FileDelete($newresultfile)
 
+
+	  ; Check active powerplan
+
+	  ShellExecuteWait('cmd.exe', '/c powercfg GETACTIVESCHEME | find /I ":" > ' & $tempfile)
+
+	  $file=FileOpen($tempfile, 0)
+	  $line = FileReadLine($file)
+	  $result = StringInStr($line, ":")
+	  $GUID=StringTrimLeft($line,$result+1)
+	  $result = StringInStr($GUID, " ")
+	  $GUID=StringLeft($GUID,$result-1)
+
+	  FileClose($file)
+	  FileDelete($tempfile)
+
+	  If $GUID==$NewGUID Then
+
+	  history ("Found that new powerplan enabled  - " & $GUID)
+
+	  ShellExecuteWait('cmd.exe', '/c powercfg /SETACTIVE ' & $OldGUID)
+
+	  history ("Enabling previous powerplan - " & $OldGUID)
+
+	  ShellExecuteWait('cmd.exe', '/c powercfg /DELETE ' & $NewGUID)
+
+	  history ("Remove powerplan - " & $NewGUID)
+
+	  ElseIf $GUID==$OldGUID Then
+
+	  history ("Found that previous powerplan enabled  - " & $GUID)
+
+	  ShellExecuteWait('cmd.exe', '/c powercfg /DELETE ' & $NewGUID)
+
+	  history ("Remove powerplan - " & $NewGUID)
+
+	  EndIf
 
 		ProgressSet(100, "Done", "Complete")
 		Sleep(500)
@@ -231,9 +302,13 @@ While 1
 
 	$destr=GUIDelete($mainGui)
 
-	; Install all files
+	history ("Install main files")
 
-	ProgressOn("Copy Progress", "Copying files", "0 percent")
+	; Install all files
+	IniWrite($inifile, "All", "Log", $log)
+	IniWrite($inifile, "All", "LineDebug", $linedebug)
+
+	ProgressOn("Install", "Copying files", "0 percent")
 
 	$FilesInstallArray[0]=FileCopy(@ScriptFullPath,  $ScriptFolder, 1)
 	$t=0
@@ -274,7 +349,7 @@ While 1
 		   $t=$t+1
 		Else
 
-		   MsgBox(0, "Sad News!", "Some files can`t be installed.")
+		   MsgBox(0, "Sad News!", "Some files can`t be installed. See log for details")
 		   history ("File missed. Number - " & $t+1 & ". Sequence of file install : WakeInstall, WakeUninstall.exe, WakePrepare.exe, WakeServer.exe, WakeClient.exe, WakeStart.exe, WakeDaemon.exe, help.txt")
 
 		ExitLoop(2)
@@ -282,7 +357,8 @@ While 1
 
 	WEnd
 
-	PauseTime($pausetime)
+
+	history ("Create program files directory")
 
 	; Start Menu install
 	DirCreate(@ProgramsCommonDir & "\" & $ScriptName)
@@ -291,9 +367,11 @@ While 1
 	FileCreateShortcut($ScriptFolder & "\" & $WakeStart, @ProgramsCommonDir & "\" & $ScriptName & "\WakeStart.lnk", $ScriptFolder)
 	FileCreateShortcut($ScriptFolder & "\" & $WakeUninstall, @ProgramsCommonDir & "\" & $ScriptName & "\WakeUninstall.lnk", $ScriptFolder)
 
+	PauseTime($pausetime)
 
 	MsgBox(0,"Good news!", "Installation of WakeScript completed. Setup`ll starts WakeStart in 5 seconds", 5)
-	Run($WakeStart, $ScriptFolder)
+
+	Run($ScriptFolder & "\" & $WakeStart, $ScriptFolder)
 
 	ExitLoop
 
@@ -343,7 +421,4 @@ While 1
 
 WEnd
 
-
-
 #include "Libs\foot.au3"
-

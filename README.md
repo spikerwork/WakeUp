@@ -1,10 +1,10 @@
-This script-program is freeware. Anyone can use it.
-WakeUp Script - tool for testing ρωόηγεσκ wakeup time from 3 state: Sleep, Hibernation and PC off (Shutdown).
-Script based on WakeOnLan function of network cards, so it`ll be working on many today`s PC.
+This script-program is freeware. Anyone can use it. Program have english interface.
+WakeUp Script - tool for testing computer wakeup time from 3 state: Sleep, Hibernation and PC off (Shutdown).
+Script based on WakeOnLan function of network cards, so it will be working on many today PC.
 
 Now supporting only OS Windows Vista/7. Windows 8 not full tested yet.
 
-Known issues are lists in help file (help.txt)
+Known issues are lists in help file (help.txt). 
 
 
 --------------------
