@@ -16,7 +16,7 @@
 #AutoIt3Wrapper_Icon=Alert.ico
 #AutoIt3Wrapper_Res_Field=PreRelease|1
 #AutoIt3Wrapper_Res_Description="WakeUp Script Time Checker (WSTC)"
-#AutoIt3Wrapper_Res_Fileversion=0.3.4.68
+#AutoIt3Wrapper_Res_Fileversion=0.3.4.77
 #AutoIt3Wrapper_Res_FileVersion_AutoIncrement=y
 #AutoIt3Wrapper_Res_Field=ProductName|WakeUp Script Time Checker
 #AutoIt3Wrapper_Res_Field=ProductVersion|0.3.x.0
@@ -29,6 +29,7 @@
 #Endregion
 
 #include "Libs\libs.au3"
+$linedebug=0
 FileDelete($logfile)
 #include "Libs\head.au3"
 
@@ -89,7 +90,7 @@ Opt("GUICoordMode", 1)
 GuiCtrlCreateLabel("Press F1 for help", 145, 0, 150, 15, $SS_RIGHT)
 
 $Button_1 = GUICtrlCreateButton("Install WakeScript", 80, 30, 150, 40)
-$F_inst=GUICtrlCreateCheckbox("Clean install ", 60, 80, 80, 20)
+$F_inst=GUICtrlCreateCheckbox("Clean install ", 40, 80, 100, 20)
 $F_log=GUICtrlCreateCheckbox("Log ", 140, 80, 50, 20)
 $F_debug=GUICtrlCreateCheckbox("Debug ", 190, 80, 120, 20)
 $Button_2 = GUICtrlCreateButton("Install BootTime", 80, 110, 150, 40)
@@ -255,6 +256,42 @@ While 1
 		FileDelete($newresultfile)
 
 
+	  ; Check active powerplan
+
+	  ShellExecuteWait('cmd.exe', '/c powercfg GETACTIVESCHEME | find /I ":" > ' & $tempfile)
+
+	  $file=FileOpen($tempfile, 0)
+	  $line = FileReadLine($file)
+	  $result = StringInStr($line, ":")
+	  $GUID=StringTrimLeft($line,$result+1)
+	  $result = StringInStr($GUID, " ")
+	  $GUID=StringLeft($GUID,$result-1)
+
+	  FileClose($file)
+	  FileDelete($tempfile)
+
+	  If $GUID==$NewGUID Then
+
+	  history ("Found that new powerplan enabled  - " & $GUID)
+
+	  ShellExecuteWait('cmd.exe', '/c powercfg /SETACTIVE ' & $OldGUID)
+
+	  history ("Enabling previous powerplan - " & $OldGUID)
+
+	  ShellExecuteWait('cmd.exe', '/c powercfg /DELETE ' & $NewGUID)
+
+	  history ("Remove powerplan - " & $NewGUID)
+
+	  ElseIf $GUID==$OldGUID Then
+
+	  history ("Found that previous powerplan enabled  - " & $GUID)
+
+	  ShellExecuteWait('cmd.exe', '/c powercfg /DELETE ' & $NewGUID)
+
+	  history ("Remove powerplan - " & $NewGUID)
+
+	  EndIf
+
 		ProgressSet(100, "Done", "Complete")
 		Sleep(500)
 		ProgressOff()
@@ -319,8 +356,6 @@ While 1
 	WEnd
 
 
-	PauseTime($pausetime)
-
 	history ("Create program files directory")
 
 	; Start Menu install
@@ -330,10 +365,11 @@ While 1
 	FileCreateShortcut($ScriptFolder & "\" & $WakeStart, @ProgramsCommonDir & "\" & $ScriptName & "\WakeStart.lnk", $ScriptFolder)
 	FileCreateShortcut($ScriptFolder & "\" & $WakeUninstall, @ProgramsCommonDir & "\" & $ScriptName & "\WakeUninstall.lnk", $ScriptFolder)
 
+	PauseTime($pausetime)
 
 	MsgBox(0,"Good news!", "Installation of WakeScript completed. Setup`ll starts WakeStart in 5 seconds", 5)
 
-	Run($WakeStart, $ScriptFolder)
+	Run($ScriptFolder & "\" & $WakeStart, $ScriptFolder)
 
 	ExitLoop
 

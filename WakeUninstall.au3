@@ -15,7 +15,7 @@
 #AutoIt3Wrapper_Icon=Alert.ico
 #AutoIt3Wrapper_Res_Comment="Wake Uninstall"
 #AutoIt3Wrapper_Res_Description="WakeUp Script Time Checker (WSTC)"
-#AutoIt3Wrapper_Res_Fileversion=0.3.4.51
+#AutoIt3Wrapper_Res_Fileversion=0.3.4.56
 #AutoIt3Wrapper_Res_FileVersion_AutoIncrement=y
 #AutoIt3Wrapper_Res_Field=ProductName|WakeUp Script Time Checker
 #AutoIt3Wrapper_Res_Field=ProductVersion|0.3.x.0
@@ -123,23 +123,23 @@
 
 	  If $GUID==$NewGUID Then
 
-	  history ("Found that new powerplan enabled  — " & $GUID)
+	  history ("Found that new powerplan enabled  - " & $GUID)
 
 	  ShellExecuteWait('cmd.exe', '/c powercfg /SETACTIVE ' & $OldGUID)
 
-	  history ("Enabling previous powerplan — " & $OldGUID)
+	  history ("Enabling previous powerplan - " & $OldGUID)
 
 	  ShellExecuteWait('cmd.exe', '/c powercfg /DELETE ' & $NewGUID)
 
-	  history ("Remove powerplan — " & $NewGUID)
+	  history ("Remove powerplan - " & $NewGUID)
 
 	  ElseIf $GUID==$OldGUID Then
 
-	  history ("Found that previous powerplan enabled  — " & $GUID)
+	  history ("Found that previous powerplan enabled  - " & $GUID)
 
 	  ShellExecuteWait('cmd.exe', '/c powercfg /DELETE ' & $NewGUID)
 
-	  history ("Remove powerplan — " & $NewGUID)
+	  history ("Remove powerplan - " & $NewGUID)
 
 	  EndIf
 
