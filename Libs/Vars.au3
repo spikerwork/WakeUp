@@ -46,8 +46,12 @@ $newresultfile = $ScriptFolder & "\" & $newresultfile
 Global $helpfile="help.txt" ; Help file
 
 ; Log files
-Global $logfile="Log_" & @ScriptName & ".txt"
+Global $logfile = "Log_" & @ScriptName & ".txt"
 $logfile = $ScriptFolder & "\" & $logfile
+
+; Statistic file
+Global $statisticfile = "Stat_" & @ScriptName & ".txt"
+$statisticfile = $ScriptFolder & "\" & $statisticfile
 
 ; Power plans (Win Vista/7 tested. Windows 8 maybe?)
 Global $Power_Notebook="Notebook.pow"
