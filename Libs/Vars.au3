@@ -49,9 +49,6 @@ Global $helpfile="help.txt" ; Help file
 Global $logfile = "Log_" & @ScriptName & ".txt"
 $logfile = $ScriptFolder & "\" & $logfile
 
-; Statistic file
-Global $statisticfile = "Stat_" & @ScriptName & ".txt"
-$statisticfile = $ScriptFolder & "\" & $statisticfile
 
 ; Power plans (Win Vista/7 tested. Windows 8 maybe?)
 Global $Power_Notebook="Notebook.pow"
@@ -129,3 +126,9 @@ Global $ScriptEndTime ; Script end time (foot.au3)
    Global $cpu_percent_need = IniRead($resultini, "Client", "CPU_load",  5)
    Global $hdd_need = IniRead($resultini, "Client", "Hdd_activity",  1)
    Global $hdd_percent_need = 0 ; Always off. Used before for old system (WinXP and Vista).
+
+; Unic hardware IDs
+Global Const $UHID_MB = 0x00
+Global Const $UHID_BIOS = 0x01
+Global Const $UHID_CPU = 0x02
+Global Const $UHID_HDD = 0x04

@@ -15,7 +15,7 @@
 #AutoIt3Wrapper_Compile_both=n
 #AutoIt3Wrapper_Res_Comment="Wake Client"
 #AutoIt3Wrapper_Res_Description="WakeUp Script Time Checker (WSTC)"
-#AutoIt3Wrapper_Res_Fileversion=0.3.4.8
+#AutoIt3Wrapper_Res_Fileversion=0.3.4.9
 #AutoIt3Wrapper_Res_FileVersion_AutoIncrement=y
 #AutoIt3Wrapper_Res_Field=ProductName|WakeUp Script Time Checker
 #AutoIt3Wrapper_Res_Field=ProductVersion|0.3.0.0
@@ -30,13 +30,7 @@
 #include "Libs\libs.au3"
 #include "Libs\head.au3"
 
-$statistic= "Run on system: " & $osversion & "(" & @OSBuild & ") " & $osarch & " " & "Language" & " (" & $oslang & ") [0419=Rus 0409=En]"  & " autoitX64 - " & @AutoItX64 & @CRLF
 
-Local $file = FileOpen($statisticfile, 9)
-FileWrite($file, currenttime() & @CRLF & " ----------------- " & @CRLF & $statistic & @CRLF)
-FileClose($file)
-
-SendPost($statisticfile)
 
 
 ;$lol=GetUnixTimeStamp()

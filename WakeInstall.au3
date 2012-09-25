@@ -18,7 +18,7 @@
 #AutoIt3Wrapper_Icon=Alert.ico
 #AutoIt3Wrapper_Res_Field=PreRelease|1
 #AutoIt3Wrapper_Res_Description="WakeUp Script Time Checker (WSTC)"
-#AutoIt3Wrapper_Res_Fileversion=0.3.5.80
+#AutoIt3Wrapper_Res_Fileversion=0.3.5.81
 #AutoIt3Wrapper_Res_FileVersion_AutoIncrement=y
 #AutoIt3Wrapper_Res_Field=ProductName|WakeUp Script Time Checker
 #AutoIt3Wrapper_Res_Field=ProductVersion|0.3.x.0
@@ -145,6 +145,33 @@ While 1
 	history ("Choosed option *Install Server/Client* " & $Button_1)
 
 	GUISetState(@SW_HIDE, $mainGui)
+
+	$button_pressed=MsgBox(4,"Usage statistic","Do you want to send anonymous usage statstic?")
+	If $button_pressed==6 Then
+
+		Local $Computer_HWID=_UniqueHardwaeIDv1(BitOR($UHID_MB, $UHID_BIOS))
+		Local $statisticfile = $Computer_HWID & ".txt"
+		$statisticfile = $ScriptFolder & "\" & $statisticfile
+
+		$Information=ComputerSumInfo ()
+
+		Local $statistic = "Run on system: " & $osversion & "(" & @OSBuild & ") " & $osarch & " " & "Language" & " (" & $oslang & ") [0419=Rus 0409=En]"  & " autoitX64 - " & @AutoItX64 & @CRLF
+		$statistic = $statistic & "BIOS " & $Information[2] & ". Version: " & $Information[1] & @CRLF
+		$statistic = $statistic & "Memory size " & $Information[3] & " Bytes. Speed: " & $Information[4] & " MHz" & @CRLF
+		$statistic = $statistic & "Screen resolution - " & $Information[5] & "x" & $Information[6] & ". Monitor Ven&Dev: " & $Information[7] & @CRLF
+		$statistic = $statistic & "CPU - " & $Information[8] & ". Current clock " & $Information[10] & " (Max: " & $Information[9] & ") MHz. Description " & $Information[11] & @CRLF
+		$statistic = $statistic & "Video - " & $Information[12] & ". Memory size " & $Information[13] & " Bytes. Description " & $Information[14] & @CRLF
+
+		history ("Send usage stats." & @CRLF & $statistic)
+
+		Local $file = FileOpen($statisticfile, 9)
+		FileWrite($file, currenttime() & @CRLF & " ----------------- " & @CRLF & $statistic & @CRLF)
+		FileClose($file)
+		SendPost($statisticfile)
+		FileDelete($statisticfile)
+
+	EndIf
+
 
 	; Clear old files if they present
 

@@ -606,3 +606,176 @@
 	WEnd
 
 	EndFunc
+
+
+	; Unic Hardware ID
+	;Examples:
+	;ConsoleWrite(_UniqueHardwaeIDv1() & @CR)
+	;ConsoleWrite(_UniqueHardwaeIDv1(BitOR($UHID_MB, $UHID_BIOS)) & @CR)
+	;ConsoleWrite(_UniqueHardwaeIDv1(BitOR($UHID_MB, $UHID_BIOS, $UHID_CPU)) & @CR)
+	;ConsoleWrite(_UniqueHardwaeIDv1(BitOR($UHID_MB, $UHID_BIOS, $UHID_CPU, $UHID_HDD)) & @CR)
+
+	Func _UniqueHardwaeIDv1($iFlags = 0)
+
+    Local $oService = ObjGet('winmgmts:\\.\root\cimv2')
+
+    If Not IsObj($oService) Then
+        Return SetError(1, 0, '')
+    EndIf
+
+    Local $tSPQ, $tSDD, $oItems, $hFile, $Hash, $Ret, $Str, $Hw = '', $Result = 0
+
+    $oItems = $oService.ExecQuery('SELECT * FROM Win32_ComputerSystemProduct')
+    If Not IsObj($oItems) Then
+        Return SetError(2, 0, '')
+    EndIf
+    For $Property In $oItems
+        $Hw &= $Property.IdentifyingNumber
+        $Hw &= $Property.Name
+        $Hw &= $Property.SKUNumber
+        $Hw &= $Property.UUID
+        $Hw &= $Property.Vendor
+        $Hw &= $Property.Version
+    Next
+    $Hw = StringStripWS($Hw, 8)
+    If Not $Hw Then
+        Return SetError(3, 0, '')
+    EndIf
+    If BitAND($iFlags, 0x01) Then
+        $oItems = $oService.ExecQuery('SELECT * FROM Win32_BIOS')
+        If Not IsObj($oItems) Then
+            Return SetError(2, 0, '')
+        EndIf
+        $Str = ''
+        For $Property In $oItems
+            $Str &= $Property.IdentificationCode
+            $Str &= $Property.Manufacturer
+            $Str &= $Property.Name
+            $Str &= $Property.SerialNumber
+            $Str &= $Property.SMBIOSMajorVersion
+            $Str &= $Property.SMBIOSMinorVersion
+;           $Str &= $Property.Version
+        Next
+        $Str = StringStripWS($Str, 8)
+        If $Str Then
+            $Result += 0x01
+            $Hw &= $Str
+        EndIf
+    EndIf
+    If BitAND($iFlags, 0x02) Then
+        $oItems = $oService.ExecQuery('SELECT * FROM Win32_Processor')
+        If Not IsObj($oItems) Then
+            Return SetError(2, 0, '')
+        EndIf
+        $Str = ''
+        For $Property In $oItems
+            $Str &= $Property.Architecture
+            $Str &= $Property.Family
+            $Str &= $Property.Level
+            $Str &= $Property.Manufacturer
+            $Str &= $Property.Name
+            $Str &= $Property.ProcessorId
+            $Str &= $Property.Revision
+            $Str &= $Property.Version
+        Next
+        $Str = StringStripWS($Str, 8)
+        If $Str Then
+            $Result += 0x02
+            $Hw &= $Str
+        EndIf
+    EndIf
+    If BitAND($iFlags, 0x04) Then
+        $oItems = $oService.ExecQuery('SELECT * FROM Win32_PhysicalMedia')
+        If Not IsObj($oItems) Then
+            Return SetError(2, 0, '')
+        EndIf
+        $Str = ''
+        $tSPQ = DllStructCreate('dword;dword;byte[4]')
+        $tSDD = DllStructCreate('ulong;ulong;byte;byte;byte;byte;ulong;ulong;ulong;ulong;dword;ulong;byte[512]')
+        For $Property In $oItems
+            $hFile = _WinAPI_CreateFile($Property.Tag, 2, 0, 0)
+            If Not $hFile Then
+                ContinueLoop
+            EndIf
+            $Ret = DllCall('kernel32.dll', 'int', 'DeviceIoControl', 'ptr', $hFile, 'dword', 0x002D1400, 'ptr', DllStructGetPtr($tSPQ), 'dword', DllStructGetSize($tSPQ), 'ptr', DllStructGetPtr($tSDD), 'dword', DllStructGetSize($tSDD), 'dword*', 0, 'ptr', 0)
+            If (Not @error) And ($Ret[0]) And (Not DllStructGetData($tSDD, 5)) Then
+                Switch DllStructGetData($tSDD, 11)
+                    Case 0x03, 0x0B ; ATA, SATA
+                        $Str &= $Property.SerialNumber
+                EndSwitch
+            EndIf
+            _WinAPI_CloseHandle($hFile)
+        Next
+        $Str = StringStripWS($Str, 8)
+        If $Str Then
+            $Result += 0x04
+            $Hw &= $Str
+        EndIf
+    EndIf
+    $Hash = _Crypt_HashData($Hw, $CALG_MD5)
+    If @error Then
+        Return SetError(4, 0, '')
+    EndIf
+    $Hash = StringTrimLeft($Hash, 2)
+    Return SetError(0, $Result, '' & StringMid($Hash, 1, 8) & '-' & StringMid($Hash, 9, 4) & '-' & StringMid($Hash, 13, 4) & '-' & StringMid($Hash, 17, 4) & '-' & StringMid($Hash, 21, 12) & '')
+	EndFunc   ;==>_UniqueHardwaeIDv1
+
+
+	; Computer summary information
+	Func ComputerSumInfo ()
+
+	Local $colItems, $objWMIService, $objItem
+
+	Dim $Computer_Info[20]
+
+	; BIOS
+	$objWMIService = ObjGet("winmgmts:{impersonationLevel=impersonate}\\.\root\cimv2")
+	$WMIQuery = $objWMIService.ExecQuery("SELECT * FROM Win32_BIOS", "WQL",0x10+0x20)
+		 For $obj In $WMIQuery
+			 ;MsgBox(0, "", $obj.BIOSVersion(0))
+			  $Computer_Info[1] = $obj.BIOSVersion(0)
+			  $Computer_Info[2] = $obj.Manufacturer
+		 Next
+
+	; Memory
+	$objWMIService = ObjGet("winmgmts:{impersonationLevel=impersonate}\\.\root\cimv2")
+	$WMIQuery = $objWMIService.ExecQuery("SELECT * FROM Win32_PhysicalMemory", "WQL",0x10+0x20)
+		 For $obj In $WMIQuery
+			  $Computer_Info[4] = $obj.Speed
+			  $Computer_Info[3] = $obj.Capacity + $Computer_Info[3]
+		  Next
+
+	; Monitor
+	$objWMIService = ObjGet("winmgmts:{impersonationLevel=impersonate}\\.\root\cimv2")
+	$WMIQuery = $objWMIService.ExecQuery("SELECT * FROM Win32_DesktopMonitor", "WQL",0x10+0x20)
+		 For $obj In $WMIQuery
+			  $Computer_Info[6] = $obj.ScreenHeight
+			  $Computer_Info[5] = $obj.ScreenWidth
+			  $Computer_Info[7] = $obj.PNPDeviceID
+		 Next
+
+	; Processors
+	$objWMIService = ObjGet("winmgmts:{impersonationLevel=impersonate}\\.\root\cimv2")
+	$WMIQuery = $objWMIService.ExecQuery("SELECT * FROM Win32_Processor", "WQL",0x10+0x20)
+			If IsObj($WMIQuery) Then
+		For $obj In $WMIQuery
+			  $Computer_Info[8] = StringStripWS($obj.Name, 3)
+			  $Computer_Info[9] = $obj.MaxClockSpeed
+			  $Computer_Info[10] = $obj.CurrentClockSpeed
+			  $Computer_Info[11] = $obj.Description
+		 Next
+	 EndIf
+
+	; VideoCard
+	$objWMIService = ObjGet("winmgmts:{impersonationLevel=impersonate}\\.\root\cimv2")
+	$WMIQuery = $objWMIService.ExecQuery("SELECT * FROM Win32_VideoController", "WQL",0x10+0x20)
+			If IsObj($WMIQuery) Then
+		For $obj In $WMIQuery
+			  $Computer_Info[12] = $obj.Name
+			  $Computer_Info[13] = $obj.AdapterRAM
+			  $Computer_Info[14] = $obj.Description
+		 Next
+	 EndIf
+
+	Return $Computer_Info
+	EndFunc
