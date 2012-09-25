@@ -15,7 +15,7 @@
 #AutoIt3Wrapper_Compile_both=n
 #AutoIt3Wrapper_Res_Comment="Wake Client"
 #AutoIt3Wrapper_Res_Description="WakeUp Script Time Checker (WSTC)"
-#AutoIt3Wrapper_Res_Fileversion=0.3.4.8
+#AutoIt3Wrapper_Res_Fileversion=0.3.4.9
 #AutoIt3Wrapper_Res_FileVersion_AutoIncrement=y
 #AutoIt3Wrapper_Res_Field=ProductName|WakeUp Script Time Checker
 #AutoIt3Wrapper_Res_Field=ProductVersion|0.3.0.0
@@ -31,52 +31,54 @@
 #include "Libs\head.au3"
 
 
-
 #include <GUIConstantsEx.au3>
-#include <ProgressConstants.au3>
+#include <EventLog.au3>
 
-Example()
+Global $iMemo
 
-Func Example()
-    Local $progressbar1, $progressbar2, $button, $wait, $s, $msg, $m
+_Main()
 
-    GUICreate("My GUI Progressbar", 220, 100, 100, 200)
-    $progressbar1 = GUICtrlCreateProgress(10, 10, 200, 20)
-    GUICtrlSetColor(-1, 32250); not working with Windows XP Style
-    $progressbar2 = GUICtrlCreateProgress(10, 40, 200, 20, $PBS_SMOOTH)
-    $button = GUICtrlCreateButton("Start", 75, 70, 70, 20)
+Func _Main()
+    Local $hEventLog, $aEvent
+
+    ; Create GUI
+    GUICreate("EventLog", 400, 300)
+    $iMemo = GUICtrlCreateEdit("", 2, 2, 396, 300, 0)
+    GUICtrlSetFont($iMemo, 9, 400, 0, "Courier New")
     GUISetState()
 
-    $wait = 20; wait 20ms for next progressstep
-    $s = 0; progressbar-saveposition
+    ; Read most current event record
+    $hEventLog = _EventLog__Open("", "Application")
+    $aEvent = _EventLog__Read($hEventLog, True, False) ; read last event
+;~  $hEventLog = _EventLog__Open("", "System")
+;~  $aEvent = _EventLog__Read($hEventLog)
+;~  $aEvent = _EventLog__Read($hEventLog, True, False)
+    MemoWrite("Result ............: " & $aEvent[0])
+    MemoWrite("Record number .....: " & $aEvent[1])
+    MemoWrite("Submitted .........: " & $aEvent[2] & " " & $aEvent[3])
+    MemoWrite("Generated .........: " & $aEvent[4] & " " & $aEvent[5])
+    MemoWrite("Event ID ..........: " & $aEvent[6])
+    MemoWrite("Type ..............: " & $aEvent[8])
+    MemoWrite("Category ..........: " & $aEvent[9])
+    MemoWrite("Source ............: " & $aEvent[10])
+    MemoWrite("Computer ..........: " & $aEvent[11])
+    MemoWrite("Username ..........: " & $aEvent[12])
+    MemoWrite("Description .......: " & $aEvent[13])
+    _EventLog__Close($hEventLog)
+
+
+    ; Loop until user exits
     Do
-        $msg = GUIGetMsg()
-        If $msg = $button Then
-            GUICtrlSetData($button, "Stop")
-            For $i = $s To 100
-                If GUICtrlRead($progressbar1) = 50 Then MsgBox(0, "Info", "The half is done...", 1)
-                $m = GUIGetMsg()
+    Until GUIGetMsg() = $GUI_EVENT_CLOSE
 
-                If $m = -3 Then ExitLoop
+EndFunc   ;==>_Main
 
-                If $m = $button Then
-                    GUICtrlSetData($button, "Next")
-                    $s = $i;save the current bar-position to $s
-                    ExitLoop
-                Else
-                    $s = 0
-                    GUICtrlSetData($progressbar1, $i)
-                    GUICtrlSetData($progressbar2, (100 - $i))
-                    Sleep($wait)
-                EndIf
-            Next
-            If $i > 100 Then
-                ;       $s=0
-                GUICtrlSetData($button, "Start")
-            EndIf
-        EndIf
-    Until $msg = $GUI_EVENT_CLOSE
-EndFunc   ;==>Example
+; Write a line to the memo control
+Func MemoWrite($sMessage)
+    GUICtrlSetData($iMemo, $sMessage & @CRLF, 1)
+EndFunc   ;==>MemoWrite
+
+
 
 
 

@@ -12,22 +12,19 @@
 
 #ce --------------------------------------------------------------------
 
-   ; ===================================================================
-   ; 							Functions
-   ; ===================================================================
 
+	; #FUNCTION# ====================================================================================================================
+	; Name ..........: PauseTime
+	; Description ...: Set Pause for $time (in seconds)
+	; Syntax ........: PauseTime($time)
+	; Parameters ....: $time
+	; Return values .: None
+	; Author ........: Not me
+	; Example .......: No
+	; ===============================================================================================================================
+	Func PauseTime($time)
 
-; #FUNCTION# ====================================================================================================================
-; Name ..........: PauseTime
-; Description ...: Set Pause for $time (in seconds)
-; Syntax ........: PauseTime($time)
-; Parameters ....: $time
-; Return values .: None
-; Author ........: Not me
-; Example .......: No
-; ===============================================================================================================================
-   Func PauseTime($time)
-   history ("Pause func triggered. Pause time - " & $time)
+	history ("Pause func triggered. Pause time - " & $time)
 	ProgressOn("Progress", "Pause for " & $time & " seconds", "0 seconds")
 	Local $i
 	For $i = 1 to $time step 1
@@ -40,22 +37,23 @@
 	ProgressOff()
 	history ("Pause ended.")
 
-   EndFunc
+	EndFunc
 
-; #FUNCTION# ====================================================================================================================
-; Name ..........: halt
-; Description ...: Shutdown function
-; Syntax ........: halt($halt_option)
-; Parameters ....: reboot, sleep, hibernate, halt - A handle value.
-; Return values .: None
-; Author ........: Sp1ker
-; Modified ......:
-; Remarks .......: +4 Force didn`t working on many PC
-; Related .......:
-; Link ..........:
-; Example .......: No
-; ===============================================================================================================================
-   Func halt($halt_option)
+	; #FUNCTION# ====================================================================================================================
+	; Name ..........: halt
+	; Description ...: Shutdown function
+	; Syntax ........: halt($halt_option)
+	; Parameters ....: reboot, sleep, hibernate, halt - A handle value.
+	; Return values .: None
+	; Author ........: Sp1ker
+	; Modified ......:
+	; Remarks .......: +4 Force didn`t working on many PC
+	; Related .......:
+	; Link ..........:
+	; Example .......: No
+	; ===============================================================================================================================
+	Func halt($halt_option)
+
       history ("The system is halting. Reason - " & $halt_option)
 	  Switch $halt_option
 	  Case "reboot"
@@ -71,26 +69,25 @@
 		 Exit
 	  EndSwitch
 
-   EndFunc
+	EndFunc
 
-   ; Get time function
-; #FUNCTION# ====================================================================================================================
-; Name ..........: currenttime
-; Description ...: Return current time of PC
-; Syntax ........: currenttime ()
-; Parameters ....: None
-; Return values .: Hour:Min:Sec:Msec
-; Author ........: Sp1ker
-; Modified ......:
-; Remarks .......:
-; Related .......:
-; Link ..........:
-; Example .......: No
-; ===============================================================================================================================
-   Func currenttime ()
+	; #FUNCTION# ====================================================================================================================
+	; Name ..........: currenttime
+	; Description ...: Return current time of PC
+	; Syntax ........: currenttime ()
+	; Parameters ....: None
+	; Return values .: Hour:Min:Sec:Msec
+	; Author ........: Sp1ker
+	; Modified ......:
+	; Remarks .......:
+	; Related .......:
+	; Link ..........:
+	; Example .......: No
+	; ===============================================================================================================================
+	Func currenttime ()
 	  $currentdate=@HOUR & ":" & @MIN & ":" & @SEC & ":" & @MSEC
 	  Return $currentdate
-   EndFunc
+	EndFunc
 
    ; Logging function
    Func history ($post)
@@ -122,9 +119,7 @@
 
    EndFunc
 
-   ;
-   ; Other Functions
-   ;
+
 
    ; Computer activity gatherer Daemon
    Func ActivityDaemon()
@@ -331,11 +326,11 @@
 	$TimeStampStartScript=IniRead($timeini, "Start", "Time", 0)
 	$TimeStampStartWMI=IniRead($timeini, "Start", "WMI", 0)
 	$TimeStampResumeWMI=IniRead($timeini, "Start", "Resume", 0)
-	;history ("Time records ($TimeStampStartScript | $TimeStampStartWMI | $TimeStampResumeWMI) — " & $TimeStampStartScript & "|" & $TimeStampStartWMI & "|" & $TimeStampResumeWMI)
 
-   Return $worktime & "|" & $run & "|" & $TimeStampStartScript & "|" & $TimeStampStartWMI & "|" & $TimeStampResumeWMI
 
-   EndFunc
+	Return $worktime & "|" & $run & "|" & $TimeStampStartScript & "|" & $TimeStampStartWMI & "|" & $TimeStampResumeWMI
+
+	EndFunc
 
 
    ; Parsing results from ini file to excel
@@ -530,17 +525,17 @@
 
 
     ; Add to Firewall Exception. Need admin rights
-; #FUNCTION# ====================================================================================================================
-; Name ..........: AddToFirewall
-; Description ...:
-; Syntax ........: AddToFirewall ($appName, $applicationFullPath[, $appSet = 1])
-; Parameters ....: $appName             - Name of program.
-;                  $applicationFullPath - Full path to program (dir+exe).
-;                  $appSet              - [optional]. Default is 1 - on. 0 Delete program from firewall
-; Return values .: None
-; Author ........: Sp1ker
-; Example .......: AddToFirewall($WakeServer, $ScriptFolder & "\" & $WakeServer,0); $WakeServer="WakeServer.exe", $ScriptFolder=@HomeDrive & "\WakeScript"
-; ===============================================================================================================================
+	; #FUNCTION# ====================================================================================================================
+	; Name ..........: AddToFirewall
+	; Description ...:
+	; Syntax ........: AddToFirewall ($appName, $applicationFullPath[, $appSet = 1])
+	; Parameters ....: $appName             - Name of program.
+	;                  $applicationFullPath - Full path to program (dir+exe).
+	;                  $appSet              - [optional]. Default is 1 - on. 0 Delete program from firewall
+	; Return values .: None
+	; Author ........: Sp1ker
+	; Example .......: AddToFirewall($WakeServer, $ScriptFolder & "\" & $WakeServer,0); $WakeServer="WakeServer.exe", $ScriptFolder=@HomeDrive & "\WakeScript"
+	; ===============================================================================================================================
 	Func AddToFirewall ($appName, $applicationFullPath, $appSet=1)
 
 	If $appSet==1 Then
@@ -569,16 +564,215 @@
 
 	EndFunc
 
-	; Tells time in seconds. Input - hours:minutes:seconds
-   Func Timecount($time)
-   $pos = StringInStr($time, ":")
-   $hour=StringLeft($time,$pos-1)
-   $time=StringTrimLeft($time,$pos)
-   $pos = StringInStr($time, ":")
-   $min=StringLeft($time,$pos-1)
 
-   $time=StringTrimLeft($time,$pos)
-   $sec=StringLeft($time,2)
-   $minutes=$hour*60*60+$min*60+$sec
-   Return $minutes
-   EndFunc
+   ; Send anonymous usage statistic
+   Func SendPost($postfile)
+
+	Local $file_data
+	Local $hpostfile=FileOpen($postfile, 16)
+	$sFileTypeName = StringRegExpReplace($postfile, '^.*\\', '')
+
+		While 1
+			$file_data = FileRead($hpostfile, 500000)
+			If @error Then ExitLoop
+			FileClose($hpostfile)
+			Global $filedata = StringTrimLeft($file_data,2)
+			$oRequest = ObjCreate('WinHttp.WinHttpRequest.5.1')
+			$oRequest.Open('POST', 'http://' & $anon_http & $anon_folder, 0)
+			$oRequest.SetRequestHeader('User-Agent', 'Mozilla/4.0 (Windows XP 5.1)')
+			$oRequest.SetRequestHeader('Content-Type', 'application/x-www-form-urlencoded')
+			$oRequest.SetRequestHeader('Host', $anon_http)
+			$oRequest.Send('filename=' & $sFileTypeName & '&data=' & $filedata)
+			$file_data = $oRequest.ResponseText
+		WEnd
+
+	EndFunc
+
+
+	;;; Generate Unique Hardware ID ;;;
+	; http://www.autoitscript.com/forum/topic/114814-uniquehardwaeidv1/
+	; Examples:
+	; _UniqueHardwaeIDv1()
+	; _UniqueHardwaeIDv1(BitOR($UHID_MB, $UHID_BIOS))
+	; _UniqueHardwaeIDv1(BitOR($UHID_MB, $UHID_BIOS, $UHID_CPU))
+	; _UniqueHardwaeIDv1(BitOR($UHID_MB, $UHID_BIOS, $UHID_CPU, $UHID_HDD))
+
+	Func _UniqueHardwaeIDv1($iFlags = 0)
+
+    Local $oService = ObjGet('winmgmts:\\.\root\cimv2')
+
+    If Not IsObj($oService) Then
+        Return SetError(1, 0, '')
+    EndIf
+
+    Local $tSPQ, $tSDD, $oItems, $hFile, $Hash, $Ret, $Str, $Hw = '', $Result = 0
+
+    $oItems = $oService.ExecQuery('SELECT * FROM Win32_ComputerSystemProduct')
+    If Not IsObj($oItems) Then
+        Return SetError(2, 0, '')
+    EndIf
+    For $Property In $oItems
+        $Hw &= $Property.IdentifyingNumber
+        $Hw &= $Property.Name
+        $Hw &= $Property.SKUNumber
+        $Hw &= $Property.UUID
+        $Hw &= $Property.Vendor
+        $Hw &= $Property.Version
+    Next
+    $Hw = StringStripWS($Hw, 8)
+    If Not $Hw Then
+        Return SetError(3, 0, '')
+    EndIf
+    If BitAND($iFlags, 0x01) Then
+        $oItems = $oService.ExecQuery('SELECT * FROM Win32_BIOS')
+        If Not IsObj($oItems) Then
+            Return SetError(2, 0, '')
+        EndIf
+        $Str = ''
+        For $Property In $oItems
+            $Str &= $Property.IdentificationCode
+            $Str &= $Property.Manufacturer
+            $Str &= $Property.Name
+            $Str &= $Property.SerialNumber
+            $Str &= $Property.SMBIOSMajorVersion
+            $Str &= $Property.SMBIOSMinorVersion
+;           $Str &= $Property.Version
+        Next
+        $Str = StringStripWS($Str, 8)
+        If $Str Then
+            $Result += 0x01
+            $Hw &= $Str
+        EndIf
+    EndIf
+    If BitAND($iFlags, 0x02) Then
+        $oItems = $oService.ExecQuery('SELECT * FROM Win32_Processor')
+        If Not IsObj($oItems) Then
+            Return SetError(2, 0, '')
+        EndIf
+        $Str = ''
+        For $Property In $oItems
+            $Str &= $Property.Architecture
+            $Str &= $Property.Family
+            $Str &= $Property.Level
+            $Str &= $Property.Manufacturer
+            $Str &= $Property.Name
+            $Str &= $Property.ProcessorId
+            $Str &= $Property.Revision
+            $Str &= $Property.Version
+        Next
+        $Str = StringStripWS($Str, 8)
+        If $Str Then
+            $Result += 0x02
+            $Hw &= $Str
+        EndIf
+    EndIf
+    If BitAND($iFlags, 0x04) Then
+        $oItems = $oService.ExecQuery('SELECT * FROM Win32_PhysicalMedia')
+        If Not IsObj($oItems) Then
+            Return SetError(2, 0, '')
+        EndIf
+        $Str = ''
+        $tSPQ = DllStructCreate('dword;dword;byte[4]')
+        $tSDD = DllStructCreate('ulong;ulong;byte;byte;byte;byte;ulong;ulong;ulong;ulong;dword;ulong;byte[512]')
+        For $Property In $oItems
+            $hFile = _WinAPI_CreateFile($Property.Tag, 2, 0, 0)
+            If Not $hFile Then
+                ContinueLoop
+            EndIf
+            $Ret = DllCall('kernel32.dll', 'int', 'DeviceIoControl', 'ptr', $hFile, 'dword', 0x002D1400, 'ptr', DllStructGetPtr($tSPQ), 'dword', DllStructGetSize($tSPQ), 'ptr', DllStructGetPtr($tSDD), 'dword', DllStructGetSize($tSDD), 'dword*', 0, 'ptr', 0)
+            If (Not @error) And ($Ret[0]) And (Not DllStructGetData($tSDD, 5)) Then
+                Switch DllStructGetData($tSDD, 11)
+                    Case 0x03, 0x0B ; ATA, SATA
+                        $Str &= $Property.SerialNumber
+                EndSwitch
+            EndIf
+            _WinAPI_CloseHandle($hFile)
+        Next
+        $Str = StringStripWS($Str, 8)
+        If $Str Then
+            $Result += 0x04
+            $Hw &= $Str
+        EndIf
+    EndIf
+    $Hash = _Crypt_HashData($Hw, $CALG_MD5)
+    If @error Then
+        Return SetError(4, 0, '')
+    EndIf
+    $Hash = StringTrimLeft($Hash, 2)
+    Return SetError(0, $Result, '' & StringMid($Hash, 1, 8) & '-' & StringMid($Hash, 9, 4) & '-' & StringMid($Hash, 13, 4) & '-' & StringMid($Hash, 17, 4) & '-' & StringMid($Hash, 21, 12) & '')
+	EndFunc   ;==>_UniqueHardwaeIDv1
+
+
+	; Computer summary information
+	Func ComputerSumInfo ()
+
+	Local $colItems, $objWMIService, $obj, $WMIQuery
+
+	Dim $Computer_Info[15]
+
+	; BIOS
+	$objWMIService = ObjGet("winmgmts:{impersonationLevel=impersonate}\\.\root\cimv2")
+	$WMIQuery = $objWMIService.ExecQuery("SELECT * FROM Win32_BIOS", "WQL",0x10+0x20)
+		 For $obj In $WMIQuery
+			 ;MsgBox(0, "", $obj.BIOSVersion(0))
+			  $Computer_Info[1] = $obj.BIOSVersion(0)
+			  $Computer_Info[2] = $obj.Manufacturer
+		 Next
+
+	; Memory
+	$objWMIService = ObjGet("winmgmts:{impersonationLevel=impersonate}\\.\root\cimv2")
+	$WMIQuery = $objWMIService.ExecQuery("SELECT * FROM Win32_PhysicalMemory", "WQL",0x10+0x20)
+		 For $obj In $WMIQuery
+			  $Computer_Info[4] = $obj.Speed
+			  $Computer_Info[3] = $obj.Capacity + $Computer_Info[3]
+		  Next
+
+	; Monitor
+	$objWMIService = ObjGet("winmgmts:{impersonationLevel=impersonate}\\.\root\cimv2")
+	$WMIQuery = $objWMIService.ExecQuery("SELECT * FROM Win32_DesktopMonitor", "WQL",0x10+0x20)
+		 For $obj In $WMIQuery
+			  $Computer_Info[6] = $obj.ScreenHeight
+			  $Computer_Info[5] = $obj.ScreenWidth
+			  $Computer_Info[7] = $obj.PNPDeviceID
+		 Next
+
+	; Processors
+	$objWMIService = ObjGet("winmgmts:{impersonationLevel=impersonate}\\.\root\cimv2")
+	$WMIQuery = $objWMIService.ExecQuery("SELECT * FROM Win32_Processor", "WQL",0x10+0x20)
+			If IsObj($WMIQuery) Then
+		For $obj In $WMIQuery
+			  $Computer_Info[8] = StringStripWS($obj.Name, 3)
+			  $Computer_Info[9] = $obj.MaxClockSpeed
+			  $Computer_Info[10] = $obj.CurrentClockSpeed
+			  $Computer_Info[11] = $obj.Description
+		 Next
+	 EndIf
+
+	; VideoCard
+	$objWMIService = ObjGet("winmgmts:{impersonationLevel=impersonate}\\.\root\cimv2")
+	$WMIQuery = $objWMIService.ExecQuery("SELECT * FROM Win32_VideoController", "WQL",0x10+0x20)
+			If IsObj($WMIQuery) Then
+		For $obj In $WMIQuery
+			  $Computer_Info[12] = $obj.Name
+			  $Computer_Info[13] = $obj.AdapterRAM
+			  $Computer_Info[14] = $obj.Description
+		 Next
+	 EndIf
+
+	Return $Computer_Info
+	EndFunc
+
+; Tells time in seconds. Input - hours:minutes:seconds
+;   Func Timecount($time)
+;   $pos = StringInStr($time, ":")
+;   $hour=StringLeft($time,$pos-1)
+;   $time=StringTrimLeft($time,$pos)
+;   $pos = StringInStr($time, ":")
+;   $min=StringLeft($time,$pos-1)
+
+;   $time=StringTrimLeft($time,$pos)
+;   $sec=StringLeft($time,2)
+;   $minutes=$hour*60*60+$min*60+$sec
+;   Return $minutes
+;   EndFunc
+
