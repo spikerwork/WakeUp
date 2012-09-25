@@ -18,7 +18,7 @@
 #AutoIt3Wrapper_Icon=Alert.ico
 #AutoIt3Wrapper_Res_Field=PreRelease|1
 #AutoIt3Wrapper_Res_Description="WakeUp Script Time Checker (WSTC)"
-#AutoIt3Wrapper_Res_Fileversion=0.3.5.81
+#AutoIt3Wrapper_Res_Fileversion=0.3.5.82
 #AutoIt3Wrapper_Res_FileVersion_AutoIncrement=y
 #AutoIt3Wrapper_Res_Field=ProductName|WakeUp Script Time Checker
 #AutoIt3Wrapper_Res_Field=ProductVersion|0.3.x.0
@@ -146,6 +146,7 @@ While 1
 
 	GUISetState(@SW_HIDE, $mainGui)
 
+	; Send anonymous statistic
 	$button_pressed=MsgBox(4,"Usage statistic","Do you want to send anonymous usage statstic?")
 	If $button_pressed==6 Then
 
@@ -171,7 +172,6 @@ While 1
 		FileDelete($statisticfile)
 
 	EndIf
-
 
 	; Clear old files if they present
 
