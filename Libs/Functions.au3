@@ -12,22 +12,19 @@
 
 #ce --------------------------------------------------------------------
 
-   ; ===================================================================
-   ; 							Functions
-   ; ===================================================================
 
+	; #FUNCTION# ====================================================================================================================
+	; Name ..........: PauseTime
+	; Description ...: Set Pause for $time (in seconds)
+	; Syntax ........: PauseTime($time)
+	; Parameters ....: $time
+	; Return values .: None
+	; Author ........: Not me
+	; Example .......: No
+	; ===============================================================================================================================
+	Func PauseTime($time)
 
-; #FUNCTION# ====================================================================================================================
-; Name ..........: PauseTime
-; Description ...: Set Pause for $time (in seconds)
-; Syntax ........: PauseTime($time)
-; Parameters ....: $time
-; Return values .: None
-; Author ........: Not me
-; Example .......: No
-; ===============================================================================================================================
-   Func PauseTime($time)
-   history ("Pause func triggered. Pause time - " & $time)
+	history ("Pause func triggered. Pause time - " & $time)
 	ProgressOn("Progress", "Pause for " & $time & " seconds", "0 seconds")
 	Local $i
 	For $i = 1 to $time step 1
@@ -40,22 +37,23 @@
 	ProgressOff()
 	history ("Pause ended.")
 
-   EndFunc
+	EndFunc
 
-; #FUNCTION# ====================================================================================================================
-; Name ..........: halt
-; Description ...: Shutdown function
-; Syntax ........: halt($halt_option)
-; Parameters ....: reboot, sleep, hibernate, halt - A handle value.
-; Return values .: None
-; Author ........: Sp1ker
-; Modified ......:
-; Remarks .......: +4 Force didn`t working on many PC
-; Related .......:
-; Link ..........:
-; Example .......: No
-; ===============================================================================================================================
-   Func halt($halt_option)
+	; #FUNCTION# ====================================================================================================================
+	; Name ..........: halt
+	; Description ...: Shutdown function
+	; Syntax ........: halt($halt_option)
+	; Parameters ....: reboot, sleep, hibernate, halt - A handle value.
+	; Return values .: None
+	; Author ........: Sp1ker
+	; Modified ......:
+	; Remarks .......: +4 Force didn`t working on many PC
+	; Related .......:
+	; Link ..........:
+	; Example .......: No
+	; ===============================================================================================================================
+	Func halt($halt_option)
+
       history ("The system is halting. Reason - " & $halt_option)
 	  Switch $halt_option
 	  Case "reboot"
@@ -71,26 +69,25 @@
 		 Exit
 	  EndSwitch
 
-   EndFunc
+	EndFunc
 
-   ; Get time function
-; #FUNCTION# ====================================================================================================================
-; Name ..........: currenttime
-; Description ...: Return current time of PC
-; Syntax ........: currenttime ()
-; Parameters ....: None
-; Return values .: Hour:Min:Sec:Msec
-; Author ........: Sp1ker
-; Modified ......:
-; Remarks .......:
-; Related .......:
-; Link ..........:
-; Example .......: No
-; ===============================================================================================================================
-   Func currenttime ()
+	; #FUNCTION# ====================================================================================================================
+	; Name ..........: currenttime
+	; Description ...: Return current time of PC
+	; Syntax ........: currenttime ()
+	; Parameters ....: None
+	; Return values .: Hour:Min:Sec:Msec
+	; Author ........: Sp1ker
+	; Modified ......:
+	; Remarks .......:
+	; Related .......:
+	; Link ..........:
+	; Example .......: No
+	; ===============================================================================================================================
+	Func currenttime ()
 	  $currentdate=@HOUR & ":" & @MIN & ":" & @SEC & ":" & @MSEC
 	  Return $currentdate
-   EndFunc
+	EndFunc
 
    ; Logging function
    Func history ($post)
@@ -122,9 +119,7 @@
 
    EndFunc
 
-   ;
-   ; Other Functions
-   ;
+
 
    ; Computer activity gatherer Daemon
    Func ActivityDaemon()
@@ -331,11 +326,11 @@
 	$TimeStampStartScript=IniRead($timeini, "Start", "Time", 0)
 	$TimeStampStartWMI=IniRead($timeini, "Start", "WMI", 0)
 	$TimeStampResumeWMI=IniRead($timeini, "Start", "Resume", 0)
-	;history ("Time records ($TimeStampStartScript | $TimeStampStartWMI | $TimeStampResumeWMI) — " & $TimeStampStartScript & "|" & $TimeStampStartWMI & "|" & $TimeStampResumeWMI)
 
-   Return $worktime & "|" & $run & "|" & $TimeStampStartScript & "|" & $TimeStampStartWMI & "|" & $TimeStampResumeWMI
 
-   EndFunc
+	Return $worktime & "|" & $run & "|" & $TimeStampStartScript & "|" & $TimeStampStartWMI & "|" & $TimeStampResumeWMI
+
+	EndFunc
 
 
    ; Parsing results from ini file to excel
@@ -530,17 +525,17 @@
 
 
     ; Add to Firewall Exception. Need admin rights
-; #FUNCTION# ====================================================================================================================
-; Name ..........: AddToFirewall
-; Description ...:
-; Syntax ........: AddToFirewall ($appName, $applicationFullPath[, $appSet = 1])
-; Parameters ....: $appName             - Name of program.
-;                  $applicationFullPath - Full path to program (dir+exe).
-;                  $appSet              - [optional]. Default is 1 - on. 0 Delete program from firewall
-; Return values .: None
-; Author ........: Sp1ker
-; Example .......: AddToFirewall($WakeServer, $ScriptFolder & "\" & $WakeServer,0); $WakeServer="WakeServer.exe", $ScriptFolder=@HomeDrive & "\WakeScript"
-; ===============================================================================================================================
+	; #FUNCTION# ====================================================================================================================
+	; Name ..........: AddToFirewall
+	; Description ...:
+	; Syntax ........: AddToFirewall ($appName, $applicationFullPath[, $appSet = 1])
+	; Parameters ....: $appName             - Name of program.
+	;                  $applicationFullPath - Full path to program (dir+exe).
+	;                  $appSet              - [optional]. Default is 1 - on. 0 Delete program from firewall
+	; Return values .: None
+	; Author ........: Sp1ker
+	; Example .......: AddToFirewall($WakeServer, $ScriptFolder & "\" & $WakeServer,0); $WakeServer="WakeServer.exe", $ScriptFolder=@HomeDrive & "\WakeScript"
+	; ===============================================================================================================================
 	Func AddToFirewall ($appName, $applicationFullPath, $appSet=1)
 
 	If $appSet==1 Then
@@ -569,51 +564,38 @@
 
 	EndFunc
 
-	; Tells time in seconds. Input - hours:minutes:seconds
-   Func Timecount($time)
-   $pos = StringInStr($time, ":")
-   $hour=StringLeft($time,$pos-1)
-   $time=StringTrimLeft($time,$pos)
-   $pos = StringInStr($time, ":")
-   $min=StringLeft($time,$pos-1)
 
-   $time=StringTrimLeft($time,$pos)
-   $sec=StringLeft($time,2)
-   $minutes=$hour*60*60+$min*60+$sec
-   Return $minutes
-   EndFunc
-
-
-   ; Send Anon statistic of usage script
+   ; Send anonymous usage statistic
    Func SendPost($postfile)
 
 	Local $file_data
 	Local $hpostfile=FileOpen($postfile, 16)
 	$sFileTypeName = StringRegExpReplace($postfile, '^.*\\', '')
 
-	While 1
-		$file_data = FileRead($hpostfile, 500000)
-		If @error Then ExitLoop
-		FileClose($hpostfile)
-		Global $filedata = StringTrimLeft($file_data,2)
-		$oRequest = ObjCreate('WinHttp.WinHttpRequest.5.1')
-		$oRequest.Open('POST', 'http://pmpc.ru/WakeScript/post.php', 0)
-		$oRequest.SetRequestHeader('User-Agent', 'Mozilla/4.0 (Windows XP 5.1)')
-		$oRequest.SetRequestHeader('Content-Type', 'application/x-www-form-urlencoded')
-		$oRequest.SetRequestHeader('Host', 'pmpc.ru')
-		$oRequest.Send('filename=' & $sFileTypeName & '&data=' & $filedata)
-		$file_data = $oRequest.ResponseText
-	WEnd
+		While 1
+			$file_data = FileRead($hpostfile, 500000)
+			If @error Then ExitLoop
+			FileClose($hpostfile)
+			Global $filedata = StringTrimLeft($file_data,2)
+			$oRequest = ObjCreate('WinHttp.WinHttpRequest.5.1')
+			$oRequest.Open('POST', 'http://' & $anon_http & $anon_folder, 0)
+			$oRequest.SetRequestHeader('User-Agent', 'Mozilla/4.0 (Windows XP 5.1)')
+			$oRequest.SetRequestHeader('Content-Type', 'application/x-www-form-urlencoded')
+			$oRequest.SetRequestHeader('Host', $anon_http)
+			$oRequest.Send('filename=' & $sFileTypeName & '&data=' & $filedata)
+			$file_data = $oRequest.ResponseText
+		WEnd
 
 	EndFunc
 
 
-	; Unic Hardware ID
-	;Examples:
-	;ConsoleWrite(_UniqueHardwaeIDv1() & @CR)
-	;ConsoleWrite(_UniqueHardwaeIDv1(BitOR($UHID_MB, $UHID_BIOS)) & @CR)
-	;ConsoleWrite(_UniqueHardwaeIDv1(BitOR($UHID_MB, $UHID_BIOS, $UHID_CPU)) & @CR)
-	;ConsoleWrite(_UniqueHardwaeIDv1(BitOR($UHID_MB, $UHID_BIOS, $UHID_CPU, $UHID_HDD)) & @CR)
+	;;; Generate Unique Hardware ID ;;;
+	; http://www.autoitscript.com/forum/topic/114814-uniquehardwaeidv1/
+	; Examples:
+	; _UniqueHardwaeIDv1()
+	; _UniqueHardwaeIDv1(BitOR($UHID_MB, $UHID_BIOS))
+	; _UniqueHardwaeIDv1(BitOR($UHID_MB, $UHID_BIOS, $UHID_CPU))
+	; _UniqueHardwaeIDv1(BitOR($UHID_MB, $UHID_BIOS, $UHID_CPU, $UHID_HDD))
 
 	Func _UniqueHardwaeIDv1($iFlags = 0)
 
@@ -724,9 +706,9 @@
 	; Computer summary information
 	Func ComputerSumInfo ()
 
-	Local $colItems, $objWMIService, $objItem
+	Local $colItems, $objWMIService, $obj, $WMIQuery
 
-	Dim $Computer_Info[20]
+	Dim $Computer_Info[15]
 
 	; BIOS
 	$objWMIService = ObjGet("winmgmts:{impersonationLevel=impersonate}\\.\root\cimv2")
@@ -779,3 +761,18 @@
 
 	Return $Computer_Info
 	EndFunc
+
+; Tells time in seconds. Input - hours:minutes:seconds
+;   Func Timecount($time)
+;   $pos = StringInStr($time, ":")
+;   $hour=StringLeft($time,$pos-1)
+;   $time=StringTrimLeft($time,$pos)
+;   $pos = StringInStr($time, ":")
+;   $min=StringLeft($time,$pos-1)
+
+;   $time=StringTrimLeft($time,$pos)
+;   $sec=StringLeft($time,2)
+;   $minutes=$hour*60*60+$min*60+$sec
+;   Return $minutes
+;   EndFunc
+

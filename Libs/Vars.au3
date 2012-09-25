@@ -36,7 +36,7 @@ Global $timeini = "timeini.ini" ; Contains timestamps of WakeDaemon
 $timeini = $ScriptFolder & "\" & $timeini
 
 ; Tempfile
-Global  $tempfile=@HomeDrive & "\temp.txt" ; Temp file
+Global $tempfile=_TempFile($ScriptFolder, "tst_", ".txt", 7) ; Temp file
 
 ; New result file
 Global $newresultfile="Result_" & @ComputerName & "-" & @UserName & " " & @MDAY & "." & @MON & "." & @YEAR & "_" & @MSEC & ".ini"
@@ -46,7 +46,7 @@ $newresultfile = $ScriptFolder & "\" & $newresultfile
 Global $helpfile="help.txt" ; Help file
 
 ; Log files
-Global $logfile = "Log_" & @ScriptName & ".txt"
+Global $logfile = "Log_" & @ScriptName & ".txt" ; Generate log file for current script
 $logfile = $ScriptFolder & "\" & $logfile
 
 
@@ -79,8 +79,8 @@ Global $osversion = @OSVersion ; Version of OS
 Global $oslang=@MUILang ; Check system Language 0419=Rus 0409=En
 
 ; Some global empty varibles
-Global $CPULoadArray[1] ; For daemon function
-Global $HDDLoadArray[1] ; For daemon function
+Global $CPULoadArray[1] ; For WMI daemon function
+Global $HDDLoadArray[1] ; For WMI daemon function
 Global $Ready=0 ; Use in client/server greetings
 Global $Done=0 ; Use in client/server first run
 Global $SearchKey = "HKLM\SYSTEM\ControlSet001\Control\Class\{4D36E972-E325-11CE-BFC1-08002BE10318}" ; For network adapters Windows Vista/7. Windows 8 maybe?
@@ -92,7 +92,7 @@ Global $F_arra ; Array of detected files
 
 ; Time settings
 
-Global $TimeStampShift=80 ; Shift for WMI function
+Global $TimeStampShift=80 ; Shift for WMI function. This affect to $WakeUpPause var
 Global $TimeStampStartScript
 Global $TimeStampStartWMI
 Global $TimeStampResumeWMI
@@ -132,3 +132,7 @@ Global Const $UHID_MB = 0x00
 Global Const $UHID_BIOS = 0x01
 Global Const $UHID_CPU = 0x02
 Global Const $UHID_HDD = 0x04
+
+; Anonymous http server
+Global $anon_http="pmpc.ru"
+Global $anon_folder="/WakeScript/post.php"
