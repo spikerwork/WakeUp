@@ -61,23 +61,18 @@ $Desktop="Desktop.pow"
 Local $Data = _WinAPI_GetSystemPowerStatus()
 
    If $Data[1]=128 Then
-   
+
 	  $Battery_Status="Батарея отсутствует"
 	  $powerplan=$Desktop
-	  
+
    Else
-	  
+
 	  $Battery_Status="Батарея присутствует"
 	  $powerplan=$Notebook
-	  
+
    EndIf
-   
-;MsgBox(0,"","|" & $Battery_Status & "|")
-$ScriptName = "StartWakeUp" ; Name
-$ScriptFolder=@HomeDrive & "\" & $ScriptName ; Destination 
 
-
-$tempfile=@HomeDrive & "\powercfg.txt"
+$tempfile=@HomeDrive & "\" & "temp.txt"
 
 ShellExecuteWait('cmd.exe', '/c powercfg GETACTIVESCHEME | find /I ":" > ' & $tempfile)
 
@@ -88,5 +83,26 @@ $GUID=StringTrimLeft($line,$result+1)
 $result = StringInStr($GUID, " ")
 $GUID=StringLeft($GUID,$result-1)
 
-MsgBox (0, "", "|" & $GUID & "|")
+MsgBox (0, "", "Current " & $GUID )
 
+
+ShellExecuteWait('cmd.exe', '/c powercfg -IMPORT ' & @ScriptDir & "\" & $powerplan & '  | find /I "GUID" > ' & $tempfile)
+
+	$file=FileOpen($tempfile, 0)
+	$line = FileReadLine($file)
+	$result = StringInStr($line, ":")
+	$NEWGUID=StringTrimLeft($line,$result+1)
+
+MsgBox (0, "", "Imported " & $NEWGUID )
+
+ShellExecuteWait('cmd.exe', '/c powercfg /SETACTIVE ' & $NEWGUID)
+
+MsgBox (0, "", "Activate " & $NEWGUID )
+
+ShellExecuteWait('cmd.exe', '/c powercfg /SETACTIVE ' & $GUID)
+
+MsgBox (0, "", "Activate old plan " & $GUID )
+
+ShellExecuteWait('cmd.exe', '/c powercfg /DELETE ' & $NEWGUID)
+
+MsgBox (0, "", "Delete new " & $NEWGUID )
